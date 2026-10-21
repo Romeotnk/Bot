@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="fr" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Viceinte — Surveillance & Pilotage Bot XAUUSD</title>
+    <meta name="description" content="Tableau de bord de surveillance et de pilotage du robot de trading automatique XAUUSD (Or). Direction artistique passerelle spatiale sci-fi avec noyau Aurum 3D en temps réel." />
+    <meta property="og:title" content="Viceinte — Surveillance & Pilotage Bot XAUUSD" />
+    <meta property="og:description" content="Tableau de bord de surveillance et de pilotage du robot de trading automatique XAUUSD (Or). Direction artistique passerelle spatiale sci-fi avec noyau Aurum 3D en temps réel." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#06070c" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Viceinte" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  </head>
+  <body class="bg-[#06070c] text-[#e9e6dc] selection:bg-[#e8c56a]/30 selection:text-[#f6e7b8] antialiased min-h-screen overflow-x-hidden font-sans">
+    <script>
+      // Ignore WebSocket / HMR disconnect errors in sandbox environment
+      window.addEventListener('unhandledrejection', function (e) {
+        if (e.reason && (
+          String(e.reason).includes('WebSocket') || 
+          String(e.reason.message || '').includes('WebSocket') ||
+          String(e.reason).includes('vite')
+        )) {
+          e.preventDefault();
+        }
+      });
+      window.addEventListener('error', function (e) {
+        if (e.message && (
+          e.message.includes('WebSocket') || 
+          e.message.includes('@vite/client')
+        )) {
+          e.preventDefault();
+        }
+      });
+    </script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
