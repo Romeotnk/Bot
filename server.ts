@@ -131,6 +131,22 @@ app.post(['/api/webhook/tradingview', '/api/webhook/pinescript'], (req: Request,
         level: 'info',
         message: `[TradingView Webhook] Ordre ${side} reçu de PineScript sur ${entryPrice.toFixed(2)} $. SL: ${stopLoss.toFixed(2)} $, TP1: ${takeProfit.toFixed(2)} $.`,
       });
+
+      // Prise de position automatique via MetaApi si activée
+      const currentState = store.getState();
+      if (currentState.metaapi?.auto_trade_enabled && currentState.metaapi?.token && currentState.metaapi?.account_id) {
+        console.log(`[Webhook Trigger] MetaApi Auto-Trade actif ! Envoi immédiat de l'ordre ${side}...`);
+        executeMetaApiOrder({
+          action: side,
+          symbol: currentState.metaapi.symbol || 'GOLD',
+          volume: currentState.metaapi.lot_size || 0.01,
+          stopLoss,
+          takeProfit,
+          comment: `TV MDT Score ${score}/7`,
+        }).catch((err) => {
+          console.error('[Webhook MetaApi Trigger Error]:', err);
+        });
+      }
     } else if (action.includes('BREAK_EVEN') || action.includes('BE')) {
       const state = store.getState();
       const openTrades = state.trades.filter((t) => t.closed_at === null);
@@ -398,6 +414,267 @@ app.post('/api/broker/sync-stats', (req: Request, res: Response) => {
   }
 });
 
+// -------------------------------------------------------------
+// MetaApi Cloud Execution Helper & Endpoints
+// -------------------------------------------------------------
+async function executeMetaApiOrder({
+  action,
+  symbol,
+  volume,
+  stopLoss,
+  takeProfit,
+  comment,
+}: {
+  action: string;
+  symbol?: string;
+  volume?: number;
+  stopLoss?: number;
+  takeProfit?: number;
+  comment?: string;
+}) {
+  const state = store.getState();
+  const metaConfig = state.metaapi;
+  if (!metaConfig?.token || !metaConfig?.account_id) {
+    console.warn('[MetaApi Auto-Trade] Token ou Account ID non configuré.');
+    return { success: false, reason: 'Token ou ID de compte MetaApi non configuré.' };
+  }
+
+  const region = metaConfig.region || 'new-york';
+  const targetHost = `https://mt-client-api-v1.${region}.agiliumtrade.ai`;
+  const url = `${targetHost}/users/current/accounts/${metaConfig.account_id}/trade`;
+
+  const isBuy = action.toUpperCase().includes('BUY') || action.toUpperCase().includes('ACHAT');
+  const actionType = isBuy ? 'ORDER_TYPE_BUY' : 'ORDER_TYPE_SELL';
+  const tradeSymbol = (symbol || metaConfig.symbol || 'GOLD').trim();
+  const tradeVolume = Number(volume) || Number(metaConfig.lot_size) || 0.01;
+
+  const tradePayload: any = {
+    actionType,
+    symbol: tradeSymbol,
+    volume: tradeVolume,
+    comment: comment || 'Viceinte MDT Auto',
+  };
+
+  if (stopLoss && Number(stopLoss) > 0) {
+    tradePayload.stopLoss = Number(Number(stopLoss).toFixed(2));
+  }
+  if (takeProfit && Number(takeProfit) > 0) {
+    tradePayload.takeProfit = Number(Number(takeProfit).toFixed(2));
+  }
+
+  console.log(`[MetaApi Auto-Trade] 🚀 Envoi de l'ordre au marché vers ${url} :`, tradePayload);
+
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'auth-token': metaConfig.token,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify(tradePayload),
+    });
+
+    const rawText = await res.text();
+    console.log(`[MetaApi Auto-Trade] Réponse HTTP ${res.status}:`, rawText);
+
+    let parsed: any = {};
+    try {
+      parsed = JSON.parse(rawText);
+    } catch {
+      parsed = { raw: rawText };
+    }
+
+    if (res.ok && (parsed.numericCode === 10009 || parsed.stringCode === 'TRADE_RETCODE_DONE' || parsed.orderId)) {
+      store.ingest('log', {
+        level: 'info',
+        message: `⚡ [MetaApi Auto-Trade] Position ${actionType} ${tradeVolume} lot sur ${tradeSymbol} ouverte avec succès (Ticket: ${parsed.orderId || parsed.positionId || 'Exécuté'}) !`,
+      });
+      return { success: true, order: parsed };
+    } else {
+      store.ingest('log', {
+        level: 'alerte',
+        message: `⚠️ [MetaApi Rejet] Échec de l'ordre (${res.status}): ${parsed.message || parsed.stringCode || rawText.substring(0, 120)}`,
+      });
+      return { success: false, status: res.status, error: parsed };
+    }
+  } catch (err: any) {
+    console.error('[MetaApi Exception]:', err);
+    store.ingest('log', {
+      level: 'alerte',
+      message: `❌ [MetaApi Erreur Réseau]: ${err.message}`,
+    });
+    return { success: false, error: err.message };
+  }
+}
+
+// 1. MetaApi Proxy (POST /api/metaapi/proxy)
+app.all('/api/metaapi/proxy', async (req: Request, res: Response) => {
+  try {
+    let targetUrl = req.body?.url || req.body?.endpoint || req.body?.path || (req.query?.url as string) || (req.query?.endpoint as string);
+
+    if (targetUrl && !targetUrl.startsWith('http://') && !targetUrl.startsWith('https://')) {
+      const defaultHost = process.env.METAAPI_BASE_URL || 'https://mt-client-api-v1.new-york.agiliumtrade.ai';
+      targetUrl = `${defaultHost.replace(/\/$/, '')}/${targetUrl.replace(/^\//, '')}`;
+    }
+
+    if (!targetUrl) {
+      res.status(400).json({ error: 'URL cible ou endpoint MetaApi manquant.' });
+      return;
+    }
+
+    const authToken =
+      req.headers['auth-token'] ||
+      req.headers['authorization']?.replace(/^Bearer\s+/i, '') ||
+      req.body?.['auth-token'] ||
+      req.body?.authToken ||
+      req.body?.token ||
+      process.env.METAAPI_TOKEN;
+
+    const forwardMethod = (req.body?.method || (req.method !== 'POST' ? req.method : 'GET')).toUpperCase();
+
+    const forwardHeaders: any = {
+      Accept: 'application/json',
+      ...(req.body?.headers || {}),
+    };
+
+    if (authToken) {
+      forwardHeaders['auth-token'] = authToken;
+    }
+
+    let forwardBody: string | undefined = undefined;
+    if (forwardMethod !== 'GET' && forwardMethod !== 'HEAD') {
+      if (req.body?.body !== undefined) {
+        forwardBody = typeof req.body.body === 'string' ? req.body.body : JSON.stringify(req.body.body);
+        if (!forwardHeaders['Content-Type']) forwardHeaders['Content-Type'] = 'application/json';
+      } else if (req.body?.data !== undefined) {
+        forwardBody = typeof req.body.data === 'string' ? req.body.data : JSON.stringify(req.body.data);
+        if (!forwardHeaders['Content-Type']) forwardHeaders['Content-Type'] = 'application/json';
+      }
+    }
+
+    console.log(`[MetaApi Proxy] -> ${forwardMethod} ${targetUrl}`);
+
+    const metaApiResponse = await fetch(targetUrl, {
+      method: forwardMethod,
+      headers: forwardHeaders,
+      body: forwardBody,
+    });
+
+    const rawBody = await metaApiResponse.text();
+    console.log(`[MetaApi Proxy] Statut: ${metaApiResponse.status}`);
+
+    const respContentType = metaApiResponse.headers.get('content-type');
+    if (respContentType) {
+      res.setHeader('Content-Type', respContentType);
+    }
+
+    res.status(metaApiResponse.status).send(rawBody);
+  } catch (err: any) {
+    console.error('[MetaApi Proxy Exception]:', err);
+    res.status(502).json({ error: 'Échec de transmission MetaApi', message: err.message });
+  }
+});
+
+// 2. MetaApi Config Save
+app.post('/api/metaapi/config', (req: Request, res: Response) => {
+  try {
+    const { token, account_id, symbol, lot_size, auto_trade_enabled, region } = req.body;
+    const updated = store.updateMetaApi({
+      token: token !== undefined ? String(token).trim() : undefined,
+      account_id: account_id !== undefined ? String(account_id).trim() : undefined,
+      symbol: symbol ? String(symbol).trim() : undefined,
+      lot_size: Number(lot_size) > 0 ? Number(lot_size) : undefined,
+      auto_trade_enabled: auto_trade_enabled !== undefined ? Boolean(auto_trade_enabled) : undefined,
+      region: region ? String(region).trim() : undefined,
+    });
+    res.json({ success: true, metaapi: updated });
+  } catch (err: any) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// 3. MetaApi Sync Account
+app.post('/api/metaapi/sync-account', async (req: Request, res: Response) => {
+  try {
+    const state = store.getState();
+    const token = req.body.token || state.metaapi?.token;
+    const accountId = req.body.account_id || state.metaapi?.account_id;
+    const region = req.body.region || state.metaapi?.region || 'new-york';
+
+    if (!token || !accountId) {
+      res.status(400).json({ error: 'Token et ID de compte requis.' });
+      return;
+    }
+
+    const host = `https://mt-client-api-v1.${region}.agiliumtrade.ai`;
+    const infoUrl = `${host}/users/current/accounts/${accountId}/information`;
+    console.log(`[MetaApi Sync] Appel ${infoUrl}...`);
+
+    let metaRes = await fetch(infoUrl, {
+      headers: { 'auth-token': token, Accept: 'application/json' },
+    });
+
+    if (!metaRes.ok) {
+      const accUrl = `${host}/users/current/accounts/${accountId}`;
+      metaRes = await fetch(accUrl, {
+        headers: { 'auth-token': token, Accept: 'application/json' },
+      });
+    }
+
+    if (!metaRes.ok) {
+      const errText = await metaRes.text();
+      res.status(metaRes.status).json({ error: `Statut ${metaRes.status}`, details: errText });
+      return;
+    }
+
+    const accountData: any = await metaRes.json();
+    const balance = accountData.balance !== undefined ? Number(accountData.balance) : (accountData.initialBalance || 1000);
+    const equity = accountData.equity !== undefined ? Number(accountData.equity) : balance;
+    const serverName = accountData.server || accountData.broker || 'MetaApi-MT5';
+    const platform = accountData.platform || 'mt5';
+
+    const updated = store.updateMetaApi({
+      token,
+      account_id: accountId,
+      connected: true,
+      balance,
+      equity,
+      server_name: serverName,
+      platform,
+      last_sync: new Date().toISOString(),
+    });
+
+    res.json({ success: true, metaapi: updated, account: accountData });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// 4. MetaApi Execute Manual / Test Trade
+app.post('/api/metaapi/trade', async (req: Request, res: Response) => {
+  try {
+    const { action, symbol, volume, stopLoss, takeProfit, comment } = req.body;
+    if (!action) {
+      res.status(400).json({ error: 'Action requise (BUY ou SELL).' });
+      return;
+    }
+
+    const result = await executeMetaApiOrder({
+      action,
+      symbol,
+      volume,
+      stopLoss,
+      takeProfit,
+      comment: comment || 'Viceinte MDT Manuel',
+    });
+
+    res.json(result);
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Advance scenario step (interactive demo)
 app.post('/api/demo/advance-sequence', (_req: Request, res: Response) => {
   const result = store.advanceDemoSequence();
@@ -432,6 +709,95 @@ app.post('/api/demo/reset', (_req: Request, res: Response) => {
   const state = store.resetToPureRealState();
   res.json({ success: true, state });
 });
+
+// -----------------------------
+// MetaApi Proxy Endpoint (POST /api/metaapi/proxy)
+// Relays request to MetaApi with auth-token header, returns raw status & body, logs response
+// -----------------------------
+app.all('/api/metaapi/proxy', async (req: Request, res: Response) => {
+  try {
+    let targetUrl = req.body?.url || req.body?.endpoint || req.body?.path || (req.query?.url as string) || (req.query?.endpoint as string);
+
+    if (targetUrl && !targetUrl.startsWith('http://') && !targetUrl.startsWith('https://')) {
+      const defaultHost = process.env.METAAPI_BASE_URL || 'https://mt-client-api-v1.new-york.agiliumtrade.ai';
+      targetUrl = `${defaultHost.replace(/\/$/, '')}/${targetUrl.replace(/^\//, '')}`;
+    }
+
+    if (!targetUrl) {
+      console.warn('[MetaApi Proxy] Requête rejetée : URL ou endpoint manquant.');
+      res.status(400).json({
+        error: 'URL cible ou endpoint MetaApi manquant.',
+        usage: {
+          url: 'https://mt-client-api-v1.new-york.agiliumtrade.ai/users/current/accounts',
+          method: 'GET',
+          headers: { 'auth-token': 'VOTRE_TOKEN' },
+        },
+      });
+      return;
+    }
+
+    const authToken =
+      (req.headers['auth-token'] as string) ||
+      (req.headers['authorization'] as string)?.replace(/^Bearer\s+/i, '') ||
+      req.body?.['auth-token'] ||
+      req.body?.authToken ||
+      req.body?.token ||
+      process.env.METAAPI_TOKEN;
+
+    const forwardMethod = (req.body?.method || (req.method !== 'POST' ? req.method : 'GET')).toUpperCase();
+
+    const forwardHeaders: Record<string, string> = {
+      Accept: 'application/json',
+      ...(req.body?.headers || {}),
+    };
+
+    if (authToken) {
+      forwardHeaders['auth-token'] = authToken;
+    }
+
+    let forwardBody: string | undefined = undefined;
+    if (forwardMethod !== 'GET' && forwardMethod !== 'HEAD') {
+      if (req.body?.body !== undefined) {
+        forwardBody = typeof req.body.body === 'string' ? req.body.body : JSON.stringify(req.body.body);
+        if (!forwardHeaders['Content-Type'] && !forwardHeaders['content-type']) {
+          forwardHeaders['Content-Type'] = 'application/json';
+        }
+      } else if (req.body?.data !== undefined) {
+        forwardBody = typeof req.body.data === 'string' ? req.body.data : JSON.stringify(req.body.data);
+        if (!forwardHeaders['Content-Type'] && !forwardHeaders['content-type']) {
+          forwardHeaders['Content-Type'] = 'application/json';
+        }
+      }
+    }
+
+    console.log(`[MetaApi Proxy Request] -> ${forwardMethod} ${targetUrl} (auth-token: ${authToken ? 'Fourni' : 'Absent'})`);
+
+    const metaApiResponse = await fetch(targetUrl, {
+      method: forwardMethod,
+      headers: forwardHeaders,
+      body: forwardBody,
+    });
+
+    const rawBody = await metaApiResponse.text();
+
+    console.log(`[MetaApi Proxy Response] Statut: ${metaApiResponse.status} ${metaApiResponse.statusText}`);
+    console.log(`[MetaApi Proxy Response Body]:\n${rawBody.length > 2500 ? rawBody.substring(0, 2500) + '... (tronqué)' : rawBody}`);
+
+    const respContentType = metaApiResponse.headers.get('content-type');
+    if (respContentType) {
+      res.setHeader('Content-Type', respContentType);
+    }
+
+    res.status(metaApiResponse.status).send(rawBody);
+  } catch (err: any) {
+    console.error('[MetaApi Proxy Exception]:', err);
+    res.status(502).json({
+      error: 'Échec de transmission vers le serveur MetaApi',
+      message: err.message,
+    });
+  }
+});
+
 
 // Live Gold Market Fetch from Real Global Feed
 app.get('/api/market/sync-live', async (_req: Request, res: Response) => {

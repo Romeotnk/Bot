@@ -16,6 +16,12 @@ import {
   Lock,
   Layers,
   ArrowRight,
+  Eye,
+  EyeOff,
+  HelpCircle,
+  Send,
+  CheckCircle2,
+  RefreshCw,
 } from 'lucide-react';
 import { useAppState } from '../context/StateContext';
 import { BrokerType, ExecutionEngineMode, BrokerAccountConfig } from '../types';
@@ -71,6 +77,15 @@ const BROKER_PRESETS: {
     badgeColor: 'bg-rose-400/20 text-rose-300 border-rose-400/40',
   },
   {
+    type: 'MetaApi (Cloud MT4/MT5)',
+    name: 'MetaApi Cloud',
+    defaultServer: 'Cloud-REST-API',
+    defaultSymbol: 'XAUUSD',
+    description: 'Trading cloud direct MT4/MT5 via l’API REST MetaApi et le proxy backend /api/metaapi/proxy.',
+    badge: 'API Cloud Rest',
+    badgeColor: 'bg-emerald-400/20 text-emerald-300 border-emerald-400/40',
+  },
+  {
     type: 'FTMO',
     name: 'FTMO / Prop Firms',
     defaultServer: 'FTMO-Demo',
@@ -91,10 +106,20 @@ const BROKER_PRESETS: {
 ];
 
 export const BrokerConnectModal: React.FC<BrokerConnectModalProps> = ({ isOpen, onClose }) => {
-  const { state, connectBroker, pingBroker, disconnectBroker } = useAppState();
-  const currentBroker = state?.broker || state?.settings?.broker;
+  const {
+    state,
+    connectBroker,
+    pingBroker,
+    disconnectBroker,
+    saveMetaApiConfig,
+    syncMetaApiAccount,
+    executeMetaApiTrade,
+  } = useAppState();
 
-  const [activeTab, setActiveTab] = useState<'connect' | 'python_hft' | 'mql5_ea' | 'architecture'>('connect');
+  const currentBroker = state?.broker || state?.settings?.broker;
+  const currentMetaApi = state?.metaapi;
+
+  const [activeTab, setActiveTab] = useState<'connect' | 'python_hft' | 'mql5_ea' | 'metaapi' | 'architecture'>('connect');
   const [selectedBroker, setSelectedBroker] = useState<BrokerType>(currentBroker?.broker_type || 'XM Global');
   const [accountType, setAccountType] = useState<'demo' | 'reel'>(currentBroker?.account_type || 'demo');
   const [accountNumber, setAccountNumber] = useState(currentBroker?.account_number || '');
@@ -106,10 +131,30 @@ export const BrokerConnectModal: React.FC<BrokerConnectModalProps> = ({ isOpen, 
   const [apiToken, setApiToken] = useState(currentBroker?.api_token || '');
   const [maxSlippage, setMaxSlippage] = useState(currentBroker?.hft_max_slippage_pips || 1.5);
 
+  // MetaApi Hub State (For automatic position taking & cloud link)
+  const [metaApiToken, setMetaApiToken] = useState(currentMetaApi?.token || '');
+  const [metaApiAccountId, setMetaApiAccountId] = useState(currentMetaApi?.account_id || '');
+  const [metaApiSymbol, setMetaApiSymbol] = useState(currentMetaApi?.symbol || 'GOLD');
+  const [metaApiLot, setMetaApiLot] = useState<number>(currentMetaApi?.lot_size || 0.01);
+  const [metaApiAutoTrade, setMetaApiAutoTrade] = useState<boolean>(currentMetaApi?.auto_trade_enabled || false);
+  const [metaApiRegion, setMetaApiRegion] = useState(currentMetaApi?.region || 'new-york');
+  const [showMetaApiToken, setShowMetaApiToken] = useState(false);
+  const [metaApiSaving, setMetaApiSaving] = useState(false);
+  const [metaApiSyncing, setMetaApiSyncing] = useState(false);
+  const [metaApiFeedback, setMetaApiFeedback] = useState<{ success: boolean; msg: string } | null>(null);
+  const [metaApiTradeTesting, setMetaApiTradeTesting] = useState<'BUY' | 'SELL' | null>(null);
+  const [metaApiTradeFeedback, setMetaApiTradeFeedback] = useState<{ success: boolean; msg: string; orderId?: string } | null>(null);
+
+  // MetaApi Proxy Live Tester State
+  const [metaApiEndpoint, setMetaApiEndpoint] = useState('https://mt-client-api-v1.new-york.agiliumtrade.ai/users/current/accounts');
+  const [metaApiTesting, setMetaApiTesting] = useState(false);
+  const [metaApiProxyResponse, setMetaApiProxyResponse] = useState<{ status: number; durationMs: number; data: any } | null>(null);
+
   const [isTesting, setIsTesting] = useState(false);
   const [testResult, setTestResult] = useState<{ success: boolean; ping: number; msg: string } | null>(null);
   const [copiedPython, setCopiedPython] = useState(false);
   const [copiedMql5, setCopiedMql5] = useState(false);
+  const [copiedMetaApiCode, setCopiedMetaApiCode] = useState(false);
 
   if (!isOpen) return null;
 
@@ -117,6 +162,101 @@ export const BrokerConnectModal: React.FC<BrokerConnectModalProps> = ({ isOpen, 
     setSelectedBroker(preset.type);
     setServerName(preset.defaultServer);
     setSymbol(preset.defaultSymbol);
+    if (preset.type === 'MetaApi (Cloud MT4/MT5)') {
+      setActiveTab('metaapi');
+    }
+  };
+
+  const handleSaveMetaApi = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    setMetaApiSaving(true);
+    setMetaApiFeedback(null);
+    try {
+      await saveMetaApiConfig({
+        token: metaApiToken.trim(),
+        account_id: metaApiAccountId.trim(),
+        symbol: metaApiSymbol.trim(),
+        lot_size: metaApiLot,
+        auto_trade_enabled: metaApiAutoTrade,
+        region: metaApiRegion,
+      });
+      setMetaApiFeedback({
+        success: true,
+        msg: `Configuration MetaApi enregistrée. Prise de position automatique : ${metaApiAutoTrade ? 'ACTIVÉE (Prêt à trader)' : 'DÉSACTIVÉE'}.`,
+      });
+      setTimeout(() => setMetaApiFeedback(null), 6000);
+    } catch (err: any) {
+      setMetaApiFeedback({
+        success: false,
+        msg: err.message || 'Erreur lors de la sauvegarde MetaApi.',
+      });
+    } finally {
+      setMetaApiSaving(false);
+    }
+  };
+
+  const handleSyncMetaApi = async () => {
+    if (!metaApiToken.trim() || !metaApiAccountId.trim()) {
+      setMetaApiFeedback({
+        success: false,
+        msg: 'Veuillez saisir votre Token MetaApi et votre Account ID avant de synchroniser.',
+      });
+      return;
+    }
+    setMetaApiSyncing(true);
+    setMetaApiFeedback(null);
+    try {
+      // First save values
+      await saveMetaApiConfig({
+        token: metaApiToken.trim(),
+        account_id: metaApiAccountId.trim(),
+        symbol: metaApiSymbol.trim(),
+        lot_size: metaApiLot,
+        auto_trade_enabled: metaApiAutoTrade,
+        region: metaApiRegion,
+      });
+
+      const res = await syncMetaApiAccount();
+      const bal = res.metaapi?.balance ?? 1000;
+      const srv = res.metaapi?.server_name || 'MT5';
+      setMetaApiFeedback({
+        success: true,
+        msg: `Compte MetaApi connecté ! Serveur : ${srv} · Solde synchronisé : $${bal.toLocaleString('fr-FR')}.`,
+      });
+    } catch (err: any) {
+      setMetaApiFeedback({
+        success: false,
+        msg: err.message || 'Impossible de synchroniser avec MetaApi. Vérifiez votre clé Token et votre Account ID.',
+      });
+    } finally {
+      setMetaApiSyncing(false);
+    }
+  };
+
+  const handleTestOrder = async (action: 'BUY' | 'SELL') => {
+    setMetaApiTradeTesting(action);
+    setMetaApiTradeFeedback(null);
+    try {
+      const res = await executeMetaApiTrade({
+        action,
+        symbol: metaApiSymbol.trim(),
+        volume: metaApiLot,
+        comment: `Test direct ${action} Viceinte`,
+      });
+      const orderId = res.order?.orderId || res.order?.numericCode || 'OK';
+      setMetaApiTradeFeedback({
+        success: true,
+        orderId: String(orderId),
+        msg: `Ordre ${action} de ${metaApiLot} lot sur ${metaApiSymbol} passé avec succès sur MetaApi ! Ticket : #${orderId}`,
+      });
+    } catch (err: any) {
+      setMetaApiTradeFeedback({
+        success: false,
+        msg: err.message || 'Échec d\'exécution de l\'ordre.',
+      });
+    } finally {
+      setMetaApiTradeTesting(null);
+    }
   };
 
   const handleConnect = async (e: React.FormEvent) => {
@@ -309,6 +449,53 @@ void OnTimer() {
     setTimeout(() => setCopiedMql5(false), 3000);
   };
 
+  const handleTestMetaApiProxy = async () => {
+    setMetaApiTesting(true);
+    setMetaApiProxyResponse(null);
+    const t0 = performance.now();
+    try {
+      const targetUrl = metaApiAccountId.trim()
+        ? `https://mt-client-api-v1.new-york.agiliumtrade.ai/users/current/accounts/${metaApiAccountId.trim()}`
+        : metaApiEndpoint.trim();
+
+      const res = await fetch('/api/metaapi/proxy', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'auth-token': metaApiToken.trim(),
+        },
+        body: JSON.stringify({
+          url: targetUrl,
+          method: 'GET',
+        }),
+      });
+
+      const elapsed = Math.round(performance.now() - t0);
+      const text = await res.text();
+      let parsed: any;
+      try {
+        parsed = JSON.parse(text);
+      } catch {
+        parsed = text;
+      }
+
+      setMetaApiProxyResponse({
+        status: res.status,
+        durationMs: elapsed,
+        data: parsed,
+      });
+    } catch (err: any) {
+      const elapsed = Math.round(performance.now() - t0);
+      setMetaApiProxyResponse({
+        status: 0,
+        durationMs: elapsed,
+        data: { error: err.message || 'Erreur réseau vers le proxy' },
+      });
+    } finally {
+      setMetaApiTesting(false);
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/85 backdrop-blur-md">
       <div className="relative w-full max-w-5xl max-h-[92vh] overflow-y-auto rounded-3xl bg-[#090b12] border border-[#232738] p-5 sm:p-7 shadow-2xl hud-box hud-corners">
@@ -429,6 +616,23 @@ void OnTimer() {
           >
             <Zap className="w-3.5 h-3.5" />
             <span>3. Robot EA MT5 (.mq5)</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('metaapi')}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-medium transition cursor-pointer relative ${
+              activeTab === 'metaapi'
+                ? 'bg-blue-500/20 text-blue-300 border border-blue-400 shadow-sm ring-1 ring-blue-400/30'
+                : 'text-[#8d93a8] hover:text-blue-300'
+            }`}
+          >
+            <Radio className="w-3.5 h-3.5" />
+            <span>4. Liaison MetaApi & Auto-Trade</span>
+            {currentMetaApi?.auto_trade_enabled ? (
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse ml-1" title="Auto-Trade Actif" />
+            ) : currentMetaApi?.token ? (
+              <span className="w-2 h-2 rounded-full bg-blue-400 ml-1" title="Configuré" />
+            ) : null}
           </button>
 
           <button
@@ -810,6 +1014,396 @@ void OnTimer() {
                 </p>
               </div>
             </div>
+          </div>
+        )}
+
+        {/* Tab 4: MetaApi Cloud REST Hub & Prise de Position Auto */}
+        {activeTab === 'metaapi' && (
+          <div className="mt-4 space-y-4">
+            {/* Guide & Overview Banner */}
+            <div className="p-4 rounded-2xl bg-gradient-to-r from-blue-950/40 via-[#0e1424] to-[#0c0f1c] border border-blue-500/40 space-y-3">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center border border-blue-500/30">
+                    <Radio className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-heading font-extrabold text-sm text-white">
+                        Liaison MetaApi Cloud — Prise de Position Automatique
+                      </h3>
+                      <span className={`text-[10px] font-mono px-2 py-0.5 rounded border ${
+                        metaApiAutoTrade 
+                          ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 animate-pulse'
+                          : 'bg-zinc-800 text-zinc-400 border-zinc-700'
+                      }`}>
+                        {metaApiAutoTrade ? '⚡ AUTO-TRADE ACTIF' : 'MODE MANUEL / SUPERVISION'}
+                      </span>
+                    </div>
+                    <p className="text-xs text-[#8d93a8] mt-0.5">
+                      Connectez votre compte <strong>XM Global</strong>, <strong>Exness</strong> ou tout compte <strong>MT4/MT5</strong> via le cloud MetaApi pour que le site prenne automatiquement les positions dès qu'un signal est validé.
+                    </p>
+                  </div>
+                </div>
+
+                <a
+                  href="https://app.metaapi.cloud"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono bg-blue-500/15 text-blue-300 hover:bg-blue-500/25 border border-blue-500/30 transition whitespace-nowrap"
+                >
+                  <span>Ouvrir MetaApi.cloud</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              </div>
+
+              {/* Step-by-step guidance */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 pt-2 border-t border-white/[0.08] text-xs">
+                <div className="p-2.5 rounded-xl bg-[#060810] border border-white/[0.06] flex items-start gap-2.5">
+                  <span className="w-5 h-5 rounded-full bg-blue-500/20 text-blue-300 text-[10px] font-mono font-bold flex items-center justify-center shrink-0">1</span>
+                  <div>
+                    <span className="font-semibold text-white">Jeton (Token MetaApi)</span>
+                    <p className="text-[11px] text-[#8d93a8] mt-0.5">
+                      Sur <code className="text-blue-300">app.metaapi.cloud</code>, allez dans <strong>API Access</strong> et copiez votre <em>Personal Access Token</em>.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="p-2.5 rounded-xl bg-[#060810] border border-white/[0.06] flex items-start gap-2.5">
+                  <span className="w-5 h-5 rounded-full bg-blue-500/20 text-blue-300 text-[10px] font-mono font-bold flex items-center justify-center shrink-0">2</span>
+                  <div>
+                    <span className="font-semibold text-white">ID de Compte (Account ID)</span>
+                    <p className="text-[11px] text-[#8d93a8] mt-0.5">
+                      Dans votre dashboard MetaApi, liez votre compte XM Global (login/pass démo), puis copiez son <strong>Account ID</strong> (ex: <code className="text-cyan-300">8b29fa0e-4361...</code>).
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* MetaApi Credentials Form */}
+            <form onSubmit={handleSaveMetaApi} className="p-4 rounded-2xl bg-[#0e111c] border border-[#232738] space-y-4">
+              <div className="flex items-center justify-between pb-2 border-b border-[#232738]">
+                <div className="text-xs font-mono uppercase text-blue-300 font-bold flex items-center gap-2">
+                  <Cpu className="w-4 h-4" />
+                  <span>Paramètres de Liaison & Exécution</span>
+                </div>
+                {currentMetaApi?.connected && (
+                  <span className="text-[11px] font-mono text-emerald-400 flex items-center gap-1">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    <span>Synchronisé ({currentMetaApi.server_name || 'MT5'})</span>
+                  </span>
+                )}
+              </div>
+
+              {/* Row 1: Token & Account ID */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {/* MetaApi Token */}
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-[11px] font-mono text-[#8d93a8] flex items-center gap-1">
+                      <span>Jeton d'authentification (auth-token MetaApi)</span>
+                      <span className="text-rose-400">*</span>
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => setShowMetaApiToken(!showMetaApiToken)}
+                      className="text-[10px] font-mono text-zinc-400 hover:text-white flex items-center gap-1 cursor-pointer"
+                    >
+                      {showMetaApiToken ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
+                      <span>{showMetaApiToken ? 'Masquer' : 'Afficher'}</span>
+                    </button>
+                  </div>
+                  <input
+                    type={showMetaApiToken ? 'text' : 'password'}
+                    required
+                    value={metaApiToken}
+                    onChange={(e) => setMetaApiToken(e.target.value)}
+                    placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                    className="w-full px-3 py-2 rounded-xl bg-[#06070d] border border-[#232738] text-xs font-mono text-white focus:outline-none focus:border-blue-400 placeholder:text-zinc-600"
+                  />
+                </div>
+
+                {/* MetaApi Account ID */}
+                <div>
+                  <label className="text-[11px] font-mono text-[#8d93a8] block mb-1">
+                    <span>ID de compte MetaApi (UUID)</span>
+                    <span className="text-rose-400 ml-1">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={metaApiAccountId}
+                    onChange={(e) => setMetaApiAccountId(e.target.value)}
+                    placeholder="ex: 8b29fa0e-4361-419b-a320-cb9d42654321"
+                    className="w-full px-3 py-2 rounded-xl bg-[#06070d] border border-[#232738] text-xs font-mono text-cyan-300 focus:outline-none focus:border-blue-400 placeholder:text-zinc-600"
+                  />
+                </div>
+              </div>
+
+              {/* Row 2: Symbol, Lot & Region */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {/* Symbol */}
+                <div>
+                  <label className="text-[11px] font-mono text-[#8d93a8] block mb-1">
+                    Symbole tradé sur le courtier
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={metaApiSymbol}
+                    onChange={(e) => setMetaApiSymbol(e.target.value)}
+                    placeholder="GOLD ou XAUUSD"
+                    className="w-full px-3 py-2 rounded-xl bg-[#06070d] border border-[#232738] text-xs font-mono text-amber-300 font-bold focus:outline-none focus:border-blue-400"
+                  />
+                  <span className="text-[9px] text-[#8d93a8] mt-0.5 block">
+                    XM Global = <code>GOLD</code> | Autres = <code>XAUUSD</code>
+                  </span>
+                </div>
+
+                {/* Lot size */}
+                <div>
+                  <label className="text-[11px] font-mono text-[#8d93a8] block mb-1">
+                    Taille du lot par position
+                  </label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    min="0.01"
+                    max="10.0"
+                    required
+                    value={metaApiLot}
+                    onChange={(e) => setMetaApiLot(parseFloat(e.target.value) || 0.01)}
+                    className="w-full px-3 py-2 rounded-xl bg-[#06070d] border border-[#232738] text-xs font-mono text-white font-bold focus:outline-none focus:border-blue-400"
+                  />
+                  <span className="text-[9px] text-[#8d93a8] mt-0.5 block">
+                    0.01 lot = Recommandé pour tester sur Démo
+                  </span>
+                </div>
+
+                {/* Region */}
+                <div>
+                  <label className="text-[11px] font-mono text-[#8d93a8] block mb-1">
+                    Région Cloud MetaApi
+                  </label>
+                  <select
+                    value={metaApiRegion}
+                    onChange={(e) => setMetaApiRegion(e.target.value)}
+                    className="w-full px-3 py-2 rounded-xl bg-[#06070d] border border-[#232738] text-xs font-mono text-white focus:outline-none focus:border-blue-400"
+                  >
+                    <option value="new-york">New York (mt-client-api-v1.new-york)</option>
+                    <option value="london">Londres (mt-client-api-v1.london)</option>
+                    <option value="singapore">Singapour (mt-client-api-v1.singapore)</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Big Interactive Auto-Trade Toggle Card */}
+              <div className={`p-4 rounded-2xl border transition-all cursor-pointer ${
+                metaApiAutoTrade
+                  ? 'bg-gradient-to-r from-emerald-950/30 via-[#0a1a14] to-[#0c121e] border-emerald-500/50 shadow-lg ring-1 ring-emerald-500/20'
+                  : 'bg-[#060810] border-white/[0.08] hover:border-white/20'
+              }`}
+                onClick={() => setMetaApiAutoTrade(!metaApiAutoTrade)}
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition ${
+                      metaApiAutoTrade ? 'bg-emerald-500 text-black shadow-md' : 'bg-zinc-800 text-zinc-400'
+                    }`}>
+                      <Zap className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <div className="font-heading font-bold text-sm text-white flex items-center gap-2">
+                        <span>Prise de Position Automatique (Auto-Trade MetaApi)</span>
+                        {metaApiAutoTrade ? (
+                          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">
+                            ACTIVÉE
+                          </span>
+                        ) : (
+                          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-800 text-zinc-400">
+                            DÉSACTIVÉE
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-[#8d93a8] mt-0.5 leading-relaxed">
+                        Lorsque cette option est activée, dès qu'un signal (TradingView Webhook ou Sniper MDT) arrive, un ordre au marché avec Stop Loss et Take Profit est immédiatement routé vers votre compte MetaTrader via MetaApi.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Toggle visual switch */}
+                  <div className={`w-12 h-6 rounded-full transition-colors relative shrink-0 p-1 ${
+                    metaApiAutoTrade ? 'bg-emerald-500' : 'bg-zinc-700'
+                  }`}>
+                    <div className={`w-4 h-4 rounded-full bg-white transition-transform ${
+                      metaApiAutoTrade ? 'translate-x-6' : 'translate-x-0'
+                    }`} />
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Buttons: Save & Sync */}
+              <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={handleSyncMetaApi}
+                  disabled={metaApiSyncing || !metaApiToken || !metaApiAccountId}
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-mono font-semibold bg-[#141b2d] text-blue-300 hover:text-white border border-blue-500/30 hover:border-blue-400 transition cursor-pointer disabled:opacity-50"
+                >
+                  {metaApiSyncing ? (
+                    <>
+                      <div className="w-3.5 h-3.5 border-2 border-blue-300 border-t-transparent rounded-full animate-spin" />
+                      <span>Synchronisation en cours...</span>
+                    </>
+                  ) : (
+                    <>
+                      <RefreshCw className="w-3.5 h-3.5 text-blue-400" />
+                      <span>Synchroniser & Vérifier le Compte</span>
+                    </>
+                  )}
+                </button>
+
+                <button
+                  type="submit"
+                  disabled={metaApiSaving}
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-mono font-bold bg-blue-500 hover:bg-blue-400 text-white transition cursor-pointer shadow-lg active:scale-95 disabled:opacity-50"
+                >
+                  {metaApiSaving ? (
+                    <>
+                      <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      <span>Enregistrement...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Check className="w-4 h-4" />
+                      <span>Enregistrer la Configuration MetaApi</span>
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {/* Feedback Alert */}
+              {metaApiFeedback && (
+                <div className={`p-3 rounded-xl border text-xs flex items-center gap-2 ${
+                  metaApiFeedback.success
+                    ? 'bg-emerald-950/30 border-emerald-500/40 text-emerald-300'
+                    : 'bg-rose-950/30 border-rose-500/40 text-rose-300'
+                }`}>
+                  {metaApiFeedback.success ? <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400" /> : <AlertCircle className="w-4 h-4 shrink-0 text-rose-400" />}
+                  <span>{metaApiFeedback.msg}</span>
+                </div>
+              )}
+            </form>
+
+            {/* Test Order Live Execution Section */}
+            <div className="p-4 rounded-2xl bg-[#0e111c] border border-[#232738] space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Send className="w-4 h-4 text-amber-400" />
+                  <span className="font-heading font-bold text-xs text-white uppercase">
+                    Test d'Exécution d'Ordre en Direct sur votre Démo
+                  </span>
+                </div>
+                <span className="text-[10px] font-mono text-zinc-400">
+                  Volume : <strong className="text-white">{metaApiLot} lot</strong> sur <strong className="text-amber-300">{metaApiSymbol}</strong>
+                </span>
+              </div>
+              <p className="text-[11px] text-[#8d93a8] leading-relaxed">
+                Cliquez pour envoyer immédiatement un ordre de test via MetaApi pour vérifier que le courtier accepte bien la prise de position.
+              </p>
+
+              <div className="flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => handleTestOrder('BUY')}
+                  disabled={metaApiTradeTesting !== null || !metaApiToken || !metaApiAccountId}
+                  className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-500/30 transition cursor-pointer disabled:opacity-40"
+                >
+                  {metaApiTradeTesting === 'BUY' ? (
+                    <>
+                      <div className="w-3.5 h-3.5 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin" />
+                      <span>Exécution ACHAT...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>🟢 Tester un ACHAT (BUY)</span>
+                    </>
+                  )}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => handleTestOrder('SELL')}
+                  disabled={metaApiTradeTesting !== null || !metaApiToken || !metaApiAccountId}
+                  className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-mono font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40 hover:bg-rose-500/30 transition cursor-pointer disabled:opacity-40"
+                >
+                  {metaApiTradeTesting === 'SELL' ? (
+                    <>
+                      <div className="w-3.5 h-3.5 border-2 border-rose-400 border-t-transparent rounded-full animate-spin" />
+                      <span>Exécution VENTE...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>🔴 Tester une VENTE (SELL)</span>
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {metaApiTradeFeedback && (
+                <div className={`p-3 rounded-xl border text-xs font-mono ${
+                  metaApiTradeFeedback.success
+                    ? 'bg-emerald-950/30 border-emerald-500/40 text-emerald-300'
+                    : 'bg-rose-950/30 border-rose-500/40 text-rose-300'
+                }`}>
+                  <div className="flex items-center gap-2">
+                    {metaApiTradeFeedback.success ? <Check className="w-4 h-4 text-emerald-400" /> : <AlertCircle className="w-4 h-4 text-rose-400" />}
+                    <span>{metaApiTradeFeedback.msg}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Direct Proxy Call Tester (for developers / advanced checks) */}
+            <details className="p-4 rounded-2xl bg-[#060810] border border-[#232738] group">
+              <summary className="text-xs font-mono text-zinc-400 hover:text-white cursor-pointer flex items-center justify-between">
+                <span>🔧 Outil Diagnostic Avancé : Testeur brut du proxy backend /api/metaapi/proxy</span>
+                <span className="text-[10px] text-blue-400">Cliquer pour déplier</span>
+              </summary>
+
+              <div className="mt-3 space-y-3 pt-3 border-t border-[#232738]">
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={metaApiAccountId ? `https://mt-client-api-v1.${metaApiRegion}.agiliumtrade.ai/users/current/accounts/${metaApiAccountId}` : metaApiEndpoint}
+                    onChange={(e) => setMetaApiEndpoint(e.target.value)}
+                    className="flex-1 px-3 py-1.5 rounded-xl bg-[#0e111c] border border-[#232738] text-xs font-mono text-white focus:outline-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleTestMetaApiProxy}
+                    disabled={metaApiTesting}
+                    className="px-3 py-1.5 rounded-xl text-xs font-mono bg-blue-600 hover:bg-blue-500 text-white cursor-pointer disabled:opacity-50"
+                  >
+                    {metaApiTesting ? 'Appel...' : 'Tester'}
+                  </button>
+                </div>
+
+                {metaApiProxyResponse && (
+                  <div className="p-2.5 rounded-xl bg-black/50 border border-white/[0.08] text-xs font-mono">
+                    <div className="text-[10px] text-zinc-400 mb-1">
+                      Statut: HTTP {metaApiProxyResponse.status} ({metaApiProxyResponse.durationMs}ms)
+                    </div>
+                    <pre className="text-cyan-300 max-h-36 overflow-auto text-[11px]">
+                      {typeof metaApiProxyResponse.data === 'object'
+                        ? JSON.stringify(metaApiProxyResponse.data, null, 2)
+                        : String(metaApiProxyResponse.data)}
+                    </pre>
+                  </div>
+                )}
+              </div>
+            </details>
           </div>
         )}
 

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState, useCallback, useMemo } from 'react';
-import { DashboardState, BotStatus, Settings, BotState, Levels, Signal, Trade, DecisionLog, BrokerAccountConfig } from '../types';
+import { DashboardState, BotStatus, Settings, BotState, Levels, Signal, Trade, DecisionLog, BrokerAccountConfig, MetaApiConfig } from '../types';
 
 interface StateContextType {
   state: DashboardState | null;
@@ -17,6 +17,9 @@ interface StateContextType {
   connectBroker: (brokerConfig: Partial<BrokerAccountConfig>) => Promise<BrokerAccountConfig>;
   pingBroker: () => Promise<number>;
   disconnectBroker: () => Promise<void>;
+  saveMetaApiConfig: (config: Partial<MetaApiConfig>) => Promise<MetaApiConfig>;
+  syncMetaApiAccount: () => Promise<any>;
+  executeMetaApiTrade: (params: { action: 'BUY' | 'SELL'; symbol?: string; volume?: number; stopLoss?: number; takeProfit?: number; comment?: string }) => Promise<any>;
   advanceDemoSequence: () => Promise<void>;
   setBotState: (newState: BotState) => Promise<void>;
   clearToRealState: () => Promise<void>;
@@ -170,6 +173,57 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   };
 
+  const saveMetaApiConfig = async (config: Partial<MetaApiConfig>): Promise<MetaApiConfig> => {
+    const res = await fetch('/api/metaapi/config', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(config),
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error || 'Impossible d\'enregistrer la configuration MetaApi.');
+    }
+    const data = await res.json();
+    await fetchState();
+    return data.metaapi;
+  };
+
+  const syncMetaApiAccount = async (): Promise<any> => {
+    const res = await fetch('/api/metaapi/sync-account', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({}),
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error || err.details || 'Échec de synchronisation avec le compte MetaApi.');
+    }
+    const data = await res.json();
+    await fetchState();
+    return data;
+  };
+
+  const executeMetaApiTrade = async (params: {
+    action: 'BUY' | 'SELL';
+    symbol?: string;
+    volume?: number;
+    stopLoss?: number;
+    takeProfit?: number;
+    comment?: string;
+  }): Promise<any> => {
+    const res = await fetch('/api/metaapi/trade', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(params),
+    });
+    const data = await res.json();
+    await fetchState();
+    if (!res.ok || !data.success) {
+      throw new Error(data.reason || data.error?.message || data.error || 'Erreur lors de l\'exécution de l\'ordre sur MetaApi.');
+    }
+    return data;
+  };
+
   const advanceDemoSequence = async () => {
     try {
       const res = await fetch('/api/demo/advance-sequence', { method: 'POST' });
@@ -277,6 +331,9 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         connectBroker,
         pingBroker,
         disconnectBroker,
+        saveMetaApiConfig,
+        syncMetaApiAccount,
+        executeMetaApiTrade,
         advanceDemoSequence,
         setBotState,
         clearToRealState,

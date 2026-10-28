@@ -93,6 +93,7 @@ export type BrokerType =
   | 'FTMO' 
   | 'MetaTrader 5 (MT5)' 
   | 'MetaTrader 4 (MT4)' 
+  | 'MetaApi (Cloud MT4/MT5)'
   | 'Autre Courtier';
 
 export type ExecutionEngineMode = 
@@ -119,6 +120,21 @@ export interface BrokerAccountConfig {
   webhook_secret: string;
 }
 
+export interface MetaApiConfig {
+  token: string;
+  account_id: string;
+  symbol: string;
+  lot_size: number;
+  auto_trade_enabled: boolean;
+  region?: string;
+  connected?: boolean;
+  balance?: number | null;
+  equity?: number | null;
+  server_name?: string;
+  platform?: 'mt4' | 'mt5';
+  last_sync?: string | null;
+}
+
 export interface Settings {
   paused: boolean;
   mode: TradingMode;
@@ -132,6 +148,7 @@ export interface Settings {
   ml_filter: boolean;
   ai_filter: boolean;
   broker?: BrokerAccountConfig;
+  metaapi?: MetaApiConfig;
 }
 
 export interface MdtRadarRow {
@@ -167,6 +184,7 @@ export interface DashboardState {
   mdt_radar?: MdtRadarRow[];
   mdt_zones?: MdtZone[];
   broker?: BrokerAccountConfig;
+  metaapi?: MetaApiConfig;
 }
 
 export interface AurumChatMessage {

@@ -4,607 +4,601 @@
     "mode": "simulation",
     "symbol": "GOLD (XAUUSD)",
     "timeframe": "5m",
-    "last_price": 4065.07,
+    "last_price": 4048.57,
     "equity": null,
     "balance": null,
     "candles": [
       {
-        "time": 1793111700,
-        "open": 4052.41,
-        "high": 4055,
-        "low": 4050.9,
-        "close": 4054.99
+        "time": 1793178600,
+        "open": 4055.37,
+        "high": 4055.97,
+        "low": 4054.96,
+        "close": 4055.96
       },
       {
-        "time": 1793112000,
-        "open": 4055,
-        "high": 4056.49,
-        "low": 4053.08,
-        "close": 4055
+        "time": 1793178900,
+        "open": 4055.97,
+        "high": 4060.45,
+        "low": 4055.97,
+        "close": 4060.44
       },
       {
-        "time": 1793112300,
-        "open": 4054.86,
-        "high": 4056.67,
-        "low": 4053.13,
+        "time": 1793179200,
+        "open": 4060.45,
+        "high": 4060.76,
+        "low": 4057.87,
+        "close": 4057.87
+      },
+      {
+        "time": 1793179500,
+        "open": 4057.69,
+        "high": 4057.69,
+        "low": 4055.96,
+        "close": 4056.54
+      },
+      {
+        "time": 1793179800,
+        "open": 4056.54,
+        "high": 4056.9,
+        "low": 4056.54,
+        "close": 4056.81
+      },
+      {
+        "time": 1793180100,
+        "open": 4056.81,
+        "high": 4059.32,
+        "low": 4056.81,
+        "close": 4059.32
+      },
+      {
+        "time": 1793180400,
+        "open": 4059.32,
+        "high": 4060.37,
+        "low": 4059.32,
+        "close": 4059.82
+      },
+      {
+        "time": 1793180700,
+        "open": 4059.84,
+        "high": 4059.84,
+        "low": 4058.35,
+        "close": 4058.6
+      },
+      {
+        "time": 1793181000,
+        "open": 4058.6,
+        "high": 4058.6,
+        "low": 4057.65,
+        "close": 4057.97
+      },
+      {
+        "time": 1793181300,
+        "open": 4057.97,
+        "high": 4059.69,
+        "low": 4057.97,
+        "close": 4059.69
+      },
+      {
+        "time": 1793181600,
+        "open": 4060.3,
+        "high": 4060.31,
+        "low": 4058.05,
+        "close": 4058.05
+      },
+      {
+        "time": 1793181900,
+        "open": 4058.05,
+        "high": 4058.06,
+        "low": 4055.02,
+        "close": 4056
+      },
+      {
+        "time": 1793182200,
+        "open": 4056,
+        "high": 4056.47,
+        "low": 4052.69,
+        "close": 4053.84
+      },
+      {
+        "time": 1793182500,
+        "open": 4053.84,
+        "high": 4054.49,
+        "low": 4052.65,
+        "close": 4052.81
+      },
+      {
+        "time": 1793182800,
+        "open": 4052.97,
+        "high": 4053.29,
+        "low": 4051.36,
+        "close": 4051.37
+      },
+      {
+        "time": 1793183100,
+        "open": 4051.37,
+        "high": 4051.97,
+        "low": 4050.47,
+        "close": 4051.24
+      },
+      {
+        "time": 1793183400,
+        "open": 4051.23,
+        "high": 4051.44,
+        "low": 4050.72,
+        "close": 4051.05
+      },
+      {
+        "time": 1793183700,
+        "open": 4050.85,
+        "high": 4051.57,
+        "low": 4050.63,
+        "close": 4051.17
+      },
+      {
+        "time": 1793184000,
+        "open": 4051.28,
+        "high": 4053.16,
+        "low": 4051.28,
+        "close": 4053.16
+      },
+      {
+        "time": 1793184300,
+        "open": 4053.16,
+        "high": 4053.17,
+        "low": 4052.52,
+        "close": 4052.52
+      },
+      {
+        "time": 1793184600,
+        "open": 4052.52,
+        "high": 4052.53,
+        "low": 4051.39,
+        "close": 4052.52
+      },
+      {
+        "time": 1793184900,
+        "open": 4052.53,
+        "high": 4052.53,
+        "low": 4051.8,
+        "close": 4051.8
+      },
+      {
+        "time": 1793185200,
+        "open": 4051.53,
+        "high": 4051.78,
+        "low": 4049.86,
+        "close": 4049.86
+      },
+      {
+        "time": 1793185500,
+        "open": 4049.71,
+        "high": 4050.88,
+        "low": 4049.16,
+        "close": 4050.52
+      },
+      {
+        "time": 1793185800,
+        "open": 4050.53,
+        "high": 4052.74,
+        "low": 4050.53,
+        "close": 4052.74
+      },
+      {
+        "time": 1793186100,
+        "open": 4052.73,
+        "high": 4053.17,
+        "low": 4052.01,
+        "close": 4052.01
+      },
+      {
+        "time": 1793186400,
+        "open": 4052.19,
+        "high": 4053.67,
+        "low": 4052.18,
+        "close": 4053.66
+      },
+      {
+        "time": 1793186700,
+        "open": 4053.66,
+        "high": 4053.97,
+        "low": 4053.66,
+        "close": 4053.97
+      },
+      {
+        "time": 1793187000,
+        "open": 4054.36,
+        "high": 4055.56,
+        "low": 4054.04,
+        "close": 4055.19
+      },
+      {
+        "time": 1793187300,
+        "open": 4055.39,
+        "high": 4055.46,
+        "low": 4054.77,
+        "close": 4054.77
+      },
+      {
+        "time": 1793187600,
+        "open": 4055.43,
+        "high": 4055.44,
+        "low": 4054.79,
+        "close": 4055.2
+      },
+      {
+        "time": 1793187900,
+        "open": 4055.2,
+        "high": 4055.45,
+        "low": 4052.59,
+        "close": 4052.59
+      },
+      {
+        "time": 1793188200,
+        "open": 4052.59,
+        "high": 4053.19,
+        "low": 4052.59,
+        "close": 4052.69
+      },
+      {
+        "time": 1793188500,
+        "open": 4052.59,
+        "high": 4052.59,
+        "low": 4051.33,
+        "close": 4052.2
+      },
+      {
+        "time": 1793188800,
+        "open": 4051.77,
+        "high": 4053.46,
+        "low": 4050.92,
+        "close": 4053.46
+      },
+      {
+        "time": 1793189100,
+        "open": 4053.47,
+        "high": 4054.58,
+        "low": 4053.46,
+        "close": 4054.58
+      },
+      {
+        "time": 1793189400,
+        "open": 4054.22,
+        "high": 4057.34,
+        "low": 4054.22,
+        "close": 4057.29
+      },
+      {
+        "time": 1793189700,
+        "open": 4057.31,
+        "high": 4061.65,
+        "low": 4057.31,
+        "close": 4061.32
+      },
+      {
+        "time": 1793190000,
+        "open": 4061.32,
+        "high": 4063.75,
+        "low": 4060.7,
+        "close": 4062.37
+      },
+      {
+        "time": 1793190300,
+        "open": 4063.17,
+        "high": 4063.75,
+        "low": 4060.66,
+        "close": 4061.7
+      },
+      {
+        "time": 1793190600,
+        "open": 4061.7,
+        "high": 4061.7,
+        "low": 4058.29,
+        "close": 4059.09
+      },
+      {
+        "time": 1793190900,
+        "open": 4059.22,
+        "high": 4060.92,
+        "low": 4058.75,
+        "close": 4059.81
+      },
+      {
+        "time": 1793191200,
+        "open": 4058.76,
+        "high": 4059,
+        "low": 4058.21,
+        "close": 4058.77
+      },
+      {
+        "time": 1793191500,
+        "open": 4059,
+        "high": 4059.31,
+        "low": 4055.48,
+        "close": 4056.65
+      },
+      {
+        "time": 1793191800,
+        "open": 4056.76,
+        "high": 4058.56,
+        "low": 4056.76,
+        "close": 4057.38
+      },
+      {
+        "time": 1793192100,
+        "open": 4056.97,
+        "high": 4058.36,
+        "low": 4056.13,
+        "close": 4058.36
+      },
+      {
+        "time": 1793192400,
+        "open": 4058.36,
+        "high": 4062.53,
+        "low": 4058.34,
+        "close": 4058.99
+      },
+      {
+        "time": 1793192700,
+        "open": 4059.46,
+        "high": 4060.53,
+        "low": 4059.24,
+        "close": 4060.53
+      },
+      {
+        "time": 1793193000,
+        "open": 4060.77,
+        "high": 4061.2,
+        "low": 4058.77,
+        "close": 4058.77
+      },
+      {
+        "time": 1793193300,
+        "open": 4058.56,
+        "high": 4058.71,
+        "low": 4056.15,
+        "close": 4056.35
+      },
+      {
+        "time": 1793193600,
+        "open": 4056.35,
+        "high": 4057.15,
+        "low": 4055.48,
+        "close": 4057.15
+      },
+      {
+        "time": 1793193900,
+        "open": 4057.48,
+        "high": 4057.57,
+        "low": 4055.48,
+        "close": 4056.14
+      },
+      {
+        "time": 1793194200,
+        "open": 4056.14,
+        "high": 4056.37,
+        "low": 4052.39,
+        "close": 4052.81
+      },
+      {
+        "time": 1793194500,
+        "open": 4052.39,
+        "high": 4055.97,
+        "low": 4051.12,
+        "close": 4051.97
+      },
+      {
+        "time": 1793194800,
+        "open": 4052.77,
+        "high": 4056.03,
+        "low": 4052.77,
+        "close": 4054.18
+      },
+      {
+        "time": 1793195100,
+        "open": 4054.3,
+        "high": 4055.12,
+        "low": 4052.24,
         "close": 4054.69
       },
       {
-        "time": 1793112600,
-        "open": 4055.07,
-        "high": 4060,
-        "low": 4054.97,
-        "close": 4059.24
+        "time": 1793195400,
+        "open": 4054.69,
+        "high": 4054.69,
+        "low": 4052.98,
+        "close": 4053.51
       },
       {
-        "time": 1793112900,
-        "open": 4059.39,
-        "high": 4061.2,
-        "low": 4058.02,
-        "close": 4058.7
+        "time": 1793195700,
+        "open": 4053.5,
+        "high": 4054.6,
+        "low": 4052.01,
+        "close": 4052.93
       },
       {
-        "time": 1793113200,
-        "open": 4058.7,
-        "high": 4063.59,
-        "low": 4058.42,
-        "close": 4062.01
+        "time": 1793196000,
+        "open": 4053.18,
+        "high": 4053.7,
+        "low": 4050.77,
+        "close": 4051.85
       },
       {
-        "time": 1793113500,
-        "open": 4062.01,
-        "high": 4064.12,
-        "low": 4059.8,
-        "close": 4059.8
+        "time": 1793196300,
+        "open": 4051.84,
+        "high": 4052.72,
+        "low": 4050.24,
+        "close": 4052.71
       },
       {
-        "time": 1793113800,
-        "open": 4059.52,
-        "high": 4063.47,
-        "low": 4059.34,
-        "close": 4063.46
+        "time": 1793196600,
+        "open": 4052.4,
+        "high": 4052.92,
+        "low": 4050.21,
+        "close": 4051.33
       },
       {
-        "time": 1793114100,
-        "open": 4063.23,
-        "high": 4064,
-        "low": 4062.07,
-        "close": 4063.55
+        "time": 1793196900,
+        "open": 4051.33,
+        "high": 4051.55,
+        "low": 4050.12,
+        "close": 4051.53
       },
       {
-        "time": 1793114400,
-        "open": 4063.56,
-        "high": 4064.54,
-        "low": 4062.49,
-        "close": 4063.69
+        "time": 1793197200,
+        "open": 4051.9,
+        "high": 4051.9,
+        "low": 4047.76,
+        "close": 4047.76
       },
       {
-        "time": 1793114700,
-        "open": 4063.7,
-        "high": 4064.5,
-        "low": 4061.8,
-        "close": 4064.5
+        "time": 1793197500,
+        "open": 4047.75,
+        "high": 4048.18,
+        "low": 4045.4,
+        "close": 4045.4
       },
       {
-        "time": 1793115000,
-        "open": 4064.5,
-        "high": 4064.5,
-        "low": 4062.8,
-        "close": 4063.87
+        "time": 1793197800,
+        "open": 4045.3,
+        "high": 4047.57,
+        "low": 4043.23,
+        "close": 4043.33
       },
       {
-        "time": 1793115300,
-        "open": 4063.86,
-        "high": 4064.36,
-        "low": 4062.27,
-        "close": 4064.07
+        "time": 1793198100,
+        "open": 4043.33,
+        "high": 4043.96,
+        "low": 4040.37,
+        "close": 4041.33
       },
       {
-        "time": 1793115600,
-        "open": 4064.06,
-        "high": 4069.79,
-        "low": 4064.06,
-        "close": 4066.67
+        "time": 1793198400,
+        "open": 4041.32,
+        "high": 4046.79,
+        "low": 4040.98,
+        "close": 4046.79
       },
       {
-        "time": 1793115900,
-        "open": 4066.66,
-        "high": 4068.2,
-        "low": 4066.35,
-        "close": 4068.12
+        "time": 1793198700,
+        "open": 4044.61,
+        "high": 4046.74,
+        "low": 4043.57,
+        "close": 4046.49
       },
       {
-        "time": 1793116200,
-        "open": 4068.19,
-        "high": 4069.1,
-        "low": 4068.19,
-        "close": 4068.19
+        "time": 1793199000,
+        "open": 4046.49,
+        "high": 4046.58,
+        "low": 4043.87,
+        "close": 4045.56
       },
       {
-        "time": 1793116500,
-        "open": 4068.2,
-        "high": 4069,
-        "low": 4067.87,
-        "close": 4069
+        "time": 1793199300,
+        "open": 4045.56,
+        "high": 4045.56,
+        "low": 4043.78,
+        "close": 4045.08
       },
       {
-        "time": 1793116800,
-        "open": 4069,
-        "high": 4069.5,
-        "low": 4066.46,
-        "close": 4066.46
+        "time": 1793199600,
+        "open": 4044.75,
+        "high": 4047.98,
+        "low": 4044.75,
+        "close": 4046.67
       },
       {
-        "time": 1793117100,
-        "open": 4066.82,
-        "high": 4067.07,
-        "low": 4063.65,
-        "close": 4064.18
+        "time": 1793199900,
+        "open": 4046.67,
+        "high": 4047.48,
+        "low": 4046.02,
+        "close": 4047.12
       },
       {
-        "time": 1793117400,
-        "open": 4063.06,
-        "high": 4065.2,
-        "low": 4063.06,
-        "close": 4065.09
+        "time": 1793200200,
+        "open": 4047.71,
+        "high": 4048.55,
+        "low": 4047.17,
+        "close": 4047.96
       },
       {
-        "time": 1793117700,
-        "open": 4065.1,
-        "high": 4065.1,
-        "low": 4063.46,
-        "close": 4064.1
+        "time": 1793200500,
+        "open": 4047.33,
+        "high": 4048.37,
+        "low": 4047.33,
+        "close": 4047.55
       },
       {
-        "time": 1793118000,
-        "open": 4064.1,
-        "high": 4064.28,
-        "low": 4063.57,
-        "close": 4063.57
+        "time": 1793200800,
+        "open": 4048.11,
+        "high": 4049.69,
+        "low": 4048.11,
+        "close": 4049.05
       },
       {
-        "time": 1793118300,
-        "open": 4063.57,
-        "high": 4064,
-        "low": 4063,
-        "close": 4063.01
+        "time": 1793201100,
+        "open": 4048.54,
+        "high": 4049.21,
+        "low": 4048.54,
+        "close": 4049.2
       },
       {
-        "time": 1793118600,
-        "open": 4063.01,
-        "high": 4064.02,
-        "low": 4063.01,
-        "close": 4063.86
+        "time": 1793201400,
+        "open": 4047.17,
+        "high": 4047.45,
+        "low": 4044.72,
+        "close": 4047.45
       },
       {
-        "time": 1793118900,
-        "open": 4063.86,
-        "high": 4066.54,
-        "low": 4063.86,
-        "close": 4066.53
+        "time": 1793201700,
+        "open": 4047.43,
+        "high": 4048.24,
+        "low": 4046.71,
+        "close": 4048.24
       },
       {
-        "time": 1793119200,
-        "open": 4066.53,
-        "high": 4066.54,
-        "low": 4064.49,
-        "close": 4065
+        "time": 1793202000,
+        "open": 4048.88,
+        "high": 4049.85,
+        "low": 4048.57,
+        "close": 4049.36
       },
       {
-        "time": 1793119500,
-        "open": 4064.76,
-        "high": 4067.43,
-        "low": 4064.56,
-        "close": 4065.26
-      },
-      {
-        "time": 1793119800,
-        "open": 4065.26,
-        "high": 4065.9,
-        "low": 4063.47,
-        "close": 4063.47
-      },
-      {
-        "time": 1793120100,
-        "open": 4063.48,
-        "high": 4063.63,
-        "low": 4063.07,
-        "close": 4063.27
-      },
-      {
-        "time": 1793120400,
-        "open": 4063.43,
-        "high": 4065.13,
-        "low": 4063.43,
-        "close": 4064.65
-      },
-      {
-        "time": 1793120700,
-        "open": 4064.87,
-        "high": 4065.47,
-        "low": 4064.6,
-        "close": 4064.6
-      },
-      {
-        "time": 1793121000,
-        "open": 4064.79,
-        "high": 4064.79,
-        "low": 4063.07,
-        "close": 4063.87
-      },
-      {
-        "time": 1793121300,
-        "open": 4063.85,
-        "high": 4065.05,
-        "low": 4063.85,
-        "close": 4065.05
-      },
-      {
-        "time": 1793121600,
-        "open": 4064.77,
-        "high": 4066.14,
-        "low": 4064.28,
-        "close": 4066.13
-      },
-      {
-        "time": 1793121900,
-        "open": 4066.13,
-        "high": 4066.67,
-        "low": 4065.47,
-        "close": 4066.67
-      },
-      {
-        "time": 1793122200,
-        "open": 4066.67,
-        "high": 4069.15,
-        "low": 4066.27,
-        "close": 4069.15
-      },
-      {
-        "time": 1793122500,
-        "open": 4069.15,
-        "high": 4070,
-        "low": 4068.46,
-        "close": 4069.06
-      },
-      {
-        "time": 1793122800,
-        "open": 4068.47,
-        "high": 4068.54,
-        "low": 4067.47,
-        "close": 4067.47
-      },
-      {
-        "time": 1793123100,
-        "open": 4066.42,
-        "high": 4066.42,
-        "low": 4063.37,
-        "close": 4063.37
-      },
-      {
-        "time": 1793123400,
-        "open": 4063.48,
-        "high": 4063.61,
-        "low": 4063.48,
-        "close": 4063.6
-      },
-      {
-        "time": 1793123700,
-        "open": 4063.6,
-        "high": 4063.6,
-        "low": 4063.48,
-        "close": 4063.49
-      },
-      {
-        "time": 1793124000,
-        "open": 4063.48,
-        "high": 4063.49,
-        "low": 4061.8,
-        "close": 4063.21
-      },
-      {
-        "time": 1793124300,
-        "open": 4063.21,
-        "high": 4063.6,
-        "low": 4063.06,
-        "close": 4063.06
-      },
-      {
-        "time": 1793124600,
-        "open": 4063.06,
-        "high": 4063.06,
-        "low": 4061.88,
-        "close": 4062.66
-      },
-      {
-        "time": 1793124900,
-        "open": 4062.92,
-        "high": 4062.92,
-        "low": 4061.83,
-        "close": 4061.83
-      },
-      {
-        "time": 1793125200,
-        "open": 4061.83,
-        "high": 4061.84,
-        "low": 4060.31,
-        "close": 4060.31
-      },
-      {
-        "time": 1793125500,
-        "open": 4060.3,
-        "high": 4060.47,
-        "low": 4060,
-        "close": 4060
-      },
-      {
-        "time": 1793125800,
-        "open": 4060.01,
-        "high": 4060.61,
-        "low": 4060.01,
-        "close": 4060.61
-      },
-      {
-        "time": 1793126100,
-        "open": 4060.6,
-        "high": 4060.71,
-        "low": 4060.6,
-        "close": 4060.71
-      },
-      {
-        "time": 1793126400,
-        "open": 4060.71,
-        "high": 4060.71,
-        "low": 4059.28,
-        "close": 4059.85
-      },
-      {
-        "time": 1793126700,
-        "open": 4060.2,
-        "high": 4060.73,
-        "low": 4060.2,
-        "close": 4060.7
-      },
-      {
-        "time": 1793127000,
-        "open": 4061,
-        "high": 4061,
-        "low": 4060.99,
-        "close": 4060.99
-      },
-      {
-        "time": 1793127300,
-        "open": 4060.99,
-        "high": 4061.43,
-        "low": 4060.99,
-        "close": 4061.42
-      },
-      {
-        "time": 1793127600,
-        "open": 4061.43,
-        "high": 4063.77,
-        "low": 4061.43,
-        "close": 4063.69
-      },
-      {
-        "time": 1793127900,
-        "open": 4063.68,
-        "high": 4065.52,
-        "low": 4063.68,
-        "close": 4064.69
-      },
-      {
-        "time": 1793128200,
-        "open": 4065.2,
-        "high": 4065.52,
-        "low": 4065.09,
-        "close": 4065.52
-      },
-      {
-        "time": 1793128500,
-        "open": 4065.51,
-        "high": 4065.73,
-        "low": 4064.65,
-        "close": 4065.73
-      },
-      {
-        "time": 1793128800,
-        "open": 4065.74,
-        "high": 4066.94,
-        "low": 4065.74,
-        "close": 4066.73
-      },
-      {
-        "time": 1793129100,
-        "open": 4066.11,
-        "high": 4066.71,
-        "low": 4065.97,
-        "close": 4065.97
-      },
-      {
-        "time": 1793129400,
-        "open": 4065.98,
-        "high": 4065.98,
-        "low": 4065.35,
-        "close": 4065.98
-      },
-      {
-        "time": 1793129700,
-        "open": 4066.2,
-        "high": 4068.67,
-        "low": 4066.2,
-        "close": 4068.06
-      },
-      {
-        "time": 1793130000,
-        "open": 4068.05,
-        "high": 4068.06,
-        "low": 4068.05,
-        "close": 4068.06
-      },
-      {
-        "time": 1793130300,
-        "open": 4068.06,
-        "high": 4068.06,
-        "low": 4067.66,
-        "close": 4067.66
-      },
-      {
-        "time": 1793130600,
-        "open": 4067.66,
-        "high": 4067.66,
-        "low": 4066.02,
-        "close": 4066.35
-      },
-      {
-        "time": 1793130900,
-        "open": 4066.35,
-        "high": 4067.64,
-        "low": 4066.35,
-        "close": 4067.44
-      },
-      {
-        "time": 1793131200,
-        "open": 4067.44,
-        "high": 4067.44,
-        "low": 4064.18,
-        "close": 4065.58
-      },
-      {
-        "time": 1793131500,
-        "open": 4065.58,
-        "high": 4066.02,
-        "low": 4064.41,
-        "close": 4064.41
-      },
-      {
-        "time": 1793131800,
-        "open": 4064.41,
-        "high": 4065.85,
-        "low": 4063.9,
-        "close": 4065.85
-      },
-      {
-        "time": 1793132100,
-        "open": 4065.85,
-        "high": 4065.85,
-        "low": 4064.82,
-        "close": 4064.82
-      },
-      {
-        "time": 1793132400,
-        "open": 4064.58,
-        "high": 4064.58,
-        "low": 4063.77,
-        "close": 4063.77
-      },
-      {
-        "time": 1793132700,
-        "open": 4063.77,
-        "high": 4063.77,
-        "low": 4062.95,
-        "close": 4062.95
-      },
-      {
-        "time": 1793133000,
-        "open": 4062.88,
-        "high": 4062.88,
-        "low": 4062.87,
-        "close": 4062.87
-      },
-      {
-        "time": 1793133300,
-        "open": 4062.88,
-        "high": 4064.21,
-        "low": 4062.87,
-        "close": 4063.96
-      },
-      {
-        "time": 1793133600,
-        "open": 4063.96,
-        "high": 4064.75,
-        "low": 4063.96,
-        "close": 4064.75
-      },
-      {
-        "time": 1793133900,
-        "open": 4064.75,
-        "high": 4064.98,
-        "low": 4064.75,
-        "close": 4064.98
-      },
-      {
-        "time": 1793134200,
-        "open": 4064.99,
-        "high": 4066.03,
-        "low": 4064.99,
-        "close": 4065.82
-      },
-      {
-        "time": 1793134500,
-        "open": 4065.82,
-        "high": 4065.82,
-        "low": 4065.27,
-        "close": 4065.27
-      },
-      {
-        "time": 1793134800,
-        "open": 4064.87,
-        "high": 4064.87,
-        "low": 4064.24,
-        "close": 4064.46
-      },
-      {
-        "time": 1793135100,
-        "open": 4064.47,
-        "high": 4064.69,
-        "low": 4064.47,
-        "close": 4064.68
-      },
-      {
-        "time": 1793135400,
-        "open": 4064.74,
-        "high": 4065.07,
-        "low": 4064.74,
-        "close": 4065.07
+        "time": 1793202300,
+        "open": 4049.23,
+        "high": 4049.24,
+        "low": 4048.57,
+        "close": 4048.57
       }
     ],
     "plan": null,
-    "updated_at": "2026-10-27T21:14:49.209Z"
+    "updated_at": "2026-10-28T15:47:04.876Z"
   },
   "levels": {
-    "day": "2026-10-27",
-    "asian_high": 4069.79,
-    "asian_low": 4050.9,
-    "prev_day_high": 4070,
-    "prev_day_low": 4050.9
+    "day": "2026-10-28",
+    "asian_high": 4060.76,
+    "asian_low": 4049.16,
+    "prev_day_high": 4063.75,
+    "prev_day_low": 4040.37
   },
   "signals": [],
   "trades": [],
   "decision_log": [
     {
-      "id": "broker-log-1793135691723",
-      "time": "2026-10-27T21:14:51.723Z",
+      "id": "metaapi-log-1793202428604",
+      "time": "2026-10-28T15:47:08.604Z",
       "level": "info",
-      "message": "[Pont Courtier Démo] Connecté avec succès à XM Global (52019482 sur XMGlobal-MT5 3). Moteur: HFT_ULTRA (Latence: 17ms)."
+      "message": "[MetaApi Auto-Trade] Désactivé. Mode surveillance uniquement."
     },
     {
-      "id": "broker-log-1793135684967",
-      "time": "2026-10-27T21:14:44.967Z",
+      "id": "metaapi-log-1793202421472",
+      "time": "2026-10-28T15:47:01.472Z",
       "level": "info",
-      "message": "[Pont Courtier Démo] Connecté avec succès à XM Global (52019482 sur XMGlobal-MT5 3). Moteur: HFT_ULTRA (Latence: 17ms)."
+      "message": "[MetaApi Auto-Trade] Activé pour undefined (undefined lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "log-init-1792679596376",
-      "time": "2026-10-22T14:33:16.376Z",
+      "id": "log-live-1793200100517",
+      "time": "2026-10-28T15:08:20.517Z",
       "level": "info",
-      "message": "Flux de marché XAUUSD connecté en direct. En attente des données du programme Python via /ingest (x-bot-key)."
-    },
-    {
-      "id": "log-mdt-1792679596376",
-      "time": "2026-10-22T14:32:16.376Z",
-      "level": "info",
-      "message": "Méthodologie MDT 2026 active : surveillance H4/H1, setup M15, trigger M3. Règle mère : « No setup. No trade. Next. »"
+      "message": "Terminal de trading connecté au flux réel XAUUSD. Surveillance active."
     }
   ],
   "settings": {
@@ -622,19 +616,30 @@
     "broker": {
       "broker_type": "XM Global",
       "account_type": "demo",
-      "account_number": "52019482",
+      "account_number": "",
       "server_name": "XMGlobal-MT5 3",
       "symbol": "GOLD",
       "execution_mode": "hft_ultra",
-      "connected": true,
-      "last_ping_ms": 17,
-      "balance": 10000,
-      "equity": 10000,
+      "connected": false,
+      "last_ping_ms": 0,
+      "balance": 0,
+      "equity": 0,
       "leverage": 500,
       "hft_max_slippage_pips": 1.5,
       "auto_breakeven_tp1": true,
       "webhook_secret": "aurum-prod-secret-xauusd-key",
       "api_token": ""
+    },
+    "metaapi": {
+      "token": "",
+      "account_id": "",
+      "auto_trade_enabled": false,
+      "connected": false,
+      "balance": null,
+      "equity": null,
+      "server_name": "",
+      "platform": "mt5",
+      "last_sync": null
     }
   },
   "is_demo_data": false,
@@ -643,45 +648,45 @@
   "mdt_radar": [
     {
       "tf": "H4",
-      "trend": "Haissier",
-      "bullOb": "4048.40 - 4050.90",
-      "bearOb": "4070.00 - 4073.20",
-      "distancePct": 0.12,
+      "trend": "Baissier",
+      "bullOb": "4037.87 - 4040.37",
+      "bearOb": "4063.75 - 4066.95",
+      "distancePct": 0.37,
       "stars": 3,
-      "confText": "Biais haussier HTF"
+      "confText": "Biais vendeur HTF"
     },
     {
       "tf": "H1",
-      "trend": "Haissier",
-      "bullOb": "4060.20 - 4062.00",
-      "bearOb": "4066.87 - 4068.67",
-      "distancePct": 0.09,
+      "trend": "Baissier",
+      "bullOb": "4040.37 - 4042.17",
+      "bearOb": "4055.77 - 4057.57",
+      "distancePct": 0.22,
       "stars": 3,
       "confText": "Zone institutionnelle active"
     },
     {
       "tf": "M15",
-      "trend": "Baissier",
-      "bullOb": "4061.40 - 4062.70",
-      "bearOb": "4066.17 - 4067.47",
-      "distancePct": 0.04,
+      "trend": "Haissier",
+      "bullOb": "4041.57 - 4042.87",
+      "bearOb": "4055.07 - 4056.37",
+      "distancePct": 0.17,
       "stars": 2,
       "confText": "Scénario en formation"
     },
     {
       "tf": "M5",
       "trend": "Baissier",
-      "bullOb": "4062.27 - 4063.57",
-      "bearOb": "4066.57 - 4067.87",
+      "bullOb": "4045.77 - 4047.07",
+      "bearOb": "4050.07 - 4051.37",
       "distancePct": 0.07,
       "stars": 2,
       "confText": "Imbalance M5 surveillée"
     },
     {
       "tf": "M3",
-      "trend": "Haissier",
-      "bullOb": "4063.87 - 4064.47",
-      "bearOb": "4065.67 - 4066.27",
+      "trend": "Baissier",
+      "bullOb": "4047.37 - 4047.97",
+      "bearOb": "4049.17 - 4049.77",
       "distancePct": 0.03,
       "stars": 1,
       "confText": "Micro-structure en veille"
@@ -690,18 +695,29 @@
   "broker": {
     "broker_type": "XM Global",
     "account_type": "demo",
-    "account_number": "52019482",
+    "account_number": "",
     "server_name": "XMGlobal-MT5 3",
     "symbol": "GOLD",
     "execution_mode": "hft_ultra",
-    "connected": true,
-    "last_ping_ms": 17,
-    "balance": 10000,
-    "equity": 10000,
+    "connected": false,
+    "last_ping_ms": 0,
+    "balance": 0,
+    "equity": 0,
     "leverage": 500,
     "hft_max_slippage_pips": 1.5,
     "auto_breakeven_tp1": true,
     "webhook_secret": "aurum-prod-secret-xauusd-key",
     "api_token": ""
+  },
+  "metaapi": {
+    "token": "",
+    "account_id": "",
+    "auto_trade_enabled": false,
+    "connected": false,
+    "balance": null,
+    "equity": null,
+    "server_name": "",
+    "platform": "mt5",
+    "last_sync": null
   }
 }

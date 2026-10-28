@@ -12,7 +12,8 @@ import {
   Candle, 
   MdtRadarRow, 
   MdtZone,
-  BrokerAccountConfig
+  BrokerAccountConfig,
+  MetaApiConfig
 } from '../src/types/index.js';
 
 const DATA_DIR = path.resolve('.data');
@@ -527,6 +528,54 @@ class Store {
         message: brokerConfig.connected 
           ? `[Pont Courtier Démo] Connecté avec succès à ${updated.broker_type} (${updated.account_number || 'Compte Démo'} sur ${updated.server_name}). Moteur: ${updated.execution_mode.toUpperCase()} (Latence: ${updated.last_ping_ms}ms, Solde: ${updated.balance > 0 ? `$${updated.balance}` : 'Non renseigné'}).`
           : `[Pont Courtier Démo] Déconnexion du compte ${updated.broker_type}. Moteur arrêté.`,
+      });
+      if (this.state.decision_log.length > 50) {
+        this.state.decision_log.pop();
+      }
+    }
+
+    this.saveState(this.state);
+    this.broadcast();
+    return updated;
+  }
+
+  public updateMetaApi(config: Partial<MetaApiConfig>): MetaApiConfig {
+    const current: MetaApiConfig = this.state.metaapi || {
+      token: process.env.METAAPI_TOKEN || '',
+      account_id: process.env.METAAPI_ACCOUNT_ID || '',
+      symbol: 'GOLD',
+      lot_size: 0.01,
+      auto_trade_enabled: false,
+      region: 'new-york',
+      connected: false,
+      balance: null,
+      equity: null,
+      server_name: '',
+      platform: 'mt5',
+      last_sync: null,
+    };
+
+    const updated: MetaApiConfig = {
+      ...current,
+      ...config,
+    };
+
+    this.state.metaapi = updated;
+    this.state.settings.metaapi = updated;
+
+    if (updated.connected && updated.balance && updated.balance > 0) {
+      this.state.bot_status.balance = updated.balance;
+      this.state.bot_status.equity = updated.equity || updated.balance;
+    }
+
+    if (config.auto_trade_enabled !== undefined) {
+      this.state.decision_log.unshift({
+        id: `metaapi-log-${Date.now()}`,
+        time: new Date().toISOString(),
+        level: 'info',
+        message: config.auto_trade_enabled
+          ? `[MetaApi Auto-Trade] Activé pour ${updated.symbol} (${updated.lot_size} lot). Tout signal valide sera routé directement en direct.`
+          : `[MetaApi Auto-Trade] Désactivé. Mode surveillance uniquement.`,
       });
       if (this.state.decision_log.length > 50) {
         this.state.decision_log.pop();

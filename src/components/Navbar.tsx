@@ -181,15 +181,26 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onSelectPage }) => 
         <div className="flex items-center gap-2">
           <PWAInstallButton />
 
+          {state?.metaapi?.auto_trade_enabled && (
+            <button
+              onClick={() => setIsBrokerModalOpen(true)}
+              className="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-mono font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-500/25 transition cursor-pointer shadow-sm"
+              title="Prise de position auto MetaApi active"
+            >
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span>Auto-Trade MetaApi : ON ({state?.metaapi?.lot_size || 0.01} lot)</span>
+            </button>
+          )}
+
           <button
             onClick={() => setIsBrokerModalOpen(true)}
             className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-mono font-bold bg-[#121624] text-cyan-300 hover:text-white border border-cyan-500/30 hover:border-cyan-400 transition active:scale-95 shadow-md cursor-pointer"
-            title="Connecter un compte Démo (XM Global, MT5, Exness, Deriv) et configurer le moteur HFT"
+            title="Connecter un compte Démo (XM Global, MT5, Exness, Deriv) et configurer MetaApi / HFT"
           >
             <Cpu className="w-3.5 h-3.5 text-cyan-400" />
-            <span className="hidden sm:inline">Compte Démo & HFT</span>
+            <span className="hidden sm:inline">Courtier & MetaApi</span>
             <span className="sm:hidden">Démo</span>
-            <span className={`w-2 h-2 rounded-full ${state?.broker?.connected ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`} />
+            <span className={`w-2 h-2 rounded-full ${state?.metaapi?.auto_trade_enabled || state?.broker?.connected ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`} />
           </button>
 
           <button

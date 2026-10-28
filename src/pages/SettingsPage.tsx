@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useAppState } from '../context/StateContext';
 import { Settings, TradingMode } from '../types';
-import { Sliders, ShieldAlert, Check, Lock, AlertTriangle, Key, Terminal, Copy, Cpu, Server, Activity, Zap } from 'lucide-react';
+import { Sliders, ShieldAlert, Check, Lock, AlertTriangle, Key, Terminal, Copy, Cpu, Server, Activity, Zap, Radio, ExternalLink } from 'lucide-react';
 
 export const SettingsPage: React.FC = () => {
-  const { state, updateSettings, setIsBrokerModalOpen } = useAppState();
+  const { state, updateSettings, setIsBrokerModalOpen, saveMetaApiConfig } = useAppState();
   const currentSettings = state?.settings;
   const currentBroker = state?.broker || state?.settings?.broker;
+  const currentMetaApi = state?.metaapi;
 
   // Local form state
   const [formData, setFormData] = useState<Settings>(
@@ -188,6 +189,101 @@ export const SettingsPage: React.FC = () => {
                 <Activity className="w-3.5 h-3.5" />
                 <span>{currentBroker?.last_ping_ms || 18} ms</span>
                 <span className="text-[10px] font-normal text-zinc-400">(IOC Slippage &lt; 1.5p)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Section 0.5: Liaison MetaApi Cloud & Prise de Position Automatique */}
+        <div className="rounded-[28px] bg-gradient-to-b from-[#0e1424] to-[#0a0d17] border border-blue-500/30 p-6 shadow-2xl backdrop-blur-md hud-box hud-corners relative overflow-hidden">
+          <div className="hud-corner-top-right" />
+          <div className="hud-corner-bottom-left" />
+
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-blue-500/20 text-blue-400 flex items-center justify-center border border-blue-500/40">
+                <Radio className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h3 className="font-heading font-extrabold text-sm text-white">
+                    Liaison MetaApi Cloud — Prise de Position Automatique
+                  </h3>
+                  <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase border ${
+                    currentMetaApi?.auto_trade_enabled
+                      ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30 animate-pulse'
+                      : currentMetaApi?.token
+                      ? 'bg-blue-500/15 text-blue-300 border border-blue-500/30'
+                      : 'bg-zinc-800 text-zinc-400 border-zinc-700'
+                  }`}>
+                    {currentMetaApi?.auto_trade_enabled
+                      ? '⚡ AUTO-TRADE ACTIF'
+                      : currentMetaApi?.token
+                      ? 'CONFIGURÉ (EN PAUSE)'
+                      : 'NON CONFIGURÉ'}
+                  </span>
+                </div>
+                <p className="text-xs text-[#8d90a3] mt-0.5">
+                  Prend automatiquement les positions sur votre compte <strong>MT4 / MT5</strong> dès réception d'un signal TradingView ou MDT.
+                </p>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setIsBrokerModalOpen(true)}
+              className="flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-bold bg-blue-500 hover:bg-blue-400 text-white transition cursor-pointer shadow-lg active:scale-95 whitespace-nowrap"
+            >
+              <Radio className="w-3.5 h-3.5" />
+              <span>{currentMetaApi?.token ? 'Gérer / Reconnecter MetaApi' : 'Configurer la Liaison MetaApi'}</span>
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 p-4 rounded-2xl bg-[#060810] border border-white/[0.06]">
+            <div>
+              <div className="text-[10px] font-mono uppercase text-[#8d90a3]">Statut Liaison Cloud</div>
+              <div className="text-xs font-bold text-white mt-0.5 flex items-center gap-1.5">
+                <span className={`w-2 h-2 rounded-full ${currentMetaApi?.token ? 'bg-emerald-400' : 'bg-amber-400'}`} />
+                <span>{currentMetaApi?.token ? (currentMetaApi.connected ? 'Connecté & Synchronisé' : 'Jeton Enregistré') : 'Non relié'}</span>
+              </div>
+            </div>
+
+            <div>
+              <div className="text-[10px] font-mono uppercase text-[#8d93a8]">ID de Compte MetaApi</div>
+              <div className="text-xs font-mono text-cyan-300 mt-0.5 truncate" title={currentMetaApi?.account_id || 'Non renseigné'}>
+                {currentMetaApi?.account_id ? `${currentMetaApi.account_id.substring(0, 14)}...` : '—'}
+              </div>
+            </div>
+
+            <div>
+              <div className="text-[10px] font-mono uppercase text-[#8d93a8]">Symbole & Lot Auto</div>
+              <div className="text-xs font-mono font-bold text-amber-300 mt-0.5">
+                {currentMetaApi?.symbol || 'GOLD'} · {currentMetaApi?.lot_size || 0.01} Lot
+              </div>
+            </div>
+
+            <div>
+              <div className="text-[10px] font-mono uppercase text-[#8d93a8]">Prise de Position Auto</div>
+              <div className="text-xs font-mono font-bold mt-0.5 flex items-center justify-between">
+                <span className={currentMetaApi?.auto_trade_enabled ? 'text-emerald-400' : 'text-zinc-400'}>
+                  {currentMetaApi?.auto_trade_enabled ? 'Activée (Automatique)' : 'Désactivée'}
+                </span>
+                {currentMetaApi?.token && (
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      if (!currentMetaApi) return;
+                      await saveMetaApiConfig({ auto_trade_enabled: !currentMetaApi.auto_trade_enabled });
+                    }}
+                    className={`text-[10px] font-mono px-2 py-0.5 rounded cursor-pointer transition border ${
+                      currentMetaApi?.auto_trade_enabled
+                        ? 'bg-rose-500/15 text-rose-300 border-rose-500/30 hover:bg-rose-500/25'
+                        : 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30 hover:bg-emerald-500/25'
+                    }`}
+                  >
+                    {currentMetaApi?.auto_trade_enabled ? 'Couper' : 'Activer'}
+                  </button>
+                )}
               </div>
             </div>
           </div>
