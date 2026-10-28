@@ -853,11 +853,12 @@ app.get('/api/auth/me', (_req: Request, res: Response) => {
   });
 });
 
-// Realtime SSE stream
+// Realtime SSE stream with ultra-fast latency (< 1s)
 app.get('/api/events', (req: Request, res: Response) => {
   res.setHeader('Content-Type', 'text/event-stream');
-  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Cache-Control', 'no-cache, no-transform');
   res.setHeader('Connection', 'keep-alive');
+  res.setHeader('X-Accel-Buffering', 'no'); // Disables reverse-proxy buffering for instant delivery
   res.flushHeaders();
 
   // Send initial state immediately
@@ -867,7 +868,13 @@ app.get('/api/events', (req: Request, res: Response) => {
     res.write(`data: ${data}\n\n`);
   });
 
+  // Keep-alive heartbeat every 15s to keep connections open
+  const keepAlive = setInterval(() => {
+    res.write(': keepalive\n\n');
+  }, 15000);
+
   req.on('close', () => {
+    clearInterval(keepAlive);
     unsubscribe();
   });
 });
@@ -896,7 +903,7 @@ async function setupServer() {
     });
   }
 
-  // Automatic background live ticker loop (every 5 seconds)
+  // Automatic high-frequency live ticker loop (every 1200ms in record time)
   let isTickerSyncing = false;
   setInterval(async () => {
     if (isTickerSyncing) return;
@@ -920,10 +927,10 @@ async function setupServer() {
     } finally {
       isTickerSyncing = false;
     }
-  }, 5000);
+  }, 1200);
 
   app.listen(PORT, () => {
-    console.log(`[Viceinte Core] Serveur actif sur http://localhost:${PORT} avec auto-actualisation 5s`);
+    console.log(`[Viceinte Core] Serveur actif sur http://localhost:${PORT} avec actualisation record 1s`);
   });
 }
 

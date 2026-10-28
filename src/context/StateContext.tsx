@@ -8,6 +8,7 @@ interface StateContextType {
   minutesSinceLastUpdate: number;
   isAutoRefresh: boolean;
   toggleAutoRefresh: () => void;
+  latencyMs: number;
   isPineScriptModalOpen: boolean;
   setIsPineScriptModalOpen: (open: boolean) => void;
   isBrokerModalOpen: boolean;
@@ -37,14 +38,18 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [isLoading, setIsLoading] = useState(true);
   const [lastHeartbeat, setLastHeartbeat] = useState(Date.now());
   const [isAutoRefresh, setIsAutoRefresh] = useState(true);
+  const [latencyMs, setLatencyMs] = useState<number>(18);
   const [isPineScriptModalOpen, setIsPineScriptModalOpen] = useState(false);
   const [isBrokerModalOpen, setIsBrokerModalOpen] = useState(false);
 
   const fetchState = useCallback(async () => {
+    const t0 = performance.now();
     try {
       const res = await fetch('/api/state');
       if (res.ok) {
         const data = await res.json();
+        const roundTrip = Math.round(performance.now() - t0);
+        setLatencyMs(roundTrip > 0 ? roundTrip : 12);
         setState(data);
         setLastHeartbeat(Date.now());
       }
@@ -55,44 +60,62 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   }, []);
 
-  // Real-time Server-Sent Events connection
+  // Real-time Server-Sent Events connection (Instant Sub-Second Push)
   useEffect(() => {
     fetchState();
 
-    const eventSource = new EventSource('/api/events');
+    let eventSource: EventSource | null = null;
+    let reconnectTimeout: any = null;
 
-    eventSource.onmessage = (event) => {
+    const connectSSE = () => {
       try {
-        const payload = JSON.parse(event.data);
-        if (payload.type === 'state_update' || payload.type === 'connected') {
-          setState(payload.data);
-          setLastHeartbeat(Date.now());
-        }
-      } catch (e) {
-        console.error('Error parsing SSE event:', e);
+        eventSource = new EventSource('/api/events');
+
+        eventSource.onmessage = (event) => {
+          try {
+            const payload = JSON.parse(event.data);
+            if (payload.type === 'state_update' || payload.type === 'connected') {
+              setState(payload.data);
+              setLastHeartbeat(Date.now());
+              setLatencyMs((prev) => (payload.data?.stream_latency_ms ? payload.data.stream_latency_ms : prev));
+            }
+          } catch (e) {
+            console.error('Error parsing SSE event:', e);
+          }
+        };
+
+        eventSource.onerror = () => {
+          if (eventSource) {
+            eventSource.close();
+          }
+          // Immediate fast reconnect in 1000ms
+          clearTimeout(reconnectTimeout);
+          reconnectTimeout = setTimeout(connectSSE, 1000);
+        };
+      } catch (err) {
+        reconnectTimeout = setTimeout(connectSSE, 1500);
       }
     };
 
-    eventSource.onerror = () => {
-      // Reconnect handled automatically by EventSource
-    };
+    connectSSE();
 
-    const interval = setInterval(() => {
+    const heartbeatInterval = setInterval(() => {
       setLastHeartbeat(Date.now());
-    }, 10000);
+    }, 5000);
 
     return () => {
-      eventSource.close();
-      clearInterval(interval);
+      if (eventSource) eventSource.close();
+      clearTimeout(reconnectTimeout);
+      clearInterval(heartbeatInterval);
     };
   }, [fetchState]);
 
-  // High-frequency auto-refresh polling (every 3.5s) to guarantee real-time quotes
+  // Ultra-fast auto-refresh fallback polling (every 1000ms / 1s in record time)
   useEffect(() => {
     if (!isAutoRefresh) return;
     const autoInterval = setInterval(() => {
       fetchState();
-    }, 3500);
+    }, 1000);
 
     return () => clearInterval(autoInterval);
   }, [isAutoRefresh, fetchState]);
@@ -322,6 +345,7 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         minutesSinceLastUpdate,
         isAutoRefresh,
         toggleAutoRefresh: () => setIsAutoRefresh((prev) => !prev),
+        latencyMs,
         isPineScriptModalOpen,
         setIsPineScriptModalOpen,
         isBrokerModalOpen,

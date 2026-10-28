@@ -1,0 +1,1070 @@
+//@version=5
+indicator("MDT Sniper Pro — Guide Débutant", shorttitle="MDT Pro", overlay=true, max_boxes_count=500, max_lines_count=500, max_labels_count=500, max_bars_back=1000)
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  MDT SNIPER PRO — Guide Débutant
+//  Smart Money Concepts : Order Blocks, FVG, Sweep, BoS, tendance, volume.
+//  - Panneau GUIDE en haut : quoi attendre, quand entrer, SL / TP1 / TP2, lot.
+//  - SCÉNARIOS futurs : flip MDT + ordres BUY/SELL LIMIT sur zone (comme le live MDT).
+//  - RADAR multi-UT : Order Blocks réels par unité de temps (distance en % + étoiles).
+//  - SESSIONS : haut et bas d'Asie / Londres / New York, avec étiquette « balayé ».
+//  - Tout se réduit / s'affiche dans Paramètres > Entrées (préréglages rapides).
+//  Outil éducatif : aucune garantie de gain. Teste toujours en démo d'abord.
+// ═══════════════════════════════════════════════════════════════════════════
+
+// ───────────── COULEURS
+color cBuy   = #22c55e
+color cSell  = #ef4444
+color cEntry = #06b6d4
+color cTP1   = #facc15
+color cOBb   = #3b82f6
+color cOBs   = #ef4444
+color cFVGb  = #22c55e
+color cFVGs  = #f59e0b
+color cFVGx  = #a855f7
+color cBg    = #0b1220
+
+// ───────────── ① AFFICHAGE
+G1 = "① AFFICHAGE — réduire / afficher à volonté"
+preset = input.string("Débutant", "Préréglage rapide", options=["Débutant", "Épuré", "Minimal", "Tout afficher", "Personnalisé"], group=G1, tooltip="Débutant = guide complet + zones + signaux.\nÉpuré = signaux + guide compact + zones OB seulement.\nMinimal = signaux et niveaux uniquement.\nTout afficher = tout, y compris radar complet et statistiques.\nPersonnalisé = utilise les cases ci-dessous.")
+i_guide = input.string("Auto", "[Perso] Panneau guide", options=["Auto", "Complet", "Compact", "Réduit", "Masqué"], group=G1, tooltip="Auto = le panneau se réduit tout seul quand il n'y a rien à faire et s'agrandit quand un setup approche.\nComplet = avec plan en 4 étapes et checklist.\nCompact = niveaux seulement.\nRéduit = une seule ligne.")
+i_mtf = input.string("Compact", "[Perso] Radar multi-UT (bas droite)", options=["Complet", "Compact", "Masqué"], group=G1)
+i_ob = input.bool(true, "[Perso] Order Blocks (OB)", group=G1)
+i_fvg = input.bool(true, "[Perso] Fair Value Gaps (FVG)", group=G1)
+i_trend = input.bool(true, "[Perso] Ligne de tendance MDT", group=G1)
+i_sig = input.bool(true, "[Perso] Étiquettes de signaux", group=G1)
+i_lvl = input.bool(true, "[Perso] Niveaux Entrée / SL / TP du trade", group=G1)
+i_scen = input.bool(true, "[Perso] Scénarios futurs (SI… ALORS…)", group=G1)
+i_sess = input.bool(true, "[Perso] Sessions Asie / Londres / New York (haut et bas)", group=G1)
+i_stats = input.bool(false, "[Perso] Statistiques", group=G1)
+i_hideMit = input.bool(true, "Cacher les zones déjà cassées", group=G1)
+guidePosS = input.string("Haut droite", "Position du guide", options=["Haut droite", "Haut gauche", "Haut centre", "Bas centre"], group=G1)
+txtSizeS = input.string("Normal", "Taille du texte des panneaux", options=["Petit", "Normal", "Grand"], group=G1)
+scenMode = input.string("Les deux", "Scénarios futurs affichés", options=["Flip MDT", "Ordre limite sur zone", "Les deux"], group=G1, tooltip="Flip MDT = « si la ligne change de couleur, j'entre ici ».\nOrdre limite sur zone = BUY LIMIT / SELL LIMIT posé sur l'OB ou le FVG le plus proche, comme dans le live MDT.\nLes deux = les deux plans (plus chargé).")
+mtfPosS = input.string("Bas droite", "Position du radar multi-UT", options=["Bas droite", "Milieu droite", "Haut gauche"], group=G1)
+
+isCust = preset == "Personnalisé"
+isDeb = preset == "Débutant"
+isEpu = preset == "Épuré"
+isMin = preset == "Minimal"
+isAll = preset == "Tout afficher"
+
+showOB = isCust ? i_ob : not isMin
+showFVG = isCust ? i_fvg : (isDeb or isAll)
+showTrend = isCust ? i_trend : (isDeb or isAll)
+showSig = isCust ? i_sig : true
+showLvl = isCust ? i_lvl : true
+showScen = isCust ? i_scen : not isMin
+showSess = isCust ? i_sess : (isDeb or isAll)
+showStats = isCust ? i_stats : isAll
+guideMode = isCust ? (i_guide == "Auto" ? 3 : i_guide == "Complet" ? 2 : i_guide == "Compact" ? 1 : i_guide == "Réduit" ? 4 : 0) : (isDeb ? 3 : (isAll ? 2 : (isEpu ? 1 : 4)))
+mtfMode = isCust ? (i_mtf == "Complet" ? 2 : i_mtf == "Compact" ? 1 : 0) : (isAll ? 2 : (isDeb ? 1 : 0))
+guidePos = guidePosS == "Haut gauche" ? position.top_left : guidePosS == "Haut centre" ? position.top_center : guidePosS == "Bas centre" ? position.bottom_center : position.top_right
+szBody = txtSizeS == "Petit" ? size.tiny : (txtSizeS == "Grand" ? size.normal : size.small)
+szStat = txtSizeS == "Petit" ? size.small : (txtSizeS == "Grand" ? size.large : size.normal)
+szVal = szStat
+wrapW = txtSizeS == "Petit" ? 46 : (txtSizeS == "Grand" ? 30 : 38)
+mtfPos = mtfPosS == "Milieu droite" ? position.middle_right : (mtfPosS == "Haut gauche" ? position.top_left : position.bottom_right)
+
+// ───────────── ② RÉGLAGES
+G2 = "② RÉGLAGES DU SYSTÈME (défauts = recommandés)"
+sweepLen = input.int(20, "Sweep : plus haut/bas sur N bougies", minval=5, group=G2)
+swingLen = input.int(5, "Structure : longueur des pivots", minval=2, group=G2)
+atrLen = input.int(10, "ATR (volatilité)", minval=2, group=G2)
+trendMult = input.float(2.2, "Ligne MDT : multiplicateur ATR", minval=0.5, step=0.1, group=G2)
+profile = input.string("Sniper A+", "Profil de signaux", options=["Starter", "Intraday Clean", "Sniper A+"], group=G2, tooltip="Starter = presque tous les changements de couleur de la ligne MDT (risque raisonnable seulement).\nIntraday Clean = score >= 4/7 et uniquement pendant les sessions Londres + New York (07h-21h UTC).\nSniper A+ = score >= 5/7, zone propre récente et tendance de fond alignée : le plus sélectif.")
+sigMode = input.string("Flip MDT (original)", "Source des signaux", options=["Flip MDT (original)", "Flip + retour en zone (avancé)"], group=G2, tooltip="Flip MDT = signal quand la ligne MDT change de couleur, comme ton indicateur d'origine.\nAvancé = ajoute des entrées sur retour en zone (idée hors MDT, optionnelle).")
+win = input.int(6, "Validité des confirmations (en bougies)", minval=2, maxval=20, group=G2, tooltip="Une zone touchée, un sweep ou un BoS reste valable pendant ce nombre de bougies.")
+flipWin = input.int(15, "Validité du retournement de la ligne MDT (bougies)", minval=3, maxval=50, group=G2)
+volLen = input.int(20, "Volume moyen sur N bougies", minval=5, group=G2)
+volMult = input.float(1.5, "Volume fort = moyenne ×", minval=1.0, step=0.1, group=G2)
+slBuf = input.float(0.4, "Marge du SL (× ATR)", minval=0.0, step=0.1, group=G2)
+slLook = input.int(6, "SL : plus bas / plus haut des N dernières bougies", minval=2, maxval=30, group=G2)
+minRiskATR = input.float(0.4, "Risque minimum (× ATR)", minval=0.1, step=0.1, group=G2)
+maxRiskATR = input.float(3.0, "Risque maximum (× ATR)", minval=0.5, step=0.1, group=G2)
+tp1R = input.float(0.8, "TP1 (en multiple du risque R)", minval=0.5, step=0.1, group=G2)
+tp2R = input.float(2.0, "TP2 (en multiple du risque R)", minval=1.0, step=0.1, group=G2)
+tp2Mode = input.string("Multiple de R", "TP2 des ordres limite", options=["Multiple de R", "Zone opposée"], group=G2, tooltip="Multiple de R = TP2 à 2R (réglage ci-dessus).\nZone opposée = TP2 posé au bord de la zone adverse la plus proche, comme TP2 4058 dans le live (si elle est plus loin que TP1).")
+minFvgATR = input.float(0.15, "FVG : taille minimum (× ATR)", minval=0.0, step=0.05, group=G2)
+maxZones = input.int(6, "Zones actives max par côté", minval=2, maxval=20, group=G2)
+maxZoneATR = input.float(2.5, "Hauteur max d'une zone (× ATR) : plus grandes = ignorées", minval=0.5, step=0.5, group=G2)
+maxBarsTrade = input.int(60, "Durée max d'un trade (bougies) avant expiration", minval=10, group=G2)
+useHtf = input.bool(true, "Filtre tendance de fond (EMA 200 sur 2 UT)", group=G2)
+htf1 = input.timeframe("60", "Tendance de fond n°1", group=G2)
+htf2 = input.timeframe("240", "Tendance de fond n°2", group=G2)
+useSess = input.bool(false, "Filtrer par session (heures UTC)", group=G2)
+sessStr = input.session("0700-1700", "Session autorisée (UTC)", group=G2, tooltip="0700-1700 UTC = Londres + début New York.")
+tfA = input.timeframe("30", "Radar UT 1", group=G2)
+tfB = input.timeframe("15", "Radar UT 2", group=G2)
+tfC = input.timeframe("60", "Radar UT 3", group=G2)
+tfD = input.timeframe("240", "Radar UT 4", group=G2)
+tfE = input.timeframe("D", "Radar UT 5", group=G2)
+
+// ───────────── ③ RISQUE
+G3 = "③ GESTION DU RISQUE (calcul du lot)"
+capital = input.float(1000, "Capital du compte ($)", minval=1, group=G3)
+riskPct = input.float(0.5, "Risque par trade (%)", minval=0.1, maxval=5, step=0.1, group=G3, tooltip="0.5% = tu risques 5$ sur 1000$ à chaque trade. Un débutant ne dépasse pas 1%.")
+contractSize = input.float(100, "Gain/perte pour 1 lot si le prix bouge de 1.00", minval=0.01, group=G3, tooltip="Or (XAUUSD) : 100 chez la plupart des brokers. Vérifie la taille de contrat chez ton broker avant d'utiliser le lot affiché.")
+
+pipSize = input.float(0.1, "Taille d'un pip (or : 0.1)", minval=0.00001, step=0.01, group=G3, tooltip="Sert à afficher les gains en pips. Or (XAUUSD) : 0.1 chez la plupart des brokers.")
+useDaily = input.bool(true, "Limite de perte journalière", group=G3)
+dailyLimit = input.float(2.0, "Perte max par jour (% du capital)", minval=0.5, step=0.5, group=G3, tooltip="Quand les pertes du jour atteignent cette limite, plus aucun nouveau signal jusqu'au lendemain.")
+
+G4 = "④ SESSIONS (heures UTC) — hauts et bas à surveiller"
+sessBox = input.bool(true, "Boîtes de session", group=G4)
+sessLines = input.bool(true, "Lignes haut / bas prolongées (liquidité)", group=G4, tooltip="Le plus haut et le plus bas de la dernière session de chaque type restent affichés vers la droite. Quand le prix les dépasse, l'étiquette indique « balayé ».")
+sessAsia = input.session("0000-0800", "Session Asie", group=G4)
+sessLon = input.session("0700-1600", "Session Londres", group=G4)
+sessNY = input.session("1200-2100", "Session New York", group=G4)
+
+int reqScore = profile == "Starter" ? 2 : (profile == "Intraday Clean" ? 4 : 5)
+bool reqZone = profile == "Sniper A+"
+bool reqHtf = profile == "Sniper A+"
+
+// ═══════════════ FONCTIONS GÉNÉRIQUES
+f_rec(bool cond, int n) => ta.barssince(cond) <= n
+
+f_p(float x) => na(x) ? "—" : str.tostring(x, format.mintick)
+
+f_chk(bool c) => c ? "✅ " : "❌ "
+
+f_miss(bool c1, bool c2, bool c3, bool c4, bool c5, bool c6, bool c7) =>
+    string s = ""
+    if not c1
+        s += "tendance de fond · "
+    if not c2
+        s += "retour en zone · "
+    if not c3
+        s += "sweep · "
+    if not c4
+        s += "cassure BoS · "
+    if not c5
+        s += "ligne MDT · "
+    if not c6
+        s += "volume fort · "
+    if not c7
+        s += "risque/gain · "
+    s
+
+f_mdt() =>
+    float a = ta.atr(atrLen)
+    var float st = na
+    var int td = 1
+    float upS = low - a * trendMult
+    float dnS = high + a * trendMult
+    int prev = td
+    if na(st)
+        st := upS
+    if prev == 1
+        if upS > st
+            st := upS
+        if close < st
+            td := -1
+            st := dnS
+    if prev == -1
+        if dnS < st
+            st := dnS
+        if close > st
+            td := 1
+            st := upS
+    [st, td]
+
+f_htf() =>
+    e = ta.ema(close, 200)
+    [stv, d] = f_mdt()
+    [e, close, d]
+
+f_addZone(array<box> bx, array<float> tp, array<float> bt, array<string> nm, int left, float top, float bot, string name, color col, bool vis, int maxN) =>
+    box b = na
+    if vis
+        b := box.new(left, top, bar_index, bot, border_color=color.new(col, 55), bgcolor=color.new(col, 86), text=name, text_size=size.tiny, text_color=color.new(col, 10), text_halign=text.align_right, text_valign=text.align_center)
+    array.push(bx, b)
+    array.push(tp, top)
+    array.push(bt, bot)
+    array.push(nm, name)
+    if array.size(bx) > maxN
+        box old = array.shift(bx)
+        if not na(old)
+            box.delete(old)
+        array.shift(tp)
+        array.shift(bt)
+        array.shift(nm)
+
+f_updateZones(array<box> bx, array<float> tp, array<float> bt, array<string> nm, bool isBull, bool hideMit) =>
+    int n = array.size(bx)
+    if n > 0
+        for i = n - 1 to 0
+            float t = array.get(tp, i)
+            float b = array.get(bt, i)
+            box bb = array.get(bx, i)
+            bool mitigated = isBull ? close < b : close > t
+            if mitigated
+                if not na(bb)
+                    if hideMit
+                        box.delete(bb)
+                    else
+                        box.set_right(bb, bar_index)
+                        box.set_bgcolor(bb, color.new(color.gray, 92))
+                        box.set_border_color(bb, color.new(color.gray, 78))
+                        box.set_text_color(bb, color.new(color.gray, 55))
+                array.remove(bx, i)
+                array.remove(tp, i)
+                array.remove(bt, i)
+                array.remove(nm, i)
+            if not mitigated
+                if not na(bb)
+                    box.set_right(bb, bar_index)
+
+f_touch(array<float> tp, array<float> bt, array<string> nm) =>
+    bool hit = false
+    float zt = na
+    float zb = na
+    string zn = ""
+    int n = array.size(tp)
+    if n > 0
+        for i = n - 1 to 0
+            float t = array.get(tp, i)
+            float b = array.get(bt, i)
+            if low <= t and high >= b
+                hit := true
+                zt := t
+                zb := b
+                zn := array.get(nm, i)
+                break
+    [hit, zt, zb, zn]
+
+f_nearest(array<float> tp, array<float> bt, array<string> nm, bool isBull) =>
+    float zt = na
+    float zb = na
+    string zn = ""
+    int n = array.size(tp)
+    if n > 0
+        for i = 0 to n - 1
+            float t = array.get(tp, i)
+            float b = array.get(bt, i)
+            if isBull
+                if b <= close
+                    if na(zt) or t > zt
+                        zt := t
+                        zb := b
+                        zn := array.get(nm, i)
+            else
+                if t >= close
+                    if na(zb) or b < zb
+                        zt := t
+                        zb := b
+                        zn := array.get(nm, i)
+    [zt, zb, zn]
+
+f_bias(string tf, float e, float c, float d) =>
+    bool ok = timeframe.in_seconds(tf) >= timeframe.in_seconds() and not na(e)
+    bool up = c > e
+    bool dUp = d > 0
+    ok ? (up and dUp ? 1 : (not up and not dUp ? -1 : 0)) : 0
+
+f_mtfRow(table t, int r, string tf, float e, float c, float d) =>
+    bool ok = timeframe.in_seconds(tf) >= timeframe.in_seconds() and not na(e)
+    bool up = c > e
+    bool dUp = d > 0
+    int b = ok ? (up and dUp ? 1 : (not up and not dUp ? -1 : 0)) : 0
+    string tfTxt = tf == "60" ? "H1" : tf == "240" ? "H4" : tf == "D" ? "D1" : tf == "1D" ? "D1" : "M" + tf
+    color bc = b == 1 ? cBuy : b == -1 ? cSell : color.gray
+    table.cell(t, 0, r, tfTxt, text_color=color.white, bgcolor=color.new(#1e293b, 0), text_size=size.small)
+    table.cell(t, 1, r, ok ? (up ? "Haussier ▲" : "Baissier ▼") : "—", text_color=ok ? (up ? cBuy : cSell) : color.gray, bgcolor=color.new(cBg, 10), text_size=size.small)
+    table.cell(t, 2, r, ok ? (dUp ? "Ligne verte" : "Ligne rouge") : "—", text_color=ok ? (dUp ? cBuy : cSell) : color.gray, bgcolor=color.new(cBg, 10), text_size=size.small)
+    table.cell(t, 3, r, ok ? (b == 1 ? "ACHAT" : b == -1 ? "VENTE" : "Neutre") : "—", text_color=bc, bgcolor=color.new(cBg, 10), text_size=size.small)
+    b
+
+f_wide(table t, int r, string txt, color tc, color bg, string sz, string al) =>
+    table.cell(t, 0, r, txt, text_color=tc, bgcolor=bg, text_size=sz, text_halign=al)
+    table.merge_cells(t, 0, r, 3, r)
+
+f_stars(string nm, bool aligned) =>
+    int n = 1 + ((nm == "OB+" or nm == "OB-" or nm == "FVG str.") ? 1 : 0) + (aligned ? 1 : 0)
+    n == 3 ? "★★★" : (n == 2 ? "★★" : "★")
+
+f_wrap(string s, int w) =>
+    string out = ""
+    string ln = ""
+    array<string> words = str.split(s, " ")
+    for i = 0 to array.size(words) - 1
+        string wd = array.get(words, i)
+        if str.length(ln) + str.length(wd) + 1 > w and str.length(ln) > 0
+            out += ln + "\n"
+            ln := wd
+        else
+            ln := str.length(ln) == 0 ? wd : ln + " " + wd
+    out + ln
+
+f_tfTxt(string tf) =>
+    tf == "60" ? "H1" : (tf == "240" ? "H4" : ((tf == "D" or tf == "1D") ? "D1" : ((tf == "W" or tf == "1W") ? "W1" : "M" + tf)))
+
+f_valid(string tf) => timeframe.in_seconds(tf) >= timeframe.in_seconds() ? 1 : 0
+
+f_wide6(table t, int r, string txt, color tc, color bg, string sz, string al) =>
+    table.cell(t, 0, r, txt, text_color=tc, bgcolor=bg, text_size=sz, text_halign=al)
+    table.merge_cells(t, 0, r, 5, r)
+
+f_conf2(float fl, bool aligned) =>
+    int n = 1 + (fl > 0 ? 1 : 0) + (aligned ? 1 : 0)
+    n >= 3 ? "★★★" : (n == 2 ? "★★" : "★")
+
+// Scanner d'une unité de temps : Order Blocks réels (impulsion), les plus proches du prix.
+// Étoiles : ★ de base · ★★ si l'impulsion a laissé un FVG collé à l'OB · ★★★ si en plus l'OB est dans le sens de la tendance EMA200 de cette UT.
+f_scan() =>
+    float a = ta.atr(atrLen)
+    float e = ta.ema(close, 200)
+    [stv, d] = f_mdt()
+    var uT = array.new_float()
+    var uB = array.new_float()
+    var uF = array.new_float()
+    var dT = array.new_float()
+    var dB = array.new_float()
+    var dF = array.new_float()
+    int nu = array.size(uT)
+    if nu > 0
+        for i = nu - 1 to 0
+            if close < array.get(uB, i)
+                array.remove(uT, i)
+                array.remove(uB, i)
+                array.remove(uF, i)
+    int nd = array.size(dT)
+    if nd > 0
+        for i = nd - 1 to 0
+            if close > array.get(dT, i)
+                array.remove(dT, i)
+                array.remove(dB, i)
+                array.remove(dF, i)
+    float cap = maxZoneATR * a
+    bool impU = close > open and close[1] > open[1] and (close - open) > a * 1.4 and close[2] < open[2] and (high[2] - low[2]) <= cap
+    bool impD = close < open and close[1] < open[1] and (open - close) > a * 1.4 and close[2] > open[2] and (high[2] - low[2]) <= cap
+    if impU
+        array.push(uT, high[2])
+        array.push(uB, low[2])
+        array.push(uF, low > high[2] ? 1.0 : 0.0)
+        if array.size(uT) > 5
+            array.shift(uT)
+            array.shift(uB)
+            array.shift(uF)
+    if impD
+        array.push(dT, high[2])
+        array.push(dB, low[2])
+        array.push(dF, high < low[2] ? 1.0 : 0.0)
+        if array.size(dT) > 5
+            array.shift(dT)
+            array.shift(dB)
+            array.shift(dF)
+    float bT = na
+    float bB = na
+    float bF = 0.0
+    float rT = na
+    float rB = na
+    float rF = 0.0
+    int n1 = array.size(uT)
+    if n1 > 0
+        for i = 0 to n1 - 1
+            float t = array.get(uT, i)
+            float b = array.get(uB, i)
+            if b <= close and (na(bT) or t > bT)
+                bT := t
+                bB := b
+                bF := array.get(uF, i)
+    int n2 = array.size(dT)
+    if n2 > 0
+        for i = 0 to n2 - 1
+            float t = array.get(dT, i)
+            float b = array.get(dB, i)
+            if t >= close and (na(rB) or b < rB)
+                rT := t
+                rB := b
+                rF := array.get(dF, i)
+    [e, close, d, bT, bB, bF, rT, rB, rF]
+
+f_obCell(float top, float bot, bool isBull, bool ok) =>
+    string s = "---"
+    if ok and not na(top)
+        float dist = isBull ? math.max(close - top, 0.0) : math.max(bot - close, 0.0)
+        s := f_p(top) + "\n" + f_p(bot) + "\n(" + str.tostring(dist / close * 100, "0.00") + "%)"
+    s
+
+f_obRow(table t, int r, string tf, float e, float c, float d, float bT, float bB, float bF, float rT, float rB, float rF) =>
+    bool ok = f_valid(tf) == 1 and not na(e)
+    bool up = c > e
+    color tcol = ok ? (up ? cBuy : cSell) : color.gray
+    string trTxt = ok ? ((up ? "Haussier ▲" : "Baissier ▼") + "\nligne " + (d > 0 ? "verte" : "rouge")) : "—"
+    table.cell(t, 0, r, f_tfTxt(tf), text_color=color.white, bgcolor=color.new(#1e293b, 0), text_size=size.small)
+    table.cell(t, 1, r, trTxt, text_color=tcol, bgcolor=color.new(cBg, 10), text_size=size.small)
+    table.cell(t, 2, r, f_obCell(bT, bB, true, ok), text_color=#93c5fd, bgcolor=color.new(cBg, 10), text_size=size.tiny)
+    table.cell(t, 3, r, (ok and not na(bT)) ? f_conf2(bF, up) : "---", text_color=cTP1, bgcolor=color.new(cBg, 10), text_size=size.small)
+    table.cell(t, 4, r, f_obCell(rT, rB, false, ok), text_color=#fca5a5, bgcolor=color.new(cBg, 10), text_size=size.tiny)
+    table.cell(t, 5, r, (ok and not na(rT)) ? f_conf2(rF, not up) : "---", text_color=cTP1, bgcolor=color.new(cBg, 10), text_size=size.small)
+
+// Sessions : boîte + plus haut / plus bas prolongés (étiquette « balayé » quand le prix les dépasse)
+// CORRIGÉ : chaque branche if/else se termine par « true » pour avoir le même type de retour.
+f_sess(string ses, color col, string nm) =>
+    bool tIn = not na(time(timeframe.period, ses, "UTC"))
+    bool inS = timeframe.isintraday and tIn
+    bool prevIn = inS[1]
+    bool stS = inS and not prevIn
+    bool enS = (not inS) and prevIn
+    var float hi = na
+    var float lo = na
+    var int b0 = 0
+    var box bx = na
+    var line lH = na
+    var line lL = na
+    var label tH = na
+    var label tL = na
+    var bool swH = false
+    var bool swL = false
+    if showSess
+        if stS
+            hi := high
+            lo := low
+            b0 := bar_index
+            swH := false
+            swL := false
+            line.delete(lH)
+            line.delete(lL)
+            label.delete(tH)
+            label.delete(tL)
+            if sessBox
+                bx := box.new(bar_index, high, bar_index, low, border_color=color.new(col, 60), bgcolor=color.new(col, 93), text=nm, text_size=size.tiny, text_color=color.new(col, 15), text_halign=text.align_left, text_valign=text.align_top)
+            if sessLines
+                lH := line.new(bar_index, high, bar_index + 1, high, color=color.new(col, 10), style=line.style_dashed, width=1)
+                lL := line.new(bar_index, low, bar_index + 1, low, color=color.new(col, 10), style=line.style_dashed, width=1)
+                tH := label.new(bar_index + 1, high, nm + " H " + f_p(high), style=label.style_label_left, color=color.new(col, 55), textcolor=color.white, size=size.tiny)
+                tL := label.new(bar_index + 1, low, nm + " L " + f_p(low), style=label.style_label_left, color=color.new(col, 55), textcolor=color.white, size=size.tiny)
+            true
+        else
+            if inS and not na(hi)
+                hi := math.max(hi, high)
+                lo := math.min(lo, low)
+                if sessBox and not na(bx)
+                    box.set_right(bx, bar_index)
+                    box.set_top(bx, hi)
+                    box.set_bottom(bx, lo)
+                if sessLines and not na(lH)
+                    line.set_xy1(lH, b0, hi)
+                    line.set_xy2(lH, bar_index, hi)
+                    line.set_xy1(lL, b0, lo)
+                    line.set_xy2(lL, bar_index, lo)
+                    label.set_xy(tH, bar_index + 1, hi)
+                    label.set_text(tH, nm + " H " + f_p(hi))
+                    label.set_xy(tL, bar_index + 1, lo)
+                    label.set_text(tL, nm + " L " + f_p(lo))
+            else
+                if enS and sessLines and not na(lH)
+                    line.set_extend(lH, extend.right)
+                    line.set_extend(lL, extend.right)
+                if sessLines and not na(lH) and not na(hi)
+                    if (not swH) and high > hi
+                        swH := true
+                        label.set_text(tH, nm + " H " + f_p(hi) + " ✔ balayé")
+                    if (not swL) and low < lo
+                        swL := true
+                        label.set_text(tL, nm + " L " + f_p(lo) + " ✔ balayé")
+            true
+    true
+
+// ═══════════════ CALCULS DE BASE
+atr = ta.atr(atrLen)
+[mdtStop, mdtTrend] = f_mdt()
+trendUp = mdtTrend == 1
+flipUp = mdtTrend == 1 and mdtTrend[1] == -1
+flipDn = mdtTrend == -1 and mdtTrend[1] == 1
+plot(showTrend ? mdtStop : na, "Ligne MDT", color=trendUp ? cBuy : cSell, linewidth=2, style=plot.style_stepline)
+
+// Structure (pivots + cassure BoS)
+ph = ta.pivothigh(high, swingLen, swingLen)
+pl = ta.pivotlow(low, swingLen, swingLen)
+var float lastSH = na
+var float lastSL = na
+var bool shBroken = true
+var bool slBroken = true
+if not na(ph)
+    lastSH := ph
+    shBroken := false
+if not na(pl)
+    lastSL := pl
+    slBroken := false
+bosUp = (not shBroken) and close > lastSH
+bosDn = (not slBroken) and close < lastSL
+if bosUp
+    shBroken := true
+if bosDn
+    slBroken := true
+
+// Sweep de liquidité
+llv = ta.lowest(low, sweepLen)[1]
+hhv = ta.highest(high, sweepLen)[1]
+sweepBull = low < llv and close > llv
+sweepBear = high > hhv and close < hhv
+
+// Volume fort (HVB)
+volAvg = ta.sma(volume, volLen)
+hasVol = nz(volume) > 0
+hvb = (not hasVol) or volume > volAvg * volMult
+
+// Bougie de confirmation
+bodyS = math.abs(close - open)
+rngS = high - low
+bullTrig = close > open and bodyS >= 0.5 * rngS and close > high[1]
+bearTrig = close < open and bodyS >= 0.5 * rngS and close < low[1]
+
+// Tendance de fond (non repeinte)
+htfE1 = request.security(syminfo.tickerid, htf1, ta.ema(close, 200)[1], lookahead=barmerge.lookahead_on)
+htfE2 = request.security(syminfo.tickerid, htf2, ta.ema(close, 200)[1], lookahead=barmerge.lookahead_on)
+htfUp = close > htfE1 and close > htfE2
+htfDn = close < htfE1 and close < htfE2
+
+// Session
+sessCustom = time(timeframe.period, sessStr, "UTC")
+sessClean = time(timeframe.period, "0700-2100", "UTC")
+inSess = profile == "Intraday Clean" ? not na(sessClean) : ((not useSess) or not na(sessCustom))
+int sessIdx = hour(time, "UTC") >= 7 and hour(time, "UTC") < 13 ? 1 : (hour(time, "UTC") >= 13 and hour(time, "UTC") < 21 ? 2 : 0)
+
+f_sess(sessAsia, #a78bfa, "Asie")
+f_sess(sessLon, #38bdf8, "Londres")
+f_sess(sessNY, #fb923c, "New York")
+
+// ═══════════════ ZONES (OB + FVG)
+var bullBox = array.new_box()
+var bullTop = array.new_float()
+var bullBot = array.new_float()
+var bullNam = array.new_string()
+var bearBox = array.new_box()
+var bearTop = array.new_float()
+var bearBot = array.new_float()
+var bearNam = array.new_string()
+
+// 1) contact avec les zones existantes (avant toute mise à jour)
+[tbHit, tbTop, tbBot, tbNam] = f_touch(bullTop, bullBot, bullNam)
+[tsHit, tsTop, tsBot, tsNam] = f_touch(bearTop, bearBot, bearNam)
+var float zBTop = na
+var float zBBot = na
+var float zSTop = na
+var float zSBot = na
+if tbHit
+    zBTop := tbTop
+    zBBot := tbBot
+if tsHit
+    zSTop := tsTop
+    zSBot := tsBot
+
+// 2) mise à jour (extension / zones cassées)
+f_updateZones(bullBox, bullTop, bullBot, bullNam, true, i_hideMit)
+f_updateZones(bearBox, bearTop, bearBot, bearNam, false, i_hideMit)
+
+// 3) création des nouvelles zones
+int lowOff = -ta.lowestbars(low, 20)
+int highOff = -ta.highestbars(high, 20)
+
+float capH = maxZoneATR * atr
+bool isBullImp = close > open and close[1] > open[1] and (close - open) > atr * 1.4 and close[2] < open[2]
+bool isBearImp = close < open and close[1] < open[1] and (open - close) > atr * 1.4 and close[2] > open[2]
+
+if isBullImp and (high[2] - low[2]) <= capH
+    f_addZone(bullBox, bullTop, bullBot, bullNam, bar_index - 2, high[2], low[2], "OB+", cOBb, showOB, maxZones)
+
+if isBearImp and (high[2] - low[2]) <= capH
+    f_addZone(bearBox, bearTop, bearBot, bearNam, bar_index - 2, high[2], low[2], "OB-", cOBs, showOB, maxZones)
+
+fvgBullNew = low > high[2] and (low - high[2]) > minFvgATR * atr and close[1] > open[1]
+fvgBearNew = high < low[2] and (low[2] - high) > minFvgATR * atr and close[1] < open[1]
+
+if fvgBullNew and (low - high[2]) <= capH
+    bool strF = bosUp or bosUp[1]
+    f_addZone(bullBox, bullTop, bullBot, bullNam, bar_index - 2, low, high[2], strF ? "FVG str." : "FVG+", strF ? cFVGx : cFVGb, showFVG, maxZones)
+
+if fvgBearNew and (low[2] - high) <= capH
+    bool strF = bosDn or bosDn[1]
+    f_addZone(bearBox, bearTop, bearBot, bearNam, bar_index - 2, low[2], high, strF ? "FVG str." : "FVG-", strF ? cFVGx : cFVGs, showFVG, maxZones)
+
+// ═══════════════ LES 7 CONDITIONS
+float zBBotU = f_rec(tbHit, win) ? zBBot : na
+float zSTopU = f_rec(tsHit, win) ? zSTop : na
+float hiL = ta.highest(high, slLook)
+float loL = ta.lowest(low, slLook)
+bool adv = sigMode == "Flip + retour en zone (avancé)"
+float plSLb = (adv ? math.min(nz(zBBotU, loL), loL) : loL) - slBuf * atr
+float plSLs = (adv ? math.max(nz(zSTopU, hiL), hiL) : hiL) + slBuf * atr
+float plRiskB = close - plSLb
+float plRiskS = plSLs - close
+bool riskOKb = plRiskB >= minRiskATR * atr and plRiskB <= maxRiskATR * atr
+bool riskOKs = plRiskS >= minRiskATR * atr and plRiskS <= maxRiskATR * atr
+
+bool cB1 = (not useHtf) or htfUp
+bool cB2 = f_rec(tbHit, win)
+bool cB3 = f_rec(sweepBull, win)
+bool cB4 = f_rec(bosUp, win)
+bool cB5 = trendUp and f_rec(flipUp, flipWin)
+bool cB6 = f_rec(hvb, win)
+bool cB7 = riskOKb
+
+bool cS1 = (not useHtf) or htfDn
+bool cS2 = f_rec(tsHit, win)
+bool cS3 = f_rec(sweepBear, win)
+bool cS4 = f_rec(bosDn, win)
+bool cS5 = (not trendUp) and f_rec(flipDn, flipWin)
+bool cS6 = f_rec(hvb, win)
+bool cS7 = riskOKs
+
+int scoreB = (cB1 ? 1 : 0) + (cB2 ? 1 : 0) + (cB3 ? 1 : 0) + (cB4 ? 1 : 0) + (cB5 ? 1 : 0) + (cB6 ? 1 : 0) + (cB7 ? 1 : 0)
+int scoreS = (cS1 ? 1 : 0) + (cS2 ? 1 : 0) + (cS3 ? 1 : 0) + (cS4 ? 1 : 0) + (cS5 ? 1 : 0) + (cS6 ? 1 : 0) + (cS7 ? 1 : 0)
+
+bool sniperB = adv and barstate.isconfirmed and bullTrig and cB2 and (cB3 or cB4) and cB7 and scoreB >= reqScore and inSess
+bool flipB = barstate.isconfirmed and flipUp and cB7 and scoreB >= reqScore and ((not reqZone) or cB2) and ((not reqHtf) or cB1) and inSess
+bool sigBuy = sniperB or flipB
+bool sniperS = adv and barstate.isconfirmed and bearTrig and cS2 and (cS3 or cS4) and cS7 and scoreS >= reqScore and inSess
+bool flipS = barstate.isconfirmed and flipDn and cS7 and scoreS >= reqScore and ((not reqZone) or cS2) and ((not reqHtf) or cS1) and inSess
+bool sigSell = sniperS or flipS
+
+// Biais global : ligne MDT + tendance de fond
+int bias = (trendUp ? 1 : -1) + (useHtf ? (htfUp ? 1 : (htfDn ? -1 : 0)) : 0)
+
+// ═══════════════ SCÉNARIOS (zones les plus proches)
+[sbTop, sbBot, sbNam] = f_nearest(bullTop, bullBot, bullNam, true)
+[ssTop, ssBot, ssNam] = f_nearest(bearTop, bearBot, bearNam, false)
+float bEnt = (mdtTrend == -1 and mdtStop > loL - slBuf * atr) ? mdtStop : na
+float bSLv = loL - slBuf * atr
+float bRk = bEnt - bSLv
+float bTP1v = bEnt + tp1R * bRk
+float bTP2v = bEnt + tp2R * bRk
+float sEnt = (mdtTrend == 1 and mdtStop < hiL + slBuf * atr) ? mdtStop : na
+float sSLv = hiL + slBuf * atr
+float sRk = sSLv - sEnt
+float sTP1v = sEnt - tp1R * sRk
+float sTP2v = sEnt - tp2R * sRk
+
+// Ordres limite sur les zones les plus proches (BUY LIMIT sous le prix / SELL LIMIT au-dessus)
+float lmBE = sbTop
+float lmBSL = sbBot - slBuf * atr
+float lmBR = lmBE - lmBSL
+bool lmBOK = not na(lmBE) and lmBE < close and lmBR >= minRiskATR * atr and lmBR <= maxRiskATR * atr
+float lmBT1 = lmBE + tp1R * lmBR
+float lmBT2 = (tp2Mode == "Zone opposée" and not na(ssBot) and ssBot > lmBT1) ? ssBot : lmBE + tp2R * lmBR
+float lmSE = ssBot
+float lmSSL = ssTop + slBuf * atr
+float lmSR = lmSSL - lmSE
+bool lmSOK = not na(lmSE) and lmSE > close and lmSR >= minRiskATR * atr and lmSR <= maxRiskATR * atr
+float lmST1 = lmSE - tp1R * lmSR
+float lmST2 = (tp2Mode == "Zone opposée" and not na(sbTop) and sbTop < lmST1) ? sbTop : lmSE - tp2R * lmSR
+
+var scL = array.new_line()
+var scLb = array.new_label()
+var scBx = array.new_box()
+
+f_scen(bool isBuy, float entry, float sl, float tp1, float tp2) =>
+    if not na(entry) and not na(sl)
+        int q = 1
+        int x0 = bar_index + 5
+        int x1 = bar_index + 22
+        int tpar = q >= 0 ? 0 : 55
+        int fill = q >= 0 ? 80 : 92
+        color cm = isBuy ? cBuy : cSell
+        color noBorder = color.new(color.white, 100)
+        array.push(scL, line.new(bar_index, close, x0, entry, color=color.new(cm, tpar), style=line.style_dashed, width=2))
+        array.push(scBx, box.new(x0, math.max(entry, sl), x1, math.min(entry, sl), border_color=noBorder, bgcolor=color.new(cSell, fill)))
+        array.push(scBx, box.new(x0, math.max(entry, tp2), x1, math.min(entry, tp2), border_color=noBorder, bgcolor=color.new(cBuy, fill)))
+        array.push(scL, line.new(x0, entry, x1, entry, color=color.new(cEntry, tpar), width=2))
+        array.push(scL, line.new(x0, sl, x1, sl, color=color.new(cSell, tpar), style=line.style_dotted, width=2))
+        array.push(scL, line.new(x0, tp1, x1, tp1, color=color.new(cTP1, tpar), style=line.style_dotted, width=2))
+        array.push(scL, line.new(x0, tp2, x1, tp2, color=color.new(cBuy, tpar), style=line.style_dotted, width=2))
+        string pre = isBuy ? "A▲ " : "B▼ "
+        array.push(scLb, label.new(x1, entry, pre + "ENTRÉE ≈ " + f_p(entry), color=color.new(cEntry, 20), style=label.style_label_left, textcolor=color.white, size=size.small))
+        array.push(scLb, label.new(x1, sl, "SL " + f_p(sl), color=color.new(cSell, 20), style=label.style_label_left, textcolor=color.white, size=size.small))
+        array.push(scLb, label.new(x1, tp1, "TP1 " + f_p(tp1), color=color.new(cTP1, 10), style=label.style_label_left, textcolor=color.black, size=size.small))
+        array.push(scLb, label.new(x1, tp2, "TP2 " + f_p(tp2), color=color.new(cBuy, 20), style=label.style_label_left, textcolor=color.white, size=size.small))
+        string head = isBuy ? "▲ SI une bougie CLÔTURE au-dessus de la ligne rouge → ACHAT (flip MDT)" : "▼ SI une bougie CLÔTURE sous la ligne verte → VENTE (flip MDT)"
+        array.push(scLb, label.new(x0, tp2, head, color=color.new(cm, 25), style=isBuy ? label.style_label_down : label.style_label_up, textcolor=color.white, size=size.small))
+
+// Ordre limite posé sur une zone (comme « BUY LIMIT 4008 » dans le live MDT)
+f_limit(bool isBuy, float entry, float sl, float tp1, float tp2, string zn, int q) =>
+    if not na(entry) and not na(sl)
+        int x0 = bar_index + 26
+        int x1 = bar_index + 38
+        int tpar = q >= 0 ? 0 : 45
+        int fill = q >= 0 ? 78 : 90
+        color nb = color.new(color.white, 100)
+        array.push(scBx, box.new(x0, math.max(entry, tp2), x1, math.min(entry, tp2), border_color=nb, bgcolor=color.new(cBuy, fill)))
+        array.push(scBx, box.new(x0, math.max(entry, sl), x1, math.min(entry, sl), border_color=nb, bgcolor=color.new(cSell, fill)))
+        array.push(scL, line.new(x0, entry, x1, entry, color=color.new(cEntry, tpar), width=2))
+        array.push(scL, line.new(x0, sl, x1, sl, color=color.new(cSell, tpar), style=line.style_dotted, width=2))
+        array.push(scL, line.new(x0, tp1, x1, tp1, color=color.new(cTP1, tpar), style=line.style_dotted, width=2))
+        array.push(scL, line.new(x0, tp2, x1, tp2, color=color.new(cBuy, tpar), style=line.style_dotted, width=2))
+        string nm = (isBuy ? "BUY LIMIT " : "SELL LIMIT ") + f_p(entry) + " · " + zn + (q < 0 ? "  ⚠ contre-tendance" : "")
+        array.push(scLb, label.new(x1, entry, nm, color=color.new(cEntry, 20), style=label.style_label_left, textcolor=color.white, size=size.small))
+        array.push(scLb, label.new(x1, sl, "SL " + f_p(sl), color=color.new(cSell, 20), style=label.style_label_left, textcolor=color.white, size=size.small))
+        array.push(scLb, label.new(x1, tp1, "TP1 " + f_p(tp1), color=color.new(cTP1, 10), style=label.style_label_left, textcolor=color.black, size=size.small))
+        array.push(scLb, label.new(x1, tp2, "TP2 " + f_p(tp2), color=color.new(cBuy, 20), style=label.style_label_left, textcolor=color.white, size=size.small))
+
+// ═══════════════ GESTION DU TRADE
+var int tradeDir = 0
+var float tEntry = na
+var float tSL = na
+var float tTP1 = na
+var float tTP2 = na
+var float tRisk = na
+var bool tTP1Hit = false
+var int tBar = na
+var int tSess = 0
+var line lnEntry = na
+var line lnSL = na
+var line lnTP1 = na
+var line lnTP2 = na
+var label lbEntry = na
+var label lbSL = na
+var label lbTP1 = na
+var label lbTP2 = na
+var int nSig = 0
+var int nTP1 = 0
+var int nTP2 = 0
+var int nSL = 0
+var int nBE = 0
+var int nExp = 0
+var float totR = 0.0
+var float dayR = 0.0
+var sessTot = array.new_int(3, 0)
+var sessWin = array.new_int(3, 0)
+
+if ta.change(time("D")) != 0
+    dayR := 0.0
+
+bool evTP1 = false
+bool evTP2 = false
+bool evSL = false
+bool evBE = false
+bool closeNow = false
+
+if tradeDir != 0 and bar_index > tBar
+    if tradeDir == 1
+        if low <= tSL
+            if tTP1Hit
+                evBE := true
+            else
+                evSL := true
+        else
+            if (not tTP1Hit) and high >= tTP1
+                evTP1 := true
+            if high >= tTP2
+                evTP2 := true
+    else
+        if high >= tSL
+            if tTP1Hit
+                evBE := true
+            else
+                evSL := true
+        else
+            if (not tTP1Hit) and low <= tTP1
+                evTP1 := true
+            if low <= tTP2
+                evTP2 := true
+
+    if evTP1 or evTP2
+        if not tTP1Hit
+            tTP1Hit := true
+            nTP1 += 1
+            array.set(sessWin, tSess, array.get(sessWin, tSess) + 1)
+            tSL := tEntry
+            if showSig
+                label.new(bar_index, tradeDir == 1 ? high : low, "TP1 TOUCHÉ ✔ +" + str.tostring(tp1R, "#.#") + "R (+" + str.tostring(tp1R * tRisk / pipSize, "#") + " pips) → SL au BE", style=tradeDir == 1 ? label.style_label_down : label.style_label_up, color=cTP1, textcolor=color.black, size=size.small)
+    if evTP2
+        nTP2 += 1
+        dayR += tp2R
+        totR += tp2R
+        closeNow := true
+        if showSig
+            label.new(bar_index, tradeDir == 1 ? high : low, "TP2 TOUCHÉ ✔✔ +" + str.tostring(tp2R, "#.#") + "R (+" + str.tostring(tp2R * tRisk / pipSize, "#") + " pips)", style=tradeDir == 1 ? label.style_label_down : label.style_label_up, color=cBuy, textcolor=color.white, size=size.small)
+    if evSL
+        nSL += 1
+        dayR -= 1.0
+        totR -= 1.0
+        closeNow := true
+        if showSig
+            label.new(bar_index, tradeDir == 1 ? low : high, "SL ✘ -1R", style=tradeDir == 1 ? label.style_label_up : label.style_label_down, color=cSell, textcolor=color.white, size=size.small)
+    if evBE
+        nBE += 1
+        closeNow := true
+        if showSig
+            label.new(bar_index, tradeDir == 1 ? low : high, "BE ⚖ 0R", style=tradeDir == 1 ? label.style_label_up : label.style_label_down, color=color.gray, textcolor=color.white, size=size.small)
+    if (not evTP2) and (not evSL) and (not evBE) and bar_index - tBar >= maxBarsTrade
+        nExp += 1
+        float rx = tradeDir * (close - tEntry) / tRisk
+        dayR += rx
+        totR += rx
+        closeNow := true
+        if showSig
+            label.new(bar_index, close, "⌛ Trade expiré (trop long)", style=label.style_label_left, color=color.gray, textcolor=color.white, size=size.small)
+
+// Ouverture d'un nouveau trade (un seul à la fois)
+bool dayBlocked = useDaily and dayR < 0 and (-dayR * riskPct) >= dailyLimit
+bool openBuy = sigBuy and (tradeDir == 0 or closeNow) and not dayBlocked
+bool openSell = sigSell and (tradeDir == 0 or closeNow) and not openBuy and not dayBlocked
+
+if closeNow
+    tradeDir := 0
+    if not na(lnEntry)
+        line.set_x2(lnEntry, bar_index)
+        line.set_x2(lnSL, bar_index)
+        line.set_x2(lnTP1, bar_index)
+        line.set_x2(lnTP2, bar_index)
+        label.set_x(lbEntry, bar_index + 1)
+        label.set_x(lbSL, bar_index + 1)
+        label.set_x(lbTP1, bar_index + 1)
+        label.set_x(lbTP2, bar_index + 1)
+
+if openBuy or openSell
+    bool isB = openBuy
+    tradeDir := isB ? 1 : -1
+    tEntry := close
+    tSL := isB ? plSLb : plSLs
+    tRisk := math.abs(tEntry - tSL)
+    tTP1 := isB ? tEntry + tp1R * tRisk : tEntry - tp1R * tRisk
+    tTP2 := isB ? tEntry + tp2R * tRisk : tEntry - tp2R * tRisk
+    tTP1Hit := false
+    tBar := bar_index
+    tSess := sessIdx
+    nSig += 1
+    array.set(sessTot, sessIdx, array.get(sessTot, sessIdx) + 1)
+    if showSig
+        label.new(bar_index, isB ? low : high, (isB ? "ACHAT " : "VENTE ") + f_p(close) + " ⚡ " + (isB ? (sniperB ? "SNIPER " : "FLIP ") + str.tostring(scoreB) : (sniperS ? "SNIPER " : "FLIP ") + str.tostring(scoreS)) + "/7", style=isB ? label.style_label_up : label.style_label_down, color=isB ? cBuy : cSell, textcolor=color.white, size=size.small)
+    if showLvl
+        lnEntry := line.new(bar_index, tEntry, bar_index + 1, tEntry, color=cEntry, style=line.style_dotted, width=2)
+        lnSL := line.new(bar_index, tSL, bar_index + 1, tSL, color=cSell, style=line.style_dotted, width=2)
+        lnTP1 := line.new(bar_index, tTP1, bar_index + 1, tTP1, color=cTP1, style=line.style_dotted, width=2)
+        lnTP2 := line.new(bar_index, tTP2, bar_index + 1, tTP2, color=cBuy, style=line.style_dotted, width=2)
+        lbEntry := label.new(bar_index + 1, tEntry, "ENTRÉE " + f_p(tEntry), style=label.style_label_left, color=color.new(cEntry, 15), textcolor=color.white, size=size.small)
+        lbSL := label.new(bar_index + 1, tSL, "SL " + f_p(tSL), style=label.style_label_left, color=color.new(cSell, 15), textcolor=color.white, size=size.small)
+        lbTP1 := label.new(bar_index + 1, tTP1, "TP1 " + f_p(tTP1), style=label.style_label_left, color=color.new(cTP1, 5), textcolor=color.black, size=size.small)
+        lbTP2 := label.new(bar_index + 1, tTP2, "TP2 " + f_p(tTP2), style=label.style_label_left, color=color.new(cBuy, 15), textcolor=color.white, size=size.small)
+
+// Mise à jour des niveaux pendant le trade
+if tradeDir != 0 and showLvl and not na(lnEntry)
+    float rNow = tradeDir * (close - tEntry) / tRisk
+    float pipsNow = tradeDir * (close - tEntry) / pipSize
+    line.set_x2(lnEntry, bar_index)
+    line.set_xy1(lnSL, tBar, tSL)
+    line.set_xy2(lnSL, bar_index, tSL)
+    line.set_x2(lnTP1, bar_index)
+    line.set_x2(lnTP2, bar_index)
+    label.set_xy(lbEntry, bar_index + 1, tEntry)
+    label.set_text(lbEntry, "ENTRÉE " + f_p(tEntry) + "  |  " + (rNow >= 0 ? "+" : "") + str.tostring(rNow, "#.##") + "R · " + (pipsNow >= 0 ? "+" : "") + str.tostring(pipsNow, "#") + " pips")
+    label.set_xy(lbSL, bar_index + 1, tSL)
+    label.set_text(lbSL, (tTP1Hit ? "SL → BE " : "SL ") + f_p(tSL))
+    label.set_x(lbTP1, bar_index + 1)
+    label.set_x(lbTP2, bar_index + 1)
+
+// ═══════════════ AFFICHAGE FINAL (dernière bougie)
+var table tGuide = na
+var table tMtf = na
+var table tStats = na
+
+[e1, c1, d1, obBT1, obBB1, obBF1, obRT1, obRB1, obRF1] = request.security(syminfo.tickerid, tfA, f_scan())
+[e2, c2, d2, obBT2, obBB2, obBF2, obRT2, obRB2, obRF2] = request.security(syminfo.tickerid, tfB, f_scan())
+[e3, c3, d3, obBT3, obBB3, obBF3, obRT3, obRB3, obRF3] = request.security(syminfo.tickerid, tfC, f_scan())
+[e4, c4, d4, obBT4, obBB4, obBF4, obRT4, obRB4, obRF4] = request.security(syminfo.tickerid, tfD, f_scan())
+[e5, c5, d5, obBT5, obBB5, obBF5, obRT5, obRB5, obRF5] = request.security(syminfo.tickerid, tfE, f_scan())
+
+if barstate.islast
+    // ---- scénarios futurs
+    for l in scL
+        line.delete(l)
+    for lb in scLb
+        label.delete(lb)
+    for bx in scBx
+        box.delete(bx)
+    array.clear(scL)
+    array.clear(scLb)
+    array.clear(scBx)
+    if showScen and tradeDir == 0
+        if scenMode != "Ordre limite sur zone"
+            f_scen(true, bEnt, bSLv, bTP1v, bTP2v)
+            f_scen(false, sEnt, sSLv, sTP1v, sTP2v)
+        if scenMode != "Flip MDT"
+            if lmBOK
+                f_limit(true, lmBE, lmBSL, lmBT1, lmBT2, sbNam, bias)
+            if lmSOK
+                f_limit(false, lmSE, lmSSL, lmST1, lmST2, ssNam, -bias)
+
+    // ---- panneau guide (intelligent : centré sur la ligne MDT)
+    table.delete(tGuide)
+    if guideMode > 0
+        bool active = tradeDir != 0
+        bool fresh = active and tBar == bar_index
+        int side = active ? tradeDir : (trendUp ? -1 : 1)
+        string sideTxt = side == 1 ? "ACHAT" : "VENTE"
+        bool k1 = side == 1 ? cB1 : cS1
+        bool k2 = side == 1 ? cB2 : cS2
+        bool k3 = side == 1 ? cB3 : cS3
+        bool k4 = side == 1 ? cB4 : cS4
+        bool k5 = side == 1 ? cB5 : cS5
+        bool k6 = side == 1 ? cB6 : cS6
+        bool k7 = side == 1 ? cB7 : cS7
+        int scAnt = side == 1 ? scoreB + (cB5 ? 0 : 1) : scoreS + (cS5 ? 0 : 1)
+        bool profOK = scAnt >= reqScore and ((not reqZone) or k2) and ((not reqHtf) or k1) and k7
+        bool nearFlip = math.abs(close - mdtStop) <= atr
+        string missing = f_miss(k1, k2, k3, k4, true, k6, k7)
+        string lineTxt = trendUp ? "verte" : "rouge"
+        string cross = side == 1 ? "au-dessus de" : "sous"
+        string stTxt = ""
+        string how = ""
+        color stBg = #475569
+        int stage = 0
+        if active
+            stage := 3
+            stBg := side == 1 ? cBuy : cSell
+            float rLive0 = tradeDir * (close - tEntry) / tRisk
+            float pipsLive = tradeDir * (close - tEntry) / pipSize
+            string rTxt = (rLive0 >= 0 ? "+" : "") + str.tostring(rLive0, "#.##") + "R · " + (pipsLive >= 0 ? "+" : "") + str.tostring(pipsLive, "#") + " pips"
+            if fresh
+                stTxt := "⚡ " + sideTxt + " : ENTRE MAINTENANT"
+                how := "La ligne MDT vient de changer de couleur. Ouvre ton " + sideTxt + " avec le SL et les TP indiqués."
+            else
+                stTxt := (side == 1 ? "📈 ACHAT en cours " : "📉 VENTE en cours ") + rTxt + (tTP1Hit ? " · TP1 ✔" : "")
+                how := tTP1Hit ? "Risque supprimé (SL à l'entrée). Laisse courir vers TP2." : "Ne touche à rien. TP1 touché → SL à l'entrée. SL touché → perte limitée, on attend le prochain signal."
+        else if dayBlocked
+            stage := 1
+            stBg := #7f1d1d
+            stTxt := "🛑 Limite de perte du jour atteinte"
+            how := "Stop pour aujourd'hui (" + str.tostring(dailyLimit, "#.#") + "% du capital). Reprends demain : c'est ça, la discipline."
+        else if nearFlip and profOK
+            stage := 2
+            stBg := #0e7490
+            stTxt := "🎯 Signal " + sideTxt + " probable " + str.tostring(scAnt) + "/7"
+            how := "Si une bougie CLÔTURE " + cross + " la ligne MDT (" + f_p(mdtStop) + "), le signal tombe. Entre à la clôture de cette bougie."
+        else if nearFlip
+            stage := 1
+            stBg := #b45309
+            stTxt := "👀 Le prix approche la ligne MDT"
+            how := "Un flip " + sideTxt + " est possible si une bougie clôture " + cross + " " + f_p(mdtStop) + ", mais il manque : " + missing + "→ pas de signal tant que le profil " + profile + " n'est pas satisfait."
+        else
+            stTxt := "⏳ ATTENDRE — ligne MDT " + lineTxt
+            how := "Pas de signal tant que la ligne ne change pas de couleur. Prochain déclencheur : clôture " + cross + " " + f_p(mdtStop) + "."
+
+        // niveau de détail : 0 = une ligne, 1 = standard, 2 = complet
+        int detail = guideMode == 3 ? (stage >= 1 ? 1 : 0) : (guideMode == 4 ? 0 : (guideMode == 1 ? 1 : 2))
+
+        float lvE = active ? tEntry : (side == 1 ? bEnt : sEnt)
+        float lvSL = active ? tSL : (side == 1 ? bSLv : sSLv)
+        float lvT1 = active ? tTP1 : (side == 1 ? bTP1v : sTP1v)
+        float lvT2 = active ? tTP2 : (side == 1 ? bTP2v : sTP2v)
+        float riskPts = active ? tRisk : math.abs(lvE - lvSL)
+        float lot = riskPts > 0 ? (capital * riskPct / 100) / (riskPts * contractSize) : na
+        string lotTxt = na(lot) ? "—" : (lot < 0.01 ? "<0.01" : str.tostring(lot, "0.00"))
+        string tag = active ? "" : " ≈"
+        string infoTxt = "Risque " + f_p(riskPts) + " pts (" + (na(riskPts) ? "—" : str.tostring(riskPts / pipSize, "#")) + " pips) · Lot " + lotTxt + " (" + str.tostring(riskPct, "#.#") + "% du capital)"
+
+        string planTxt = ""
+        if not active
+            planTxt := f_wrap("① La ligne MDT est " + lineTxt + " : on ne trade pas contre elle.", wrapW) + "\n" + f_wrap("② Surveille la ligne : elle est à " + f_p(mdtStop) + " (elle bouge à chaque bougie).", wrapW) + "\n" + f_wrap("③ Signal = UNE bougie qui clôture " + cross + " la ligne : elle change de couleur.", wrapW) + "\n" + f_wrap("④ Entre à la clôture · SL " + f_p(lvSL) + " · TP1 " + f_p(lvT1) + " · TP2 " + f_p(lvT2), wrapW) + "\n" + f_wrap("⑤ TP1 touché → remets le SL à l'entrée (break-even).", wrapW)
+
+        int nRows = detail == 0 ? 1 : (detail == 1 ? 5 : 1 + 5 + (active ? 0 : 1) + 7 + 1)
+        tGuide := table.new(guidePos, detail == 0 ? 1 : 4, nRows, bgcolor=color.new(cBg, 6), frame_color=color.new(#334155, 20), frame_width=1, border_color=color.new(#334155, 40), border_width=1)
+        if detail == 0
+            table.cell(tGuide, 0, 0, stTxt, text_color=color.white, bgcolor=stBg, text_size=szStat)
+        else
+            int r = 0
+            if detail == 2
+                f_wide(tGuide, r, "🎯 MDT PRO · " + syminfo.ticker + " · " + timeframe.period + " · profil " + profile, color.white, color.new(#1e293b, 0), szBody, text.align_center)
+                r += 1
+            f_wide(tGuide, r, stTxt, color.white, stBg, szStat, text.align_center)
+            r += 1
+            f_wide(tGuide, r, f_wrap(how, wrapW), #e2e8f0, color.new(cBg, 6), szBody, text.align_left)
+            r += 1
+            table.cell(tGuide, 0, r, "ENTRÉE" + tag, text_color=cEntry, bgcolor=color.new(#1e293b, 20), text_size=szBody)
+            table.cell(tGuide, 1, r, "STOP LOSS", text_color=cSell, bgcolor=color.new(#1e293b, 20), text_size=szBody)
+            table.cell(tGuide, 2, r, "TP1 (+" + str.tostring(tp1R, "#.#") + "R)", text_color=cTP1, bgcolor=color.new(#1e293b, 20), text_size=szBody)
+            table.cell(tGuide, 3, r, "TP2 (+" + str.tostring(tp2R, "#.#") + "R)", text_color=cBuy, bgcolor=color.new(#1e293b, 20), text_size=szBody)
+            r += 1
+            table.cell(tGuide, 0, r, f_p(lvE), text_color=cEntry, bgcolor=color.new(cBg, 6), text_size=szVal)
+            table.cell(tGuide, 1, r, f_p(lvSL), text_color=cSell, bgcolor=color.new(cBg, 6), text_size=szVal)
+            table.cell(tGuide, 2, r, f_p(lvT1), text_color=cTP1, bgcolor=color.new(cBg, 6), text_size=szVal)
+            table.cell(tGuide, 3, r, f_p(lvT2), text_color=cBuy, bgcolor=color.new(cBg, 6), text_size=szVal)
+            r += 1
+            f_wide(tGuide, r, infoTxt, #94a3b8, color.new(cBg, 6), szBody, text.align_left)
+            r += 1
+            if detail == 2
+                if not active
+                    f_wide(tGuide, r, planTxt, #e2e8f0, color.new(#1e293b, 40), szBody, text.align_left)
+                    r += 1
+                f_wide(tGuide, r, f_chk(k1) + "Tendance de fond alignée (H1 + H4)", k1 ? #86efac : #fca5a5, color.new(cBg, 6), szBody, text.align_left)
+                r += 1
+                f_wide(tGuide, r, f_chk(k2) + "Prix dans une zone OB / FVG propre", k2 ? #86efac : #fca5a5, color.new(cBg, 6), szBody, text.align_left)
+                r += 1
+                f_wide(tGuide, r, f_chk(k3) + "Sweep de liquidité", k3 ? #86efac : #fca5a5, color.new(cBg, 6), szBody, text.align_left)
+                r += 1
+                f_wide(tGuide, r, f_chk(k4) + "Cassure de structure (BoS)", k4 ? #86efac : #fca5a5, color.new(cBg, 6), szBody, text.align_left)
+                r += 1
+                f_wide(tGuide, r, (active ? "✅ " : "⏳ ") + "Ligne MDT retournée (le déclencheur)", active ? #86efac : #fcd34d, color.new(cBg, 6), szBody, text.align_left)
+                r += 1
+                f_wide(tGuide, r, f_chk(k6) + "Volume fort (HVB)", k6 ? #86efac : #fca5a5, color.new(cBg, 6), szBody, text.align_left)
+                r += 1
+                f_wide(tGuide, r, f_chk(k7) + "Risque/gain réaliste (RR ≥ 1:2)", k7 ? #86efac : #fca5a5, color.new(cBg, 6), szBody, text.align_left)
+                r += 1
+                f_wide(tGuide, r, f_wrap("Règle d'or : un signal = la ligne change de couleur. Les filtres servent à choisir les meilleurs.", wrapW), #fde68a, color.new(#1e293b, 30), szBody, text.align_left)
+
+    // ---- radar multi-UT (Order Blocks réels par unité de temps, comme le tableau MDT)
+    table.delete(tMtf)
+    int bA = f_bias(tfA, e1, c1, d1)
+    int bB = f_bias(tfB, e2, c2, d2)
+    int bC = f_bias(tfC, e3, c3, d3)
+    int bD = f_bias(tfD, e4, c4, d4)
+    int bE = f_bias(tfE, e5, c5, d5)
+    int sumB = bA + bB + bC + bD + bE
+    int nOk = f_valid(tfA) + f_valid(tfB) + f_valid(tfC) + f_valid(tfD) + f_valid(tfE)
+    int thr = math.max(nOk - 1, 2)
+    string cons = sumB >= thr ? "BIAIS HAUSSIER" : (sumB <= -thr ? "BIAIS BAISSIER" : "BIAIS MIXTE — prudence")
+    bool ready = (sumB >= thr and trendUp) or (sumB <= -thr and not trendUp)
+    string consTxt = cons + "  " + str.tostring(math.abs(sumB)) + "/" + str.tostring(nOk) + (ready ? "  PRÊT ⚡" : "")
+    color consCol = sumB >= thr ? cBuy : (sumB <= -thr ? cSell : color.gray)
+    if mtfMode == 1
+        tMtf := table.new(mtfPos, 2, 1, bgcolor=color.new(cBg, 6), frame_color=color.new(#334155, 20), frame_width=1, border_color=color.new(#334155, 40), border_width=1)
+        table.cell(tMtf, 0, 0, "Radar UT", text_color=color.white, bgcolor=color.new(#1e293b, 0), text_size=size.small)
+        table.cell(tMtf, 1, 0, consTxt, text_color=consCol, bgcolor=color.new(cBg, 6), text_size=size.small)
+    if mtfMode == 2
+        tMtf := table.new(mtfPos, 6, 7, bgcolor=color.new(cBg, 6), frame_color=color.new(#334155, 20), frame_width=1, border_color=color.new(#334155, 40), border_width=1)
+        string hdr = "UT|Tendance|Bull OB|Conf.|Bear OB|Conf."
+        array<string> hh = str.split(hdr, "|")
+        for i = 0 to 5
+            table.cell(tMtf, i, 0, array.get(hh, i), text_color=color.white, bgcolor=color.new(#1e293b, 0), text_size=size.small)
+        f_obRow(tMtf, 1, tfA, e1, c1, d1, obBT1, obBB1, obBF1, obRT1, obRB1, obRF1)
+        f_obRow(tMtf, 2, tfB, e2, c2, d2, obBT2, obBB2, obBF2, obRT2, obRB2, obRF2)
+        f_obRow(tMtf, 3, tfC, e3, c3, d3, obBT3, obBB3, obBF3, obRT3, obRB3, obRF3)
+        f_obRow(tMtf, 4, tfD, e4, c4, d4, obBT4, obBB4, obBF4, obRT4, obRB4, obRF4)
+        f_obRow(tMtf, 5, tfE, e5, c5, d5, obBT5, obBB5, obBF5, obRT5, obRB5, obRF5)
+        f_wide6(tMtf, 6, consTxt, consCol, color.new(#1e293b, 0), size.small, text.align_center)
+
+    // ---- statistiques
+    table.delete(tStats)
+    if showStats
+        int decided = nTP1 + nSL
+        string rate = decided > 0 ? str.tostring(nTP1 * 100.0 / decided, "#.#") + "%" : "—"
+        tStats := table.new(position.bottom_left, 2, 9, bgcolor=color.new(cBg, 6), frame_color=color.new(#334155, 20), frame_width=1, border_color=color.new(#334155, 40), border_width=1)
+        table.cell(tStats, 0, 0, "📊 STATISTIQUES (historique affiché)", text_color=color.white, bgcolor=color.new(#1e293b, 0), text_size=size.small, text_halign=text.align_center)
+        table.merge_cells(tStats, 0, 0, 1, 0)
+        table.cell(tStats, 0, 1, "Signaux", text_color=#94a3b8, text_size=size.small)
+        table.cell(tStats, 1, 1, str.tostring(nSig), text_color=color.white, text_size=size.small)
+        table.cell(tStats, 0, 2, "TP1 touchés", text_color=#94a3b8, text_size=size.small)
+        table.cell(tStats, 1, 2, str.tostring(nTP1), text_color=cTP1, text_size=size.small)
+        table.cell(tStats, 0, 3, "TP2 touchés", text_color=#94a3b8, text_size=size.small)
+        table.cell(tStats, 1, 3, str.tostring(nTP2), text_color=cBuy, text_size=size.small)
+        table.cell(tStats, 0, 4, "SL touchés", text_color=#94a3b8, text_size=size.small)
+        table.cell(tStats, 1, 4, str.tostring(nSL), text_color=cSell, text_size=size.small)
+        table.cell(tStats, 0, 5, "Break-even / expirés", text_color=#94a3b8, text_size=size.small)
+        table.cell(tStats, 1, 5, str.tostring(nBE) + " / " + str.tostring(nExp), text_color=color.white, text_size=size.small)
+        table.cell(tStats, 0, 6, "Taux TP1 · R cumulé", text_color=#94a3b8, text_size=size.small)
+        table.cell(tStats, 1, 6, rate + " · " + (totR >= 0 ? "+" : "") + str.tostring(totR, "#.#") + "R", text_color=color.white, text_size=size.small)
+        table.cell(tStats, 0, 7, "Asie / Londres / NY", text_color=#94a3b8, text_size=size.small)
+        table.cell(tStats, 1, 7, str.tostring(array.get(sessWin, 0)) + "/" + str.tostring(array.get(sessTot, 0)) + "  ·  " + str.tostring(array.get(sessWin, 1)) + "/" + str.tostring(array.get(sessTot, 1)) + "  ·  " + str.tostring(array.get(sessWin, 2)) + "/" + str.tostring(array.get(sessTot, 2)), text_color=color.white, text_size=size.small)
+        table.cell(tStats, 0, 8, "Le passé ne garantit pas le futur.", text_color=#fde68a, bgcolor=color.new(#1e293b, 30), text_size=size.tiny, text_halign=text.align_center)
+        table.merge_cells(tStats, 0, 8, 1, 8)
+
+// ═══════════════ ALERTES
+alertcondition(openBuy, "ACHAT sniper", "MDT Pro : signal ACHAT sur {{ticker}} — voir Entrée / SL / TP sur le graphique")
+alertcondition(openSell, "VENTE sniper", "MDT Pro : signal VENTE sur {{ticker}} — voir Entrée / SL / TP sur le graphique")
+alertcondition(evTP1, "TP1 touché", "MDT Pro : TP1 touché sur {{ticker}} — remets le SL à l'entrée")
+alertcondition(evTP2, "TP2 touché", "MDT Pro : TP2 touché sur {{ticker}}")
+alertcondition(evSL, "Stop Loss touché", "MDT Pro : SL touché sur {{ticker}}")
+alertcondition(tbHit and trendUp, "Prix en zone d'ACHAT", "MDT Pro : le prix touche une zone d'achat sur {{ticker}} — surveille sweep + bougie de confirmation")
+alertcondition(tsHit and not trendUp, "Prix en zone de VENTE", "MDT Pro : le prix touche une zone de vente sur {{ticker}} — surveille sweep + bougie de confirmation")

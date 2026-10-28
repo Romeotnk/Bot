@@ -171,6 +171,40 @@ export interface MdtZone {
   mitigated: boolean;
 }
 
+export interface FutureScenarioChecklist {
+  htf_trend: boolean;
+  clean_zone: boolean;
+  liquidity_sweep: boolean;
+  bos_structure: boolean;
+  mdt_line: boolean;
+  high_volume: boolean;
+  risk_reward_ok: boolean;
+}
+
+export interface FutureScenario {
+  id: string;
+  title: string;
+  type: 'flip_buy' | 'flip_sell' | 'limit_buy' | 'limit_sell';
+  direction: 'BUY' | 'SELL';
+  triggerCondition: string;
+  zoneName?: string;
+  entry: number;
+  stop_loss: number;
+  take_profit_1: number;
+  take_profit_2: number;
+  take_profit_3?: number;
+  risk_points: number;
+  risk_pips: number;
+  rr_ratio: number;
+  confluences_count: number;
+  confluences_max: number;
+  stars: number;
+  stars_text: string;
+  checklist: FutureScenarioChecklist;
+  status: 'pret' | 'en_attente' | 'approche' | 'contre_tendance';
+  recommended_lot: number;
+}
+
 export interface DashboardState {
   bot_status: BotStatus;
   levels: Levels;
@@ -183,8 +217,10 @@ export interface DashboardState {
   bot_key: string;
   mdt_radar?: MdtRadarRow[];
   mdt_zones?: MdtZone[];
+  future_scenarios?: FutureScenario[];
   broker?: BrokerAccountConfig;
   metaapi?: MetaApiConfig;
+  stream_latency_ms?: number;
 }
 
 export interface AurumChatMessage {

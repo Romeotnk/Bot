@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAppState } from '../context/StateContext';
 import { TradingChart } from '../components/TradingChart';
 import { TradingViewChart } from '../components/TradingViewChart';
+import { FutureScenariosCard } from '../components/FutureScenariosCard';
 import { MdtRadarTable } from '../components/MdtRadarTable';
 import { MdtChecklistModal } from '../components/MdtChecklistModal';
 import { SafetyGauges } from '../components/SafetyGauges';
@@ -39,7 +40,8 @@ export const DashboardPage: React.FC = () => {
     state, 
     refreshState,
     setIsPineScriptModalOpen,
-    setIsBrokerModalOpen
+    setIsBrokerModalOpen,
+    latencyMs
   } = useAppState();
 
   const [chartViewMode, setChartViewMode] = useState<'mdt_smc' | 'tradingview'>('mdt_smc');
@@ -581,6 +583,15 @@ export const DashboardPage: React.FC = () => {
           />
         </div>
       </div>
+
+      {/* SCÉNARIOS FUTURS & CONFLUENCES EN ÉTOILES (FLIP MDT & ORDRES LIMIT SUR ZONES) */}
+      <FutureScenariosCard
+        currentPrice={lastPrice}
+        scenarios={state.future_scenarios}
+        capital={calcCapital}
+        riskPct={calcRiskPct}
+        latencyMs={latencyMs}
+      />
 
       {/* 3. RADAR COMPLET DES ZONES & DÉTAILS MULTI-UT */}
       <MdtRadarTable currentPrice={lastPrice} radarRows={mdt_radar} />
