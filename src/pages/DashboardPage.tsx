@@ -3,6 +3,7 @@ import { useAppState } from '../context/StateContext';
 import { TradingChart } from '../components/TradingChart';
 import { TradingViewChart } from '../components/TradingViewChart';
 import { FutureScenariosCard } from '../components/FutureScenariosCard';
+import { HftExecutionConsole } from '../components/HftExecutionConsole';
 import { MdtRadarTable } from '../components/MdtRadarTable';
 import { MdtChecklistModal } from '../components/MdtChecklistModal';
 import { SafetyGauges } from '../components/SafetyGauges';
@@ -583,6 +584,9 @@ export const DashboardPage: React.FC = () => {
           />
         </div>
       </div>
+
+      {/* CONSOLE D'EXÉCUTION HFT & MICRO-SCALPING ULTRA-BASSE LATENCE */}
+      <HftExecutionConsole currentPrice={lastPrice} />
 
       {/* SCÉNARIOS FUTURS & CONFLUENCES EN ÉTOILES (FLIP MDT & ORDRES LIMIT SUR ZONES) */}
       <FutureScenariosCard
