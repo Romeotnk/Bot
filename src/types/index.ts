@@ -86,6 +86,39 @@ export interface DecisionLog {
   message: string;
 }
 
+export type BrokerType = 
+  | 'XM Global' 
+  | 'Deriv' 
+  | 'Exness' 
+  | 'FTMO' 
+  | 'MetaTrader 5 (MT5)' 
+  | 'MetaTrader 4 (MT4)' 
+  | 'Autre Courtier';
+
+export type ExecutionEngineMode = 
+  | 'hft_ultra' 
+  | 'scalp_m1' 
+  | 'retest_m15' 
+  | 'swing_h1';
+
+export interface BrokerAccountConfig {
+  broker_type: BrokerType;
+  account_type: 'demo' | 'reel';
+  account_number: string;
+  server_name: string;
+  symbol: string;
+  execution_mode: ExecutionEngineMode;
+  api_token?: string;
+  connected: boolean;
+  last_ping_ms: number;
+  balance: number;
+  equity: number;
+  leverage: number;
+  hft_max_slippage_pips: number;
+  auto_breakeven_tp1: boolean;
+  webhook_secret: string;
+}
+
 export interface Settings {
   paused: boolean;
   mode: TradingMode;
@@ -98,6 +131,7 @@ export interface Settings {
   news_filter: boolean;
   ml_filter: boolean;
   ai_filter: boolean;
+  broker?: BrokerAccountConfig;
 }
 
 export interface MdtRadarRow {
@@ -132,6 +166,7 @@ export interface DashboardState {
   bot_key: string;
   mdt_radar?: MdtRadarRow[];
   mdt_zones?: MdtZone[];
+  broker?: BrokerAccountConfig;
 }
 
 export interface AurumChatMessage {
@@ -141,4 +176,5 @@ export interface AurumChatMessage {
   time: string;
   isTyping?: boolean;
 }
+
 

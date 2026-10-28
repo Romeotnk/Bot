@@ -1,6 +1,6 @@
 {
   "name": "Viceinte",
-  "description": "Tableau de bord de surveillance et de pilotage du robot de trading automatique XAUUSD (Or). Direction artistique passerelle spatiale sci-fi avec noyau Aurum 3D en temps réel.",
+  "description": "Terminal institutionnel de surveillance et de pilotage du trading XAUUSD (Or). Intégration TradingView Pine Script v5 et méthodologie MDT Smart Money.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

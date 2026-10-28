@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useAppState } from '../context/StateContext';
 import { Settings, TradingMode } from '../types';
-import { Sliders, ShieldAlert, Check, Lock, AlertTriangle, Key, Terminal, Copy } from 'lucide-react';
+import { Sliders, ShieldAlert, Check, Lock, AlertTriangle, Key, Terminal, Copy, Cpu, Server, Activity, Zap } from 'lucide-react';
 
 export const SettingsPage: React.FC = () => {
-  const { state, updateSettings } = useAppState();
+  const { state, updateSettings, setIsBrokerModalOpen } = useAppState();
   const currentSettings = state?.settings;
+  const currentBroker = state?.broker || state?.settings?.broker;
 
   // Local form state
   const [formData, setFormData] = useState<Settings>(
@@ -117,6 +118,81 @@ export const SettingsPage: React.FC = () => {
       )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Section 0: Connexion Compte Démo (XM Global, MT5, Exness, Deriv) & HFT */}
+        <div className="rounded-[28px] bg-gradient-to-b from-[#121626] to-[#0c0f1a] border border-cyan-500/30 p-6 shadow-2xl backdrop-blur-md hud-box hud-corners relative overflow-hidden">
+          <div className="hud-corner-top-right" />
+          <div className="hud-corner-bottom-left" />
+
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-cyan-500/20 text-cyan-300 flex items-center justify-center border border-cyan-500/40">
+                <Cpu className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h3 className="font-heading font-extrabold text-sm text-white">
+                    Connexion Compte Démo Courtier & Moteur HFT
+                  </h3>
+                  <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase border ${
+                    currentBroker?.connected 
+                      ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30' 
+                      : 'bg-amber-500/15 text-amber-400 border-amber-500/30'
+                  }`}>
+                    {currentBroker?.connected ? 'Pont Démo Connecté' : 'Non Connecté'}
+                  </span>
+                </div>
+                <p className="text-xs text-[#8d90a3] mt-0.5">
+                  Liez votre compte démo <strong>XM Global</strong>, <strong>Exness</strong>, <strong>Deriv</strong> ou <strong>MT5</strong> avec exécution haute fréquence (&lt;25ms).
+                </p>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setIsBrokerModalOpen(true)}
+              className="flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-bold bg-cyan-400 text-black hover:bg-cyan-300 transition cursor-pointer shadow-lg active:scale-95 whitespace-nowrap"
+            >
+              <Server className="w-3.5 h-3.5 text-black" />
+              <span>{currentBroker?.connected ? 'Gérer / Reconnecter Démo' : 'Connecter un Compte Démo'}</span>
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 p-4 rounded-2xl bg-[#060810] border border-white/[0.06]">
+            <div>
+              <div className="text-[10px] font-mono uppercase text-[#8d90a3]">Courtier Actif</div>
+              <div className="text-xs font-bold text-white mt-0.5 flex items-center gap-1.5">
+                <span>{currentBroker?.broker_type || 'XM Global'}</span>
+                <span className="text-[9px] font-mono px-1 py-0.2 rounded bg-amber-400/20 text-amber-300">
+                  {currentBroker?.account_type?.toUpperCase() || 'DÉMO'}
+                </span>
+              </div>
+            </div>
+
+            <div>
+              <div className="text-[10px] font-mono uppercase text-[#8d90a3]">Serveur Démo & Compte</div>
+              <div className="text-xs font-mono text-cyan-300 mt-0.5 truncate">
+                {currentBroker?.server_name || 'XMGlobal-MT5 3'} ({currentBroker?.account_number || '52019482'})
+              </div>
+            </div>
+
+            <div>
+              <div className="text-[10px] font-mono uppercase text-[#8d90a3]">Symbole Tradé</div>
+              <div className="text-xs font-mono font-bold text-amber-300 mt-0.5">
+                {currentBroker?.symbol || 'GOLD'} (XAUUSD)
+              </div>
+            </div>
+
+            <div>
+              <div className="text-[10px] font-mono uppercase text-[#8d90a3]">Latence Moteur HFT</div>
+              <div className="text-xs font-mono font-bold text-emerald-400 mt-0.5 flex items-center gap-1">
+                <Activity className="w-3.5 h-3.5" />
+                <span>{currentBroker?.last_ping_ms || 18} ms</span>
+                <span className="text-[10px] font-normal text-zinc-400">(IOC Slippage &lt; 1.5p)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Section 1: Mode d'exécution (Ordres Réels vs Simulation) */}
         <div className="rounded-[28px] bg-[#10121b]/90 border border-[#232637] p-6 shadow-xl backdrop-blur-md hud-box hud-corners">
           <div className="hud-corner-top-right" />

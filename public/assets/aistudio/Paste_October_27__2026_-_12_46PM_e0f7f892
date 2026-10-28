@@ -1,0 +1,520 @@
+//@version=5
+// ============================================================================
+//  MDT SNIPER XAUUSD - VERSION 4 (reproduction fidele de l'indicateur MDT)
+//  Pour DEBUTANTS : un gros message te dit quoi faire, et pourquoi.
+//
+//  CONTENU :
+//  - Zones OB (bleu/rouge) et FVG (vert/orange/violet) avec etiquettes
+//  - Croix de sweep (le piege avant le vrai mouvement)
+//  - Ligne de tendance MDT en palier (verte = haussier, rouge = baissier)
+//  - Score de confluence sur 7 filtres (le signal part seulement si assez fort)
+//  - Entree sur RETEST apres cassure (modele MDT officiel)
+//  - 4 niveaux traces : Entree (cyan), SL (rouge), TP1 (jaune), TP2 (vert)
+//  - Compteur de pips en direct + "TP1 TOUCHE" / "TP2 TOUCHE" / "SL TOUCHE"
+//  - Stats de reussite des signaux (W/L + %)
+//  - Historique des anciens trades (tableau reductible)
+//
+//  Outil educatif. Teste en REPLAY / DEMO avant tout argent reel.
+//  NB : l'historique est une SIMULATION des regles du script sur les bougies
+//  chargees (entree = cloture de la bougie du signal, heures en UTC).
+// ============================================================================
+indicator("MDT Sniper XAUUSD - v4", overlay = true, max_boxes_count = 500, max_lines_count = 200, max_labels_count = 200)
+
+// ---------------------------- REGLAGES -------------------------------------
+grpB = "1. Tendance de fond (la MAP)"
+tfA      = input.timeframe("240", "Tendance 1 (H4)", group = grpB)
+tfB      = input.timeframe("60",  "Tendance 2 (H1)", group = grpB)
+emaLen   = input.int(200, "EMA de tendance (PDF = 200)", minval = 5, group = grpB)
+
+grpZ = "2. Zones (ou surveiller)"
+pivLen   = input.int(5, "Force des swings", minval = 2, group = grpZ)
+maxZones = input.int(5, "Zones max par cote (PDF starter = 4-5)", minval = 1, maxval = 20, group = grpZ)
+showOB   = input.bool(true, "Afficher les OB", group = grpZ)
+showFVG  = input.bool(true, "Afficher les FVG", group = grpZ)
+minFvgAtr= input.float(0.3, "Taille mini FVG (x ATR)", step = 0.1, group = grpZ)
+zoneMaxAge = input.int(150, "Duree de vie d'une zone (bougies)", minval = 20, group = grpZ)
+maxZoneAtr = input.float(4.0, "Taille max d'une zone (x ATR)", step = 0.5, group = grpZ)
+
+grpT = "3. Signal (le TRIGGER)"
+sweepLook = input.int(10, "Sweep valide pendant (bougies)", minval = 1, group = grpT)
+zoneLook  = input.int(15, "Contact zone valide pendant (bougies)", minval = 1, group = grpT)
+microLen  = input.int(2, "Force micro-structure", minval = 1, group = grpT)
+dispAtr   = input.float(1.0, "Deplacement mini (corps x ATR)", step = 0.1, group = grpT)
+useRetest = input.bool(true, "Entree sur RETEST (modele MDT officiel)", group = grpT)
+retestLook= input.int(10, "Retest valide pendant (bougies)", minval = 1, group = grpT)
+cooldown  = input.int(20, "Bougies mini entre 2 signaux", minval = 0, group = grpT)
+retestNextBar = input.bool(false, "Retest seulement APRES la barre de cassure", group = grpT)
+
+grpTL = "4. Ligne de tendance MDT"
+showTL   = input.bool(true, "Afficher la ligne de tendance", group = grpTL)
+tlMult   = input.float(2.0, "Largeur du palier (x ATR)", step = 0.1, group = grpTL)
+flipLook = input.int(10, "Flip valide pendant (bougies)", minval = 1, group = grpTL)
+
+grpC = "5. Score de confluence (sur 7)"
+hvbMult  = input.float(1.5, "Gros volume = EMA volume x", step = 0.1, group = grpC)
+hvbLen   = input.int(20, "EMA volume", minval = 5, group = grpC)
+minScore = input.int(5, "Score minimum pour signaler (sur 7)", minval = 1, maxval = 7, group = grpC)
+
+grpR = "6. Risque"
+slBufAtr = input.float(0.2, "Marge stop (x ATR)", step = 0.05, group = grpR)
+tp1R     = input.float(1.0, "TP1 (R) - apres TP1 tu securises", step = 0.5, group = grpR)
+tp2R     = input.float(2.5, "TP2 (R) - objectif principal", step = 0.5, group = grpR)
+pipSize  = input.float(0.1, "Taille d'un pip (XAUUSD = 0.1)", step = 0.01, group = grpR)
+beAfterTP1 = input.bool(true, "Apres TP1, le stop passe a l'entree (BE)", group = grpR)
+
+grpS = "7. Horaires"
+useSess  = input.bool(true, "Trader seulement en session", group = grpS)
+sess     = input.session("0800-1700", "Session (Londres -> NY)", group = grpS)
+sessTz   = input.string("Europe/London", "Fuseau", group = grpS)
+
+grpD = "8. Affichage"
+showDash   = input.bool(true, "Afficher le panneau", group = grpD)
+showSweeps = input.bool(true, "Afficher les croix de sweep", group = grpD)
+sigMemory  = input.int(10, "Le signal reste affiche (bougies)", minval = 1, group = grpD)
+histMode   = input.string("Complet", "Historique des trades", options = ["Masque", "Reduit (dernier trade)", "Complet"], group = grpD)
+histRows   = input.int(5, "Lignes de l'historique (mode Complet)", minval = 1, maxval = 10, group = grpD)
+histPos    = input.string(position.bottom_right, "Position de l'historique", options = [position.bottom_right, position.bottom_left, position.top_left, position.middle_right, position.middle_left], group = grpD)
+
+// ---------------------------- COULEURS (code MDT officiel) -----------------
+cBullOB  = color.new(color.blue,   80)
+cBearOB  = color.new(color.red,    80)
+cBullFVG = color.new(color.green,  85)
+cBearFVG = color.new(color.orange, 85)
+cStrFVG  = color.new(color.purple, 80)
+
+atr = ta.atr(14)
+
+// ---------------------------- 1. TENDANCE DE FOND (MAP) --------------------
+// Filtre 1/7 : H4 et H1 au-dessus (ou en-dessous) de leur EMA 200, meme sens
+trendCalc() =>
+    e = ta.ema(close, emaLen)
+    ePrev = e[3]
+    close > e and e > ePrev ? 1 : close < e and e < ePrev ? -1 : 0
+
+htfTrend(tf) =>
+    request.security(syminfo.tickerid, tf, trendCalc(), lookahead = barmerge.lookahead_off)
+
+biasA = htfTrend(tfA)
+biasB = htfTrend(tfB)
+bias  = biasA == 1 and biasB == 1 ? 1 : biasA == -1 and biasB == -1 ? -1 : 0
+
+// ---------------------------- STRUCTURE ------------------------------------
+ph = ta.pivothigh(high, pivLen, pivLen)
+pl = ta.pivotlow(low,  pivLen, pivLen)
+var float lastHigh = na
+var float lastLow  = na
+if not na(ph)
+    lastHigh := ph
+if not na(pl)
+    lastLow := pl
+
+crossUpHigh  = ta.crossover(close, lastHigh)
+crossDownLow = ta.crossunder(close, lastLow)
+bosUp   = not na(lastHigh) and crossUpHigh
+bosDown = not na(lastLow)  and crossDownLow
+
+// ---------------------------- 2. ZONES -------------------------------------
+// Une zone ACTIVE suit les bougies (bord droit = derniere bougie).
+// Quand elle est invalidee / trop vieille / remplacee, elle est FIGEE
+// a cet endroit (pas supprimee) : on la retrouve en remontant l'historique.
+var array<box> bullZones = array.new<box>()
+var array<box> bearZones = array.new<box>()
+
+closeZone(box b) =>
+    box.set_right(b, bar_index)
+    true
+
+// Une zone trop grande (> maxZoneAtr x ATR) est ignoree
+pushZone(array<box> arr, box b) =>
+    if box.get_top(b) - box.get_bottom(b) > atr * maxZoneAtr
+        box.delete(b)
+    else
+        array.push(arr, b)
+        if array.size(arr) > maxZones
+            closeZone(array.shift(arr))
+    true
+
+// OB acheteur : derniere bougie baissiere avant la cassure haussiere
+if showOB and bosUp
+    for i = 1 to 10
+        if close[i] < open[i]
+            pushZone(bullZones, box.new(bar_index - i, high[i], bar_index, low[i], border_color = color.new(color.blue, 40), bgcolor = cBullOB, text = "OB+", text_color = color.blue, text_size = size.tiny, text_halign = text.align_left))
+            break
+// OB vendeur : derniere bougie haussiere avant la cassure baissiere
+if showOB and bosDown
+    for i = 1 to 10
+        if close[i] > open[i]
+            pushZone(bearZones, box.new(bar_index - i, high[i], bar_index, low[i], border_color = color.new(color.red, 40), bgcolor = cBearOB, text = "OB-", text_color = color.red, text_size = size.tiny, text_halign = text.align_left))
+            break
+
+// FVG (violet = ne d'une cassure de structure = PRIORITAIRE)
+bullFvg = low > high[2] and (low - high[2]) > atr * minFvgAtr
+bearFvg = high < low[2] and (low[2] - high) > atr * minFvgAtr
+bosUpPrev   = bosUp[1]
+bosDownPrev = bosDown[1]
+if showFVG and bullFvg
+    pushZone(bullZones, box.new(bar_index - 2, low, bar_index, high[2], border_color = na, bgcolor = (bosUpPrev or bosUp) ? cStrFVG : cBullFVG, text = "FVG+", text_color = color.green, text_size = size.tiny, text_halign = text.align_left))
+if showFVG and bearFvg
+    pushZone(bearZones, box.new(bar_index - 2, low[2], bar_index, high, border_color = na, bgcolor = (bosDownPrev or bosDown) ? cStrFVG : cBearFVG, text = "FVG-", text_color = color.orange, text_size = size.tiny, text_halign = text.align_left))
+
+// Contact zone + gestion des zones actives
+touchZone(array<box> arr, bool isBull) =>
+    bool touched = false
+    int n = array.size(arr)
+    if n > 0
+        for j = n - 1 to 0
+            b   = array.get(arr, j)
+            top = box.get_top(b)
+            bot = box.get_bottom(b)
+            if bar_index - box.get_left(b) > zoneMaxAge
+                closeZone(b)
+                array.remove(arr, j)
+            else if isBull and close < bot
+                closeZone(b)
+                array.remove(arr, j)
+            else if not isBull and close > top
+                closeZone(b)
+                array.remove(arr, j)
+            else
+                box.set_right(b, bar_index)
+                if low <= top and high >= bot
+                    touched := true
+    touched
+
+inBull = touchZone(bullZones, true)
+inBear = touchZone(bearZones, false)
+
+// ---------------------------- LIGNE DE TENDANCE MDT (palier ATR) -----------
+// Verte = haussier, rouge = baissier. Le FLIP (changement de couleur)
+// est le filtre 5/7 : il confirme le retournement apres le sweep.
+var float tl    = na
+var int   tlDir = 1
+if na(tl)
+    tl := close
+if tlDir == 1 and close < tl
+    tlDir := -1
+    tl    := high + atr * tlMult
+else if tlDir == -1 and close > tl
+    tlDir := 1
+    tl    := low - atr * tlMult
+else
+    tl := tlDir == 1 ? math.max(tl, close - atr * tlMult) : math.min(tl, close + atr * tlMult)
+
+flipUp   = tlDir == 1  and tlDir[1] == -1
+flipDown = tlDir == -1 and tlDir[1] == 1
+recentFlipUp   = nz(ta.barssince(flipUp),   9999) <= flipLook
+recentFlipDown = nz(ta.barssince(flipDown), 9999) <= flipLook
+
+plot(showTL ? tl : na, "Ligne de tendance MDT", color = tlDir == 1 ? color.new(color.green, 0) : color.new(color.red, 0), style = plot.style_stepline, linewidth = 2)
+
+// ---------------------------- 3. TRIGGER -----------------------------------
+// Filtre 3/7 : sweep = meche sous le dernier creux (ou au-dessus du sommet)
+// puis reintegration. C'est le piege a stops avant le vrai mouvement.
+sweepLow  = not na(lastLow)  and low  < lastLow  and close > lastLow
+sweepHigh = not na(lastHigh) and high > lastHigh and close < lastHigh
+
+var float sweepLowPx  = na
+var float sweepHighPx = na
+if sweepLow
+    sweepLowPx := low
+if sweepHigh
+    sweepHighPx := high
+
+recentSweepLow  = nz(ta.barssince(sweepLow),  9999) <= sweepLook
+recentSweepHigh = nz(ta.barssince(sweepHigh), 9999) <= sweepLook
+recentBullZone  = nz(ta.barssince(inBull),    9999) <= zoneLook
+recentBearZone  = nz(ta.barssince(inBear),    9999) <= zoneLook
+
+// Filtre 4/7 : cassure de micro-structure avec bougie de deplacement
+mph = ta.pivothigh(high, microLen, microLen)
+mpl = ta.pivotlow(low,  microLen, microLen)
+var float microHigh = na
+var float microLow  = na
+if not na(mph)
+    microHigh := mph
+if not na(mpl)
+    microLow := mpl
+
+body       = math.abs(close - open)
+dispUp     = close > open and body >= atr * dispAtr
+dispDown   = close < open and body >= atr * dispAtr
+crossUpMicro   = ta.crossover(close, microHigh)
+crossDownMicro = ta.crossunder(close, microLow)
+microBreakUp   = not na(microHigh) and crossUpMicro   and dispUp
+microBreakDown = not na(microLow)  and crossDownMicro and dispDown
+
+inSession = not useSess or not na(time(timeframe.period, sess, sessTz))
+
+// Filtre 6/7 : gros volume (HVB = bougie a volume institutionnel)
+volEma = ta.ema(volume, hvbLen)
+hvb    = volume > volEma * hvbMult
+
+// ---------------------------- SCORE SUR 7 ----------------------------------
+// 1 alignement H4/H1 | 2 prix en zone | 3 sweep | 4 cassure micro
+// 5 flip trendline   | 6 gros volume | 7 RR >= 1:2 (garanti par TP2)
+scoreL = (bias == 1 ? 1 : 0) + (recentBullZone ? 1 : 0) + (recentSweepLow ? 1 : 0) + (microBreakUp ? 1 : 0) + (recentFlipUp ? 1 : 0) + (hvb ? 1 : 0) + (tp2R >= 2.0 ? 1 : 0)
+scoreS = (bias == -1 ? 1 : 0) + (recentBearZone ? 1 : 0) + (recentSweepHigh ? 1 : 0) + (microBreakDown ? 1 : 0) + (recentFlipDown ? 1 : 0) + (hvb ? 1 : 0) + (tp2R >= 2.0 ? 1 : 0)
+
+setupL = microBreakUp and inSession and scoreL >= minScore
+setupS = microBreakDown and inSession and scoreS >= minScore
+
+// ---------------------------- ENTREE SUR RETEST (modele MDT) ---------------
+// Apres la cassure, on N'ENTRE PAS tout de suite : on attend que le prix
+// revienne retester le niveau casse. Meilleur prix, meilleur RR.
+var bool  armL      = false
+var float armLLevel = na
+var int   armLBar   = na
+var int   armLScore = 0
+var bool  armS      = false
+var float armSLevel = na
+var int   armSBar   = na
+var int   armSScore = 0
+
+if setupL
+    armL      := true
+    armLLevel := microHigh
+    armLBar   := bar_index
+    armLScore := scoreL
+if setupS
+    armS      := true
+    armSLevel := microLow
+    armSBar   := bar_index
+    armSScore := scoreS
+
+retestL = armL and not na(armLBar) and (not retestNextBar or bar_index > armLBar) and not na(armLLevel) and low  <= armLLevel and close >= armLLevel
+retestS = armS and not na(armSBar) and (not retestNextBar or bar_index > armSBar) and not na(armSLevel) and high >= armSLevel and close <= armSLevel
+expiredL = armL and (na(armLBar) or bar_index - armLBar > retestLook)
+expiredS = armS and (na(armSBar) or bar_index - armSBar > retestLook)
+
+var int lastSig = -100000
+canSignal = bar_index - lastSig > cooldown
+
+longSig  = barstate.isconfirmed and canSignal and (useRetest ? retestL : setupL)
+shortSig = barstate.isconfirmed and canSignal and (useRetest ? retestS : setupS)
+
+if longSig
+    armL := false
+if shortSig
+    armS := false
+if expiredL
+    armL := false
+if expiredS
+    armS := false
+
+// ---------------------------- 4 NIVEAUX + SUIVI DU TRADE -------------------
+var bool   inTrade  = false
+var int    tradeDir = 0
+var float  eEntry   = na
+var float  eSL      = na
+var float  eTP1     = na
+var float  eTP2     = na
+var bool   tp1Done  = false
+var int    wins     = 0
+var int    losses   = 0
+var string tradeStatus = ""
+
+// Historique des trades (un element par trade, le plus recent a la fin)
+var array<string> hTime  = array.new<string>()
+var array<string> hDir   = array.new<string>()
+var array<float>  hEntry = array.new<float>()
+var array<float>  hSL    = array.new<float>()
+var array<float>  hTP1   = array.new<float>()
+var array<float>  hTP2   = array.new<float>()
+var array<string> hRes   = array.new<string>()
+
+// Met a jour le resultat du dernier trade de l'historique
+setLastResult(array<string> arr, string s) =>
+    int n = array.size(arr)
+    if n > 0
+        array.set(arr, n - 1, s)
+    true
+
+// Fonction de DESSIN uniquement (elle ne modifie aucune variable globale)
+drawLevels(float entry, float sl, float tp1, float tp2) =>
+    // Les 4 niveaux officiels : Entree cyan, SL rouge, TP1 jaune, TP2 vert
+    line.new(bar_index, entry, bar_index + 30, entry, color = color.aqua,   style = line.style_dashed, width = 2)
+    line.new(bar_index, sl,    bar_index + 30, sl,    color = color.red,    style = line.style_dashed)
+    line.new(bar_index, tp1,   bar_index + 30, tp1,   color = color.yellow, style = line.style_dashed)
+    line.new(bar_index, tp2,   bar_index + 30, tp2,   color = color.green,  style = line.style_dashed, width = 2)
+    label.new(bar_index + 30, sl,  "SL "  + str.tostring(sl,  format.mintick), style = label.style_label_left, color = color.new(color.red, 60),    textcolor = color.white, size = size.tiny)
+    label.new(bar_index + 30, tp1, "TP1 " + str.tostring(tp1, format.mintick), style = label.style_label_left, color = color.new(color.yellow, 60), textcolor = color.black, size = size.tiny)
+    label.new(bar_index + 30, tp2, "TP2 " + str.tostring(tp2, format.mintick), style = label.style_label_left, color = color.new(color.green, 60),  textcolor = color.white, size = size.tiny)
+
+if longSig
+    // Un trade encore ouvert est cloture dans l'historique (plus de ligne bloquee)
+    if inTrade
+        setLastResult(hRes, tp1Done ? "Remplace (TP1 fait)" : "Remplace ➖")
+    lastSig  := bar_index
+    float slL   = math.min(nz(sweepLowPx, low), low) - atr * slBufAtr
+    float riskL = math.abs(close - slL)
+    inTrade  := true
+    tradeDir := 1
+    eEntry   := close
+    eSL      := slL
+    eTP1     := close + riskL * tp1R
+    eTP2     := close + riskL * tp2R
+    tp1Done  := false
+    drawLevels(eEntry, eSL, eTP1, eTP2)
+    array.push(hTime,  str.format_time(time, "dd/MM HH:mm", "UTC"))
+    array.push(hDir,   "ACHAT")
+    array.push(hEntry, eEntry)
+    array.push(hSL,    eSL)
+    array.push(hTP1,   eTP1)
+    array.push(hTP2,   eTP2)
+    array.push(hRes,   "En cours ⏳")
+    label.new(bar_index, low, "ACHAT " + str.tostring(close, format.mintick) + " ⚡ " + str.tostring(armLScore) + "/7", style = label.style_label_up, color = color.green, textcolor = color.white, yloc = yloc.belowbar, size = size.normal)
+    alert("MDT ACHAT " + syminfo.ticker + " " + str.tostring(armLScore) + "/7 | Entree " + str.tostring(close, format.mintick) + " | SL " + str.tostring(eSL, format.mintick) + " | TP1 " + str.tostring(eTP1, format.mintick) + " | TP2 " + str.tostring(eTP2, format.mintick), alert.freq_once_per_bar_close)
+
+if shortSig
+    // Un trade encore ouvert est cloture dans l'historique (plus de ligne bloquee)
+    if inTrade
+        setLastResult(hRes, tp1Done ? "Remplace (TP1 fait)" : "Remplace ➖")
+    lastSig  := bar_index
+    float slS   = math.max(nz(sweepHighPx, high), high) + atr * slBufAtr
+    float riskS = math.abs(close - slS)
+    inTrade  := true
+    tradeDir := -1
+    eEntry   := close
+    eSL      := slS
+    eTP1     := close - riskS * tp1R
+    eTP2     := close - riskS * tp2R
+    tp1Done  := false
+    drawLevels(eEntry, eSL, eTP1, eTP2)
+    array.push(hTime,  str.format_time(time, "dd/MM HH:mm", "UTC"))
+    array.push(hDir,   "VENTE")
+    array.push(hEntry, eEntry)
+    array.push(hSL,    eSL)
+    array.push(hTP1,   eTP1)
+    array.push(hTP2,   eTP2)
+    array.push(hRes,   "En cours ⏳")
+    label.new(bar_index, high, "VENTE " + str.tostring(close, format.mintick) + " ⚡ " + str.tostring(armSScore) + "/7", style = label.style_label_down, color = color.red, textcolor = color.white, yloc = yloc.abovebar, size = size.normal)
+    alert("MDT VENTE " + syminfo.ticker + " " + str.tostring(armSScore) + "/7 | Entree " + str.tostring(close, format.mintick) + " | SL " + str.tostring(eSL, format.mintick) + " | TP1 " + str.tostring(eTP1, format.mintick) + " | TP2 " + str.tostring(eTP2, format.mintick), alert.freq_once_per_bar_close)
+
+// Suivi en direct : pips, TP1/TP2 touches, SL touche
+if inTrade and barstate.isconfirmed
+    pips   = (close - eEntry) * tradeDir / pipSize
+    hitTP2 = tradeDir == 1 ? high >= eTP2 : low <= eTP2
+    hitTP1 = tradeDir == 1 ? high >= eTP1 : low <= eTP1
+    slLevel = (tp1Done and beAfterTP1) ? eEntry : eSL
+    hitSL   = tradeDir == 1 ? low <= slLevel : high >= slLevel
+    // Si SL et TP2 sont touches sur la meme bougie, on compte le SL (prudent)
+    tp2Win  = hitTP2 and not hitSL
+    if tp2Win
+        label.new(bar_index, tradeDir == 1 ? high : low, "TP2 TOUCHE ✅", style = tradeDir == 1 ? label.style_label_down : label.style_label_up, color = color.green, textcolor = color.white, size = size.small)
+        wins += 1
+        inTrade := false
+        setLastResult(hRes, "TP2 ✅")
+        tradeStatus := "TP2 TOUCHE ✅ +" + str.tostring(math.abs(eTP2 - eEntry) / pipSize, "#") + " pips"
+    else if hitSL
+        if tp1Done and beAfterTP1
+            label.new(bar_index, tradeDir == 1 ? low : high, "SL A BE (0€)", style = tradeDir == 1 ? label.style_label_up : label.style_label_down, color = color.gray, textcolor = color.white, size = size.small)
+            setLastResult(hRes, "BE ➖ (TP1 fait)")
+            tradeStatus := "TP1 touche puis break-even : trade securise, 0€"
+        else
+            label.new(bar_index, tradeDir == 1 ? low : high, "SL TOUCHE ❌", style = tradeDir == 1 ? label.style_label_up : label.style_label_down, color = color.red, textcolor = color.white, size = size.small)
+            losses += 1
+            setLastResult(hRes, "SL ❌")
+            tradeStatus := "SL TOUCHE ❌ -1R (perte normale, next)"
+        inTrade := false
+    else
+        if hitTP1 and not tp1Done
+            tp1Done := true
+            setLastResult(hRes, "TP1 ✅ en cours")
+            label.new(bar_index, tradeDir == 1 ? high : low, "TP1 TOUCHE ✅ - mets ton SL a BE", style = tradeDir == 1 ? label.style_label_down : label.style_label_up, color = color.yellow, textcolor = color.black, size = size.small)
+        tradeStatus := (pips >= 0 ? "+" : "") + str.tostring(pips, "#") + " PIPS" + (tp1Done ? " (TP1 fait, SL a BE)" : "")
+
+plotshape(showSweeps and sweepLow,  "Sweep low",  shape.xcross, location.belowbar, color.new(color.blue, 40), size = size.tiny)
+plotshape(showSweeps and sweepHigh, "Sweep high", shape.xcross, location.abovebar, color.new(color.red,  40), size = size.tiny)
+
+alertcondition(longSig,  "MDT ACHAT",  "MDT ACHAT sur {{ticker}} a {{close}}")
+alertcondition(shortSig, "MDT VENTE", "MDT VENTE sur {{ticker}} a {{close}}")
+
+// ---------------------------- PANNEAU SIMPLE -------------------------------
+var int sigDir   = 0
+var int sigBar   = na
+var int sigScore = 0
+if longSig
+    sigDir   := 1
+    sigBar   := bar_index
+    sigScore := armLScore
+if shortSig
+    sigDir   := -1
+    sigBar   := bar_index
+    sigScore := armSScore
+recentSignal = sigDir != 0 and not na(sigBar) and bar_index - sigBar <= sigMemory
+
+string bigMsg = ""
+color  bigCol = color.gray
+string whyMsg = ""
+string scMsg  = ""
+
+bool zoneOk  = bias == 1 ? recentBullZone : recentBearZone
+bool sweepOk = bias == 1 ? recentSweepLow : recentSweepHigh
+int  curScore = bias == 1 ? scoreL : bias == -1 ? scoreS : 0
+
+if recentSignal
+    bigMsg := sigDir == 1 ? "ACHETE" : "VENDS"
+    bigCol := sigDir == 1 ? color.green : color.red
+    whyMsg := "Signal " + str.tostring(sigScore) + "/7 donne il y a " + str.tostring(bar_index - sigBar) + " bougie(s)"
+    scMsg  := "Entree, SL, TP1 et TP2 sont traces sur le chart"
+else if bias == 0
+    bigMsg := "NO TRADE"
+    bigCol := color.gray
+    whyMsg := "H4 et H1 ne sont pas d'accord : on ne touche a rien"
+    scMsg  := ""
+else if not inSession
+    bigMsg := "ATTENDS"
+    bigCol := color.gray
+    whyMsg := "Hors session : le marche serieux ouvre a 08h00 (Londres)"
+    scMsg  := ""
+else if (bias == 1 and armL) or (bias == -1 and armS)
+    bigMsg := "ATTENDS"
+    bigCol := color.orange
+    whyMsg := "Cassure faite : attends le RETEST pour entrer (modele MDT)"
+    scMsg  := "Score du setup : " + str.tostring(bias == 1 ? armLScore : armSScore) + "/7"
+else
+    bigMsg := "ATTENDS"
+    bigCol := color.orange
+    whyMsg := not zoneOk ? "Tendance " + (bias == 1 ? "haussiere" : "baissiere") + " : attends que le prix revienne dans une zone (bleu/rouge/violet)" : not sweepOk ? "Prix dans la zone : attends le piege (croix de sweep)" : "Presque : attends la cassure (grosse bougie) + le flip de la ligne de tendance"
+    scMsg  := "Score actuel : " + str.tostring(curScore) + "/7 (il faut " + str.tostring(minScore) + "/7)"
+
+totalTrades = wins + losses
+winrate = totalTrades > 0 ? wins / totalTrades * 100 : 0.0
+statsMsg = totalTrades > 0 ? "Stats signaux : " + str.tostring(wins) + "W / " + str.tostring(losses) + "L (" + str.tostring(winrate, "#.#") + "%)" : "Stats signaux : aucun trade termine pour l'instant"
+
+var table dash = table.new(position.top_right, 1, 6, bgcolor = color.new(color.black, 20), border_width = 1)
+if showDash and barstate.islast
+    table.cell(dash, 0, 0, "MDT SNIPER - " + syminfo.ticker, text_color = color.white, text_size = size.small)
+    table.cell(dash, 0, 1, bigMsg, bgcolor = color.new(bigCol, 15), text_color = color.white, text_size = size.large)
+    table.cell(dash, 0, 2, whyMsg, text_color = color.new(color.white, 10), text_size = size.small)
+    table.cell(dash, 0, 3, scMsg, text_color = color.new(color.yellow, 10), text_size = size.small)
+    table.cell(dash, 0, 4, inTrade ? "Trade en cours : " + tradeStatus : "", text_color = color.new(color.aqua, 10), text_size = size.small)
+    table.cell(dash, 0, 5, statsMsg, text_color = color.new(color.gray, 10), text_size = size.small)
+
+// ---------------------------- HISTORIQUE DES TRADES ------------------------
+// Petit tableau : les derniers trades avec Entree / SL / TP1 / TP2 / Resultat
+// Reglage "Historique des trades" : Masque / Reduit (1 ligne) / Complet
+var table hist = table.new(histPos, 7, 11, bgcolor = color.new(color.black, 25), border_width = 1)
+if barstate.islast
+    table.clear(hist, 0, 0, 6, 10)
+    if histMode != "Masque"
+        int n = array.size(hRes)
+        if n == 0
+            table.cell(hist, 0, 0, "Historique : aucun trade pour l'instant", text_color = color.new(color.gray, 10), text_size = size.tiny)
+        else
+            heads = array.from("Heure UTC", "Sens", "Entree", "SL", "TP1", "TP2", "Resultat")
+            for c = 0 to 6
+                table.cell(hist, c, 0, array.get(heads, c), text_color = color.white, text_size = size.tiny, bgcolor = color.new(color.gray, 50))
+            int cnt = histMode == "Complet" ? math.min(histRows, n) : 1
+            for k = 0 to cnt - 1
+                int idx = n - 1 - k
+                string res = array.get(hRes, idx)
+                string dirTxt = array.get(hDir, idx)
+                color resCol = str.contains(res, "TP2") ? color.new(color.green, 40) : str.contains(res, "SL") ? color.new(color.red, 40) : (str.contains(res, "BE") or str.contains(res, "Remplace")) ? color.new(color.gray, 40) : color.new(color.blue, 50)
+                table.cell(hist, 0, k + 1, array.get(hTime, idx), text_color = color.white, text_size = size.tiny)
+                table.cell(hist, 1, k + 1, dirTxt, text_color = dirTxt == "ACHAT" ? color.lime : color.red, text_size = size.tiny)
+                table.cell(hist, 2, k + 1, str.tostring(array.get(hEntry, idx), format.mintick), text_color = color.aqua, text_size = size.tiny)
+                table.cell(hist, 3, k + 1, str.tostring(array.get(hSL, idx), format.mintick), text_color = color.new(color.red, 10), text_size = size.tiny)
+                table.cell(hist, 4, k + 1, str.tostring(array.get(hTP1, idx), format.mintick), text_color = color.yellow, text_size = size.tiny)
+                table.cell(hist, 5, k + 1, str.tostring(array.get(hTP2, idx), format.mintick), text_color = color.lime, text_size = size.tiny)
+                table.cell(hist, 6, k + 1, res, text_color = color.white, text_size = size.tiny, bgcolor = resCol)

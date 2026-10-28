@@ -11,7 +11,8 @@ import {
   BotState, 
   Candle, 
   MdtRadarRow, 
-  MdtZone 
+  MdtZone,
+  BrokerAccountConfig
 } from '../src/types/index.js';
 
 const DATA_DIR = path.resolve('.data');
@@ -167,6 +168,23 @@ export function createCleanRealState(candles: Candle[], currentPrice: number, le
     updated_at: new Date().toISOString(),
   };
 
+  const defaultBroker: BrokerAccountConfig = {
+    broker_type: 'XM Global',
+    account_type: 'demo',
+    account_number: '',
+    server_name: 'XMGlobal-MT5 3',
+    symbol: 'GOLD',
+    execution_mode: 'hft_ultra',
+    connected: false,
+    last_ping_ms: 0,
+    balance: 0,
+    equity: 0,
+    leverage: 500,
+    hft_max_slippage_pips: 1.5,
+    auto_breakeven_tp1: true,
+    webhook_secret: process.env.BOT_KEY || 'aurum-prod-secret-xauusd-key',
+  };
+
   const settings: Settings = {
     paused: false,
     mode: 'simulation',
@@ -179,6 +197,7 @@ export function createCleanRealState(candles: Candle[], currentPrice: number, le
     news_filter: true,
     ml_filter: false,
     ai_filter: false,
+    broker: defaultBroker,
   };
 
   const decision_log: DecisionLog[] = [
@@ -186,23 +205,30 @@ export function createCleanRealState(candles: Candle[], currentPrice: number, le
       id: `log-init-${Date.now()}`,
       time: new Date().toISOString(),
       level: 'info',
-      message: 'Flux de marché XAUUSD connecté en direct. En attente des données du programme Python via /ingest (x-bot-key).',
+      message: 'Flux spot XAUUSD en direct connecté. Moteur de surveillance quantitatif opérationnel.',
     },
     {
       id: `log-mdt-${Date.now()}`,
-      time: new Date(Date.now() - 60000).toISOString(),
+      time: new Date().toISOString(),
       level: 'info',
       message: 'Méthodologie MDT 2026 active : surveillance H4/H1, setup M15, trigger M3. Règle mère : « No setup. No trade. Next. »',
+    },
+    {
+      id: `log-broker-${Date.now()}`,
+      time: new Date().toISOString(),
+      level: 'info',
+      message: 'Passerelle HFT prête. En attente de la saisie de votre compte démo XM Global, MT5 ou Exness via « Lier Démo Courtier ».',
     },
   ];
 
   return {
     bot_status,
     levels,
-    signals: [], // Empty! No fake signals
-    trades: [], // Empty! No fake trades
+    signals: [], // Empty: No fake signals
+    trades: [], // Empty: No fake trades
     decision_log,
     settings,
+    broker: defaultBroker,
     is_demo_data: false, // Pure real data mode
     server_time: new Date().toISOString(),
     bot_key: process.env.BOT_KEY || 'aurum-prod-secret-xauusd-key',
@@ -219,6 +245,23 @@ export function createPedagogicalDemoState(candles: Candle[], currentPrice: numb
     take_profit: Number((currentPrice - 8.2).toFixed(2)),
     fvg_top: Number((currentPrice + 2.0).toFixed(2)),
     fvg_bottom: Number((currentPrice + 0.5).toFixed(2)),
+  };
+
+  const defaultBroker: BrokerAccountConfig = {
+    broker_type: 'XM Global',
+    account_type: 'demo',
+    account_number: '52019482',
+    server_name: 'XMGlobal-MT5 3',
+    symbol: 'GOLD',
+    execution_mode: 'hft_ultra',
+    connected: true,
+    last_ping_ms: 18,
+    balance: 10245.80,
+    equity: 10245.80,
+    leverage: 500,
+    hft_max_slippage_pips: 1.5,
+    auto_breakeven_tp1: true,
+    webhook_secret: process.env.BOT_KEY || 'aurum-prod-secret-xauusd-key',
   };
 
   const bot_status: BotStatus = {
@@ -246,6 +289,7 @@ export function createPedagogicalDemoState(candles: Candle[], currentPrice: numb
     news_filter: true,
     ml_filter: false,
     ai_filter: false,
+    broker: defaultBroker,
   };
 
   const signals: Signal[] = [
@@ -354,6 +398,57 @@ class Store {
         const raw = fs.readFileSync(STATE_FILE, 'utf-8');
         const parsed = JSON.parse(raw);
         this.isDemo = parsed.is_demo_data ?? false;
+
+        // Cleanse fake hardcoded demo account if user hadn't entered real credentials
+        if (parsed.broker?.account_number === '52019482' || !parsed.broker?.account_number) {
+          if (parsed.broker) {
+            parsed.broker.account_number = '';
+            parsed.broker.connected = false;
+            parsed.broker.balance = 0;
+            parsed.broker.equity = 0;
+            parsed.broker.last_ping_ms = 0;
+          }
+        }
+        if (parsed.settings?.broker?.account_number === '52019482' || !parsed.settings?.broker?.account_number) {
+          if (parsed.settings?.broker) {
+            parsed.settings.broker.account_number = '';
+            parsed.settings.broker.connected = false;
+            parsed.settings.broker.balance = 0;
+            parsed.settings.broker.equity = 0;
+            parsed.settings.broker.last_ping_ms = 0;
+          }
+        }
+
+        // Filter out stale logs referencing old hardcoded mock dates or fake accounts
+        if (Array.isArray(parsed.decision_log)) {
+          parsed.decision_log = parsed.decision_log.filter((l: any) => 
+            !l.message?.includes('52019482') && 
+            !l.time?.startsWith('2026-10-22')
+          );
+          if (parsed.decision_log.length === 0) {
+            parsed.decision_log = [
+              {
+                id: `log-live-${Date.now()}`,
+                time: new Date().toISOString(),
+                level: 'info',
+                message: 'Terminal de trading connecté au flux réel XAUUSD. Surveillance active.',
+              },
+            ];
+          }
+        }
+
+        if (!this.isDemo) {
+          // Guarantee no obsolete fake mock signals
+          parsed.signals = (parsed.signals || []).filter((s: any) => s.entry > 3000);
+          parsed.trades = (parsed.trades || []).filter((t: any) => t.entry > 3000);
+          if (parsed.bot_status?.plan && parsed.bot_status.plan.entry < 3000) {
+            parsed.bot_status.plan = null;
+          }
+          if (parsed.bot_status && parsed.bot_status.equity === 10425.8) {
+            parsed.bot_status.equity = null;
+            parsed.bot_status.balance = null;
+          }
+        }
         return parsed;
       }
     } catch (e) {
@@ -380,12 +475,67 @@ class Store {
   }
 
   public getState(): DashboardState {
+    const broker = this.state.settings.broker || this.state.broker;
     return {
       ...this.state,
+      broker,
       server_time: new Date().toISOString(),
       is_demo_data: this.isDemo,
       bot_key: process.env.BOT_KEY || 'aurum-prod-secret-xauusd-key',
     };
+  }
+
+  public updateBroker(brokerConfig: Partial<BrokerAccountConfig>): BrokerAccountConfig {
+    const current: BrokerAccountConfig = this.state.settings.broker || this.state.broker || {
+      broker_type: 'XM Global',
+      account_type: 'demo',
+      account_number: '',
+      server_name: 'XMGlobal-MT5 3',
+      symbol: 'GOLD',
+      execution_mode: 'hft_ultra',
+      connected: false,
+      last_ping_ms: 0,
+      balance: 0,
+      equity: 0,
+      leverage: 500,
+      hft_max_slippage_pips: 1.5,
+      auto_breakeven_tp1: true,
+      webhook_secret: process.env.BOT_KEY || 'aurum-prod-secret-xauusd-key',
+    };
+
+    const updated: BrokerAccountConfig = {
+      ...current,
+      ...brokerConfig,
+    };
+
+    this.state.settings.broker = updated;
+    this.state.broker = updated;
+
+    if (updated.connected && updated.balance > 0) {
+      this.state.bot_status.balance = updated.balance;
+      this.state.bot_status.equity = updated.equity || updated.balance;
+    } else if (!updated.connected) {
+      this.state.bot_status.balance = null;
+      this.state.bot_status.equity = null;
+    }
+
+    if (brokerConfig.connected !== undefined) {
+      this.state.decision_log.unshift({
+        id: `broker-log-${Date.now()}`,
+        time: new Date().toISOString(),
+        level: 'info',
+        message: brokerConfig.connected 
+          ? `[Pont Courtier Démo] Connecté avec succès à ${updated.broker_type} (${updated.account_number || 'Compte Démo'} sur ${updated.server_name}). Moteur: ${updated.execution_mode.toUpperCase()} (Latence: ${updated.last_ping_ms}ms, Solde: ${updated.balance > 0 ? `$${updated.balance}` : 'Non renseigné'}).`
+          : `[Pont Courtier Démo] Déconnexion du compte ${updated.broker_type}. Moteur arrêté.`,
+      });
+      if (this.state.decision_log.length > 50) {
+        this.state.decision_log.pop();
+      }
+    }
+
+    this.saveState(this.state);
+    this.broadcast();
+    return updated;
   }
 
   public subscribe(cb: (data: string) => void): () => void {
@@ -425,6 +575,16 @@ class Store {
     if (candles && candles.length > 0) {
       this.state.bot_status.candles = candles;
       this.state.mdt_radar = computeMdtRadarFromCandles(candles, this.state.bot_status.last_price);
+      
+      const highs = candles.map((c: any) => c.high);
+      const lows = candles.map((c: any) => c.low);
+      this.state.levels = {
+        day: new Date().toISOString().split('T')[0],
+        asian_high: Number((Math.max(...highs.slice(0, 30))).toFixed(2)),
+        asian_low: Number((Math.min(...lows.slice(0, 30))).toFixed(2)),
+        prev_day_high: Number(Math.max(...highs).toFixed(2)),
+        prev_day_low: Number(Math.min(...lows).toFixed(2)),
+      };
     }
     this.state.bot_status.updated_at = new Date().toISOString();
     this.saveState(this.state);

@@ -75,14 +75,14 @@ export const TradingChart: React.FC<TradingChartProps> = ({
 
     chartInstanceRef.current = chart;
 
-    // Add Candlestick Series
+    // Add Candlestick Series (Institutional Emerald / Crimson)
     const candleSeries = chart.addSeries(CandlestickSeries, {
-      upColor: '#7fd6ff', // Glacier blue for bullish candles
-      downColor: '#ff6b5b', // Ember red for bearish candles
-      borderUpColor: '#7fd6ff',
-      borderDownColor: '#ff6b5b',
-      wickUpColor: '#7fd6ff',
-      wickDownColor: '#ff6b5b',
+      upColor: '#10b981', // Emerald green
+      downColor: '#f43f5e', // Crimson red
+      borderUpColor: '#10b981',
+      borderDownColor: '#f43f5e',
+      wickUpColor: '#10b981',
+      wickDownColor: '#f43f5e',
     });
     seriesRef.current = candleSeries;
 

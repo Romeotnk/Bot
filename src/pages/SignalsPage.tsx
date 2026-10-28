@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useAppState } from '../context/StateContext';
 import { Signal, SignalFilter } from '../types';
-import { Radio, CheckCircle2, XCircle, ShieldAlert, Newspaper, Cpu, Bot, ArrowUpRight, ArrowDownRight, Plus } from 'lucide-react';
+import { Radio, CheckCircle2, XCircle, ShieldAlert, Newspaper, Cpu, Bot, ArrowUpRight, ArrowDownRight, Terminal } from 'lucide-react';
 
 export const SignalsPage: React.FC = () => {
-  const { state, ingestDemoSignal } = useAppState();
+  const { state, setIsPineScriptModalOpen } = useAppState();
   const signals = state?.signals || [];
 
   const [statusFilter, setStatusFilter] = useState<'all' | 'pris' | 'ignore'>('all');
@@ -39,7 +39,7 @@ export const SignalsPage: React.FC = () => {
       case 'ia':
         return (
           <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono bg-[#f6e7b8]/15 text-[#f6e7b8] border border-[#f6e7b8]/30">
-            <Bot className="w-3 h-3" /> Filtre Aurum IA
+            <Bot className="w-3 h-3" /> Filtre Algorithmique
           </span>
         );
       case 'aucun':
@@ -58,24 +58,24 @@ export const SignalsPage: React.FC = () => {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="font-heading font-extrabold text-2xl sm:text-3xl text-[#e9e6dc]">
-            Signaux tactiques émis
+            Signaux Réceptionnés
           </h1>
           <p className="text-xs text-[#8d90a3] mt-1">
-            Détection algorithmique brute, signaux pris en trade et opportunités filtrées par les garde-fous.
+            Flux direct des ordres et alertes reçus par webhook depuis le script TradingView Pine Script v5 ou le robot Python.
           </p>
         </div>
 
         <button
-          onClick={ingestDemoSignal}
-          className="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-[#171a27] text-[#e8c56a] border border-[#e8c56a]/40 hover:bg-[#e8c56a]/15 transition active:scale-95 cursor-pointer"
+          onClick={() => setIsPineScriptModalOpen(true)}
+          className="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-[#e8c56a] text-[#06070c] hover:bg-[#f6e7b8] transition active:scale-95 shadow-md shadow-[#e8c56a]/20 cursor-pointer"
         >
-          <Plus className="w-3.5 h-3.5" />
-          <span>Simuler réception d'un signal (/ingest)</span>
+          <Terminal className="w-3.5 h-3.5" />
+          <span>Configurer l'alerte TradingView</span>
         </button>
       </div>
 
       {/* Filter Chips */}
-      <div className="flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-[#10121b]/90 border border-[#232637] backdrop-blur-md">
+      <div className="flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-[#10121b] border border-[#232637]">
         {/* Status tabs */}
         <div className="flex items-center gap-1.5 p-1 rounded-xl bg-[#06070c] border border-[#232637]">
           <button
@@ -96,7 +96,7 @@ export const SignalsPage: React.FC = () => {
                 : 'text-[#8d90a3] hover:text-[#e9e6dc]'
             }`}
           >
-            Pris en trade ({signals.filter((s) => s.status === 'pris').length})
+            Pris en ordre ({signals.filter((s) => s.status === 'pris').length})
           </button>
           <button
             onClick={() => setStatusFilter('ignore')}
@@ -112,57 +112,59 @@ export const SignalsPage: React.FC = () => {
 
         {/* Filter Type selector */}
         <div className="flex items-center gap-2">
-          <span className="text-xs text-[#8d90a3]">Filtre responsable :</span>
+          <span className="text-xs text-[#8d90a3]">Filtre :</span>
           <select
             value={filterType}
             onChange={(e) => setFilterType(e.target.value)}
             className="px-3 py-1.5 rounded-xl bg-[#06070c] border border-[#232637] text-xs text-[#e9e6dc] focus:border-[#e8c56a] focus:outline-none"
           >
             <option value="all">Tous les filtres</option>
-            <option value="aucun">Aucun (Exécuté)</option>
-            <option value="risque">Risque capital</option>
-            <option value="actualites">Actualités / Macro</option>
-            <option value="ml">Machine Learning</option>
-            <option value="ia">Intelligence Aurum</option>
+            <option value="aucun">Aucun (Exécutés)</option>
+            <option value="actualites">Actualités / FOMC</option>
+            <option value="risque">Plafond de risque</option>
           </select>
         </div>
       </div>
 
-      {/* Signals List / Feed */}
-      <div className="space-y-3.5">
+      {/* Signals List */}
+      <div className="space-y-3">
         {filteredSignals.length === 0 ? (
-          <div className="p-12 text-center rounded-2xl bg-[#10121b] border border-[#232637] text-sm text-[#8d90a3]">
-            Aucun signal ne correspond aux filtres sélectionnés.
+          <div className="p-10 rounded-2xl bg-[#10121b] border border-[#232637] text-center">
+            <Radio className="w-10 h-10 text-[#8d90a3]/40 mx-auto mb-3" />
+            <h3 className="font-heading font-bold text-base text-[#e9e6dc]">
+              Aucun signal reçu pour le moment
+            </h3>
+            <p className="text-xs text-[#8d90a3] max-w-md mx-auto mt-1 leading-relaxed">
+              Dès que votre indicateur <strong>MDT Sniper Ultimate Pro</strong> détecte un setup sur TradingView ou que votre robot émet un ordre, il apparaîtra ici avec ses niveaux d'entrée, de stop loss et d'objectifs.
+            </p>
           </div>
         ) : (
           filteredSignals.map((sig) => {
-            const isTaken = sig.status === 'pris';
             const isBuy = sig.side === 'BUY';
+            const isTaken = sig.status === 'pris';
 
             return (
               <div
                 key={sig.id}
-                className={`p-4 sm:p-5 rounded-2xl border transition-all duration-300 hud-box ${
-                  isTaken
-                    ? 'border-[#7fd6ff]/40 bg-[#10121b]/90 shadow-md shadow-[#7fd6ff]/5'
-                    : 'border-[#232637] bg-[#10121b]/70 opacity-90'
-                }`}
+                className="p-5 rounded-2xl bg-[#10121b] border border-[#232637] hover:border-[#e8c56a]/40 transition shadow-lg"
               >
+                {/* Header row */}
                 <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
-                  <div className="flex items-center gap-2.5">
-                    {/* Side badge */}
+                  <div className="flex items-center gap-3">
                     <span
-                      className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg font-mono font-bold text-xs ${
-                        isBuy ? 'bg-[#7fd6ff]/20 text-[#7fd6ff]' : 'bg-[#ff6b5b]/20 text-[#ff6b5b]'
+                      className={`inline-flex items-center gap-1 px-3 py-1 rounded-xl text-xs font-heading font-extrabold tracking-wider ${
+                        isBuy
+                          ? 'bg-[#22c55e]/20 text-[#22c55e] border border-[#22c55e]/40'
+                          : 'bg-[#ef4444]/20 text-[#ef4444] border border-[#ef4444]/40'
                       }`}
                     >
-                      {isBuy ? <ArrowUpRight className="w-3.5 h-3.5" /> : <ArrowDownRight className="w-3.5 h-3.5" />}
-                      {sig.side}
+                      {isBuy ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
+                      {isBuy ? 'ACHAT (BUY)' : 'VENTE (SELL)'}
                     </span>
 
-                    <h3 className="font-heading font-semibold text-sm text-[#e9e6dc]">
+                    <span className="font-heading font-bold text-sm text-[#e9e6dc]">
                       {sig.strategy}
-                    </h3>
+                    </span>
                   </div>
 
                   <div className="flex items-center gap-2">

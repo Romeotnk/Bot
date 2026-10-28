@@ -10,7 +10,8 @@ import { DashboardPage } from './pages/DashboardPage';
 import { HistoryPage } from './pages/HistoryPage';
 import { SignalsPage } from './pages/SignalsPage';
 import { SettingsPage } from './pages/SettingsPage';
-import { AskAurumPage } from './pages/AskAurumPage';
+import { PineScriptModal } from './components/PineScriptModal';
+import { BrokerConnectModal } from './components/BrokerConnectModal';
 import { WifiOff } from 'lucide-react';
 
 function OfflineBanner() {
@@ -43,44 +44,48 @@ function OfflineBanner() {
 
 function MainAppContent() {
   const [currentPage, setCurrentPage] = useState<PageId>('dashboard');
+  const { 
+    isPineScriptModalOpen, 
+    setIsPineScriptModalOpen, 
+    isBrokerModalOpen, 
+    setIsBrokerModalOpen, 
+    state 
+  } = useAppState();
 
   return (
     <div className="relative min-h-screen bg-[#06070c] text-[#e9e6dc] flex flex-col font-sans selection:bg-[#e8c56a]/30 selection:text-[#f6e7b8]">
-      {/* Discrete subtle golden ambient halo at top-left (Sci-fi spacecraft bridge lighting) */}
-      <div 
-        className="fixed top-0 left-0 w-[550px] h-[550px] pointer-events-none z-0 rounded-full blur-[130px] opacity-15"
-        style={{
-          background: 'radial-gradient(circle, #e8c56a 0%, #10121b 70%, transparent 100%)',
-        }}
-      />
-      {/* Subtle glacier ambient halo at bottom-right */}
-      <div 
-        className="fixed bottom-0 right-0 w-[450px] h-[450px] pointer-events-none z-0 rounded-full blur-[140px] opacity-10"
-        style={{
-          background: 'radial-gradient(circle, #7fd6ff 0%, transparent 70%)',
-        }}
-      />
-
-      {/* Main Header / Navigation */}
+      {/* Navigation principale */}
       <Navbar currentPage={currentPage} onSelectPage={setCurrentPage} />
 
-      {/* Main View Container */}
+      {/* Vue active */}
       <main className="relative z-10 flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 pt-6">
         {currentPage === 'dashboard' && <DashboardPage />}
-        {currentPage === 'history' && <HistoryPage />}
         {currentPage === 'signals' && <SignalsPage />}
+        {currentPage === 'history' && <HistoryPage />}
         {currentPage === 'settings' && <SettingsPage />}
-        {currentPage === 'aurum' && <AskAurumPage />}
       </main>
 
-      {/* Footer */}
-      <footer className="relative z-10 border-t border-[#232637]/60 bg-[#06070c] py-6 px-4 text-center text-xs text-[#8d90a3] font-mono">
+      {/* Modal Pine Script TradingView & Webhook */}
+      <PineScriptModal
+        isOpen={isPineScriptModalOpen}
+        onClose={() => setIsPineScriptModalOpen(false)}
+        botKey={state?.bot_key || 'aurum-prod-secret-xauusd-key'}
+      />
+
+      {/* Modal Connexion Compte Démo (XM Global, MT5, Exness, Deriv) & HFT */}
+      <BrokerConnectModal
+        isOpen={isBrokerModalOpen}
+        onClose={() => setIsBrokerModalOpen(false)}
+      />
+
+      {/* Footer épuré pour la production */}
+      <footer className="relative z-10 border-t border-[#232637]/60 bg-[#06070c] py-5 px-4 text-center text-xs text-[#8d90a3] font-mono">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-          <span>Viceinte v2.4 · Contrôle & Télémétrie XAUUSD</span>
-          <span className="text-[#8d90a3]/70">
-            Protégé par clé d’ingestion serveur · Ne passe aucun ordre direct
+          <span>Viceinte · Terminal de Trading Institutionnel XAUUSD</span>
+          <span className="text-[#8d90a3]/80">
+            Intégration TradingView Pine Script v5 & Webhooks
           </span>
-          <span className="text-[#e8c56a]">Noyau Aurum Opérationnel</span>
+          <span className="text-[#e8c56a]">Méthodologie MDT Smart Money</span>
         </div>
       </footer>
 

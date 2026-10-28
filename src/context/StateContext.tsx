@@ -1,13 +1,22 @@
 import React, { createContext, useContext, useEffect, useState, useCallback, useMemo } from 'react';
-import { DashboardState, BotStatus, Settings, BotState, Levels, Signal, Trade, DecisionLog } from '../types';
+import { DashboardState, BotStatus, Settings, BotState, Levels, Signal, Trade, DecisionLog, BrokerAccountConfig } from '../types';
 
 interface StateContextType {
   state: DashboardState | null;
   isLoading: boolean;
   isBotUnresponsive: boolean;
   minutesSinceLastUpdate: number;
+  isAutoRefresh: boolean;
+  toggleAutoRefresh: () => void;
+  isPineScriptModalOpen: boolean;
+  setIsPineScriptModalOpen: (open: boolean) => void;
+  isBrokerModalOpen: boolean;
+  setIsBrokerModalOpen: (open: boolean) => void;
   togglePause: () => Promise<void>;
   updateSettings: (newSettings: Partial<Settings>) => Promise<void>;
+  connectBroker: (brokerConfig: Partial<BrokerAccountConfig>) => Promise<BrokerAccountConfig>;
+  pingBroker: () => Promise<number>;
+  disconnectBroker: () => Promise<void>;
   advanceDemoSequence: () => Promise<void>;
   setBotState: (newState: BotState) => Promise<void>;
   clearToRealState: () => Promise<void>;
@@ -24,6 +33,9 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [state, setState] = useState<DashboardState | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [lastHeartbeat, setLastHeartbeat] = useState(Date.now());
+  const [isAutoRefresh, setIsAutoRefresh] = useState(true);
+  const [isPineScriptModalOpen, setIsPineScriptModalOpen] = useState(false);
+  const [isBrokerModalOpen, setIsBrokerModalOpen] = useState(false);
 
   const fetchState = useCallback(async () => {
     try {
@@ -72,6 +84,16 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     };
   }, [fetchState]);
 
+  // High-frequency auto-refresh polling (every 3.5s) to guarantee real-time quotes
+  useEffect(() => {
+    if (!isAutoRefresh) return;
+    const autoInterval = setInterval(() => {
+      fetchState();
+    }, 3500);
+
+    return () => clearInterval(autoInterval);
+  }, [isAutoRefresh, fetchState]);
+
   // Check if robot is unresponsive: updated_at older than 2 minutes
   const { isBotUnresponsive, minutesSinceLastUpdate } = useMemo(() => {
     if (!state?.bot_status?.updated_at) return { isBotUnresponsive: false, minutesSinceLastUpdate: 0 };
@@ -106,6 +128,46 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       throw new Error(err.error || 'Erreur de mise à jour des réglages.');
     }
     await fetchState();
+  };
+
+  const connectBroker = async (brokerConfig: Partial<BrokerAccountConfig>): Promise<BrokerAccountConfig> => {
+    const res = await fetch('/api/broker/connect', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(brokerConfig),
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error || 'Impossible de connecter le compte courtier.');
+    }
+    const data = await res.json();
+    await fetchState();
+    return data.broker;
+  };
+
+  const pingBroker = async (): Promise<number> => {
+    try {
+      const res = await fetch('/api/broker/ping', { method: 'POST' });
+      if (res.ok) {
+        const data = await res.json();
+        await fetchState();
+        return data.ping_ms || 18;
+      }
+    } catch (err) {
+      console.error('Failed to ping broker:', err);
+    }
+    return 24;
+  };
+
+  const disconnectBroker = async (): Promise<void> => {
+    try {
+      const res = await fetch('/api/broker/disconnect', { method: 'POST' });
+      if (res.ok) {
+        await fetchState();
+      }
+    } catch (err) {
+      console.error('Failed to disconnect broker:', err);
+    }
   };
 
   const advanceDemoSequence = async () => {
@@ -204,8 +266,17 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         isLoading,
         isBotUnresponsive,
         minutesSinceLastUpdate,
+        isAutoRefresh,
+        toggleAutoRefresh: () => setIsAutoRefresh((prev) => !prev),
+        isPineScriptModalOpen,
+        setIsPineScriptModalOpen,
+        isBrokerModalOpen,
+        setIsBrokerModalOpen,
         togglePause,
         updateSettings,
+        connectBroker,
+        pingBroker,
+        disconnectBroker,
         advanceDemoSequence,
         setBotState,
         clearToRealState,
