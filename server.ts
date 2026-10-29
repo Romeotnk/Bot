@@ -508,6 +508,9 @@ async function executeMetaApiOrder({
   }
 }
 
+// Connect data store autonomous engine to MetaApi execution
+store.onOrderSignal = executeMetaApiOrder;
+
 // 1. MetaApi Proxy (POST /api/metaapi/proxy)
 app.all('/api/metaapi/proxy', async (req: Request, res: Response) => {
   try {
@@ -703,6 +706,35 @@ app.post('/api/hft/multi-fire', (req: Request, res: Response) => {
     }
 
     res.json({ success: true, count: openedTrades.length, trades: openedTrades });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// MDT Autonomous Engine Endpoints
+app.post('/api/mdt/config', (req: Request, res: Response) => {
+  try {
+    const updated = store.updateMdtEngineConfig(req.body);
+    res.json({ success: true, mdt_engine: updated });
+  } catch (err: any) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+app.post('/api/mdt/scan-now', (_req: Request, res: Response) => {
+  try {
+    const status = store.forceMdtScan();
+    res.json({ success: true, mdt_engine: status });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/mdt/test-fire', (req: Request, res: Response) => {
+  try {
+    const { side } = req.body;
+    const trades = store.forceMdtTestTrade(side || 'BUY');
+    res.json({ success: true, trades });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }

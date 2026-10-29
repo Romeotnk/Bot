@@ -3,6 +3,7 @@ import { useAppState } from '../context/StateContext';
 import { TradingChart } from '../components/TradingChart';
 import { TradingViewChart } from '../components/TradingViewChart';
 import { FutureScenariosCard } from '../components/FutureScenariosCard';
+import { MdtAutonomousEngineCard } from '../components/MdtAutonomousEngineCard';
 import { HftExecutionConsole } from '../components/HftExecutionConsole';
 import { HftHitRateTracker } from '../components/HftHitRateTracker';
 import { MdtRadarTable } from '../components/MdtRadarTable';
@@ -601,6 +602,9 @@ export const DashboardPage: React.FC = () => {
           />
         </div>
       </div>
+
+      {/* MOTEUR AUTONOME MDT & HFT (PINE V5 INTÉGRÉ DIRECTEMENT DANS LE SERVEUR) */}
+      <MdtAutonomousEngineCard />
 
       {/* CONSOLE D'EXÉCUTION HFT & MICRO-SCALPING ULTRA-BASSE LATENCE */}
       <HftExecutionConsole currentPrice={lastPrice} />

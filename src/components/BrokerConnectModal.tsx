@@ -1078,6 +1078,16 @@ void OnTimer() {
                     </p>
                   </div>
                 </div>
+
+                <div className="p-2.5 rounded-xl bg-[#060810] border border-emerald-500/30 flex items-start gap-2.5 col-span-1 md:col-span-2">
+                  <span className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-mono font-bold flex items-center justify-center shrink-0">3</span>
+                  <div>
+                    <span className="font-semibold text-emerald-300">Moteur Autonome MDT & HFT Actif sur Render</span>
+                    <p className="text-[11px] text-[#8d93a8] mt-0.5">
+                      Plus besoin de script externe : le moteur <code className="text-amber-300">MdtEngine</code> et l'orchestrateur <code className="text-amber-300">mdtRunner</code> tournent désormais 24/7 directement au cœur du serveur. Dès qu'un setup se présente, la position est ouverte automatiquement sur votre MetaTrader 5 !
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
 

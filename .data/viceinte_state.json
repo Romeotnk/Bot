@@ -4,601 +4,883 @@
     "mode": "simulation",
     "symbol": "GOLD (XAUUSD)",
     "timeframe": "5m",
-    "last_price": 4048.57,
+    "last_price": 4029.18,
     "equity": null,
     "balance": null,
     "candles": [
       {
-        "time": 1793178600,
-        "open": 4055.37,
-        "high": 4055.97,
-        "low": 4054.96,
-        "close": 4055.96
+        "time": 1793264700,
+        "open": 4030.95,
+        "high": 4040.88,
+        "low": 4030.25,
+        "close": 4039.25
       },
       {
-        "time": 1793178900,
-        "open": 4055.97,
-        "high": 4060.45,
-        "low": 4055.97,
-        "close": 4060.44
+        "time": 1793265000,
+        "open": 4038.9,
+        "high": 4038.9,
+        "low": 4034.6,
+        "close": 4034.6
       },
       {
-        "time": 1793179200,
-        "open": 4060.45,
-        "high": 4060.76,
-        "low": 4057.87,
-        "close": 4057.87
+        "time": 1793265300,
+        "open": 4034.53,
+        "high": 4036.07,
+        "low": 4030.32,
+        "close": 4030.32
       },
       {
-        "time": 1793179500,
-        "open": 4057.69,
-        "high": 4057.69,
-        "low": 4055.96,
-        "close": 4056.54
+        "time": 1793265600,
+        "open": 4030.01,
+        "high": 4034.04,
+        "low": 4030,
+        "close": 4031.81
       },
       {
-        "time": 1793179800,
-        "open": 4056.54,
-        "high": 4056.9,
-        "low": 4056.54,
-        "close": 4056.81
+        "time": 1793265900,
+        "open": 4032.02,
+        "high": 4033.09,
+        "low": 4030.03,
+        "close": 4030.73
       },
       {
-        "time": 1793180100,
-        "open": 4056.81,
-        "high": 4059.32,
-        "low": 4056.81,
-        "close": 4059.32
+        "time": 1793266200,
+        "open": 4030.73,
+        "high": 4031.06,
+        "low": 4029.42,
+        "close": 4029.42
       },
       {
-        "time": 1793180400,
-        "open": 4059.32,
-        "high": 4060.37,
-        "low": 4059.32,
-        "close": 4059.82
+        "time": 1793266500,
+        "open": 4029.28,
+        "high": 4031.47,
+        "low": 4028.56,
+        "close": 4031.47
       },
       {
-        "time": 1793180700,
-        "open": 4059.84,
-        "high": 4059.84,
-        "low": 4058.35,
-        "close": 4058.6
+        "time": 1793266800,
+        "open": 4031.64,
+        "high": 4031.64,
+        "low": 4030.77,
+        "close": 4031.36
       },
       {
-        "time": 1793181000,
-        "open": 4058.6,
-        "high": 4058.6,
-        "low": 4057.65,
-        "close": 4057.97
+        "time": 1793267100,
+        "open": 4031.46,
+        "high": 4031.47,
+        "low": 4030.63,
+        "close": 4031.27
       },
       {
-        "time": 1793181300,
-        "open": 4057.97,
-        "high": 4059.69,
-        "low": 4057.97,
-        "close": 4059.69
+        "time": 1793267400,
+        "open": 4030.83,
+        "high": 4031.73,
+        "low": 4030.83,
+        "close": 4031.31
       },
       {
-        "time": 1793181600,
-        "open": 4060.3,
-        "high": 4060.31,
-        "low": 4058.05,
-        "close": 4058.05
+        "time": 1793267700,
+        "open": 4033.29,
+        "high": 4033.67,
+        "low": 4032.9,
+        "close": 4033.06
       },
       {
-        "time": 1793181900,
-        "open": 4058.05,
-        "high": 4058.06,
-        "low": 4055.02,
-        "close": 4056
+        "time": 1793268000,
+        "open": 4033.77,
+        "high": 4036.6,
+        "low": 4033.45,
+        "close": 4036.6
       },
       {
-        "time": 1793182200,
-        "open": 4056,
-        "high": 4056.47,
-        "low": 4052.69,
-        "close": 4053.84
+        "time": 1793268300,
+        "open": 4037.34,
+        "high": 4037.49,
+        "low": 4035.07,
+        "close": 4035.85
       },
       {
-        "time": 1793182500,
-        "open": 4053.84,
-        "high": 4054.49,
-        "low": 4052.65,
-        "close": 4052.81
+        "time": 1793268600,
+        "open": 4036.03,
+        "high": 4038,
+        "low": 4036.03,
+        "close": 4037.75
       },
       {
-        "time": 1793182800,
-        "open": 4052.97,
-        "high": 4053.29,
-        "low": 4051.36,
-        "close": 4051.37
+        "time": 1793268900,
+        "open": 4037.8,
+        "high": 4037.8,
+        "low": 4035.77,
+        "close": 4036.39
       },
       {
-        "time": 1793183100,
-        "open": 4051.37,
-        "high": 4051.97,
-        "low": 4050.47,
-        "close": 4051.24
+        "time": 1793269200,
+        "open": 4036.07,
+        "high": 4038.1,
+        "low": 4035.74,
+        "close": 4035.75
       },
       {
-        "time": 1793183400,
-        "open": 4051.23,
-        "high": 4051.44,
-        "low": 4050.72,
-        "close": 4051.05
+        "time": 1793269500,
+        "open": 4035.74,
+        "high": 4036.46,
+        "low": 4032.37,
+        "close": 4032.57
       },
       {
-        "time": 1793183700,
-        "open": 4050.85,
-        "high": 4051.57,
-        "low": 4050.63,
-        "close": 4051.17
+        "time": 1793269800,
+        "open": 4032.87,
+        "high": 4033.18,
+        "low": 4031.36,
+        "close": 4032.34
       },
       {
-        "time": 1793184000,
-        "open": 4051.28,
-        "high": 4053.16,
-        "low": 4051.28,
-        "close": 4053.16
+        "time": 1793270100,
+        "open": 4032.81,
+        "high": 4033.65,
+        "low": 4031.96,
+        "close": 4032.54
       },
       {
-        "time": 1793184300,
-        "open": 4053.16,
-        "high": 4053.17,
-        "low": 4052.52,
-        "close": 4052.52
+        "time": 1793270400,
+        "open": 4032.26,
+        "high": 4032.37,
+        "low": 4030.85,
+        "close": 4032.37
       },
       {
-        "time": 1793184600,
-        "open": 4052.52,
-        "high": 4052.53,
-        "low": 4051.39,
-        "close": 4052.52
+        "time": 1793270700,
+        "open": 4032.38,
+        "high": 4033.39,
+        "low": 4031.59,
+        "close": 4032.24
       },
       {
-        "time": 1793184900,
-        "open": 4052.53,
-        "high": 4052.53,
-        "low": 4051.8,
-        "close": 4051.8
+        "time": 1793271000,
+        "open": 4032.55,
+        "high": 4034.15,
+        "low": 4031.95,
+        "close": 4034.15
       },
       {
-        "time": 1793185200,
-        "open": 4051.53,
-        "high": 4051.78,
-        "low": 4049.86,
-        "close": 4049.86
+        "time": 1793271300,
+        "open": 4034.28,
+        "high": 4035.67,
+        "low": 4034.28,
+        "close": 4035.25
       },
       {
-        "time": 1793185500,
-        "open": 4049.71,
-        "high": 4050.88,
-        "low": 4049.16,
-        "close": 4050.52
+        "time": 1793271600,
+        "open": 4035.69,
+        "high": 4039.61,
+        "low": 4035.68,
+        "close": 4038.11
       },
       {
-        "time": 1793185800,
-        "open": 4050.53,
-        "high": 4052.74,
-        "low": 4050.53,
-        "close": 4052.74
+        "time": 1793271900,
+        "open": 4039.25,
+        "high": 4042.25,
+        "low": 4038.07,
+        "close": 4042.25
       },
       {
-        "time": 1793186100,
-        "open": 4052.73,
-        "high": 4053.17,
-        "low": 4052.01,
-        "close": 4052.01
+        "time": 1793272200,
+        "open": 4042.27,
+        "high": 4042.82,
+        "low": 4039.07,
+        "close": 4039.73
       },
       {
-        "time": 1793186400,
-        "open": 4052.19,
-        "high": 4053.67,
-        "low": 4052.18,
-        "close": 4053.66
+        "time": 1793272500,
+        "open": 4040.92,
+        "high": 4042.63,
+        "low": 4038.11,
+        "close": 4038.11
       },
       {
-        "time": 1793186700,
-        "open": 4053.66,
-        "high": 4053.97,
-        "low": 4053.66,
-        "close": 4053.97
+        "time": 1793272800,
+        "open": 4040.26,
+        "high": 4041.05,
+        "low": 4038.58,
+        "close": 4038.65
       },
       {
-        "time": 1793187000,
-        "open": 4054.36,
-        "high": 4055.56,
-        "low": 4054.04,
-        "close": 4055.19
+        "time": 1793273100,
+        "open": 4039.06,
+        "high": 4039.75,
+        "low": 4037.1,
+        "close": 4037.1
       },
       {
-        "time": 1793187300,
-        "open": 4055.39,
-        "high": 4055.46,
-        "low": 4054.77,
-        "close": 4054.77
+        "time": 1793273400,
+        "open": 4036.89,
+        "high": 4037.37,
+        "low": 4035.97,
+        "close": 4037.3
       },
       {
-        "time": 1793187600,
-        "open": 4055.43,
-        "high": 4055.44,
-        "low": 4054.79,
-        "close": 4055.2
+        "time": 1793273700,
+        "open": 4037.93,
+        "high": 4037.93,
+        "low": 4033.42,
+        "close": 4034.26
       },
       {
-        "time": 1793187900,
-        "open": 4055.2,
-        "high": 4055.45,
-        "low": 4052.59,
-        "close": 4052.59
+        "time": 1793274000,
+        "open": 4034.03,
+        "high": 4035.24,
+        "low": 4032.98,
+        "close": 4033.17
       },
       {
-        "time": 1793188200,
-        "open": 4052.59,
-        "high": 4053.19,
-        "low": 4052.59,
-        "close": 4052.69
+        "time": 1793274300,
+        "open": 4033.11,
+        "high": 4034.26,
+        "low": 4032.78,
+        "close": 4034.26
       },
       {
-        "time": 1793188500,
-        "open": 4052.59,
-        "high": 4052.59,
-        "low": 4051.33,
-        "close": 4052.2
+        "time": 1793274600,
+        "open": 4033.78,
+        "high": 4033.78,
+        "low": 4029.45,
+        "close": 4030.24
       },
       {
-        "time": 1793188800,
-        "open": 4051.77,
-        "high": 4053.46,
-        "low": 4050.92,
-        "close": 4053.46
+        "time": 1793274900,
+        "open": 4030.05,
+        "high": 4030.05,
+        "low": 4025.32,
+        "close": 4026.02
       },
       {
-        "time": 1793189100,
-        "open": 4053.47,
-        "high": 4054.58,
-        "low": 4053.46,
-        "close": 4054.58
+        "time": 1793275200,
+        "open": 4025.57,
+        "high": 4028.24,
+        "low": 4024.18,
+        "close": 4025.67
       },
       {
-        "time": 1793189400,
-        "open": 4054.22,
-        "high": 4057.34,
-        "low": 4054.22,
-        "close": 4057.29
+        "time": 1793275500,
+        "open": 4025.62,
+        "high": 4030.5,
+        "low": 4025.62,
+        "close": 4030.27
       },
       {
-        "time": 1793189700,
-        "open": 4057.31,
-        "high": 4061.65,
-        "low": 4057.31,
-        "close": 4061.32
+        "time": 1793275800,
+        "open": 4030.11,
+        "high": 4036.2,
+        "low": 4030.11,
+        "close": 4034.25
       },
       {
-        "time": 1793190000,
-        "open": 4061.32,
-        "high": 4063.75,
-        "low": 4060.7,
-        "close": 4062.37
+        "time": 1793276100,
+        "open": 4034.43,
+        "high": 4035.78,
+        "low": 4032.51,
+        "close": 4033.86
       },
       {
-        "time": 1793190300,
-        "open": 4063.17,
-        "high": 4063.75,
-        "low": 4060.66,
-        "close": 4061.7
+        "time": 1793276400,
+        "open": 4033.42,
+        "high": 4033.65,
+        "low": 4027.15,
+        "close": 4027.97
       },
       {
-        "time": 1793190600,
-        "open": 4061.7,
-        "high": 4061.7,
-        "low": 4058.29,
-        "close": 4059.09
+        "time": 1793276700,
+        "open": 4028.08,
+        "high": 4030.18,
+        "low": 4028.08,
+        "close": 4028.78
       },
       {
-        "time": 1793190900,
-        "open": 4059.22,
-        "high": 4060.92,
-        "low": 4058.75,
-        "close": 4059.81
+        "time": 1793277000,
+        "open": 4028.78,
+        "high": 4035.85,
+        "low": 4027.45,
+        "close": 4031.89
       },
       {
-        "time": 1793191200,
-        "open": 4058.76,
-        "high": 4059,
-        "low": 4058.21,
-        "close": 4058.77
+        "time": 1793277300,
+        "open": 4030.25,
+        "high": 4036.49,
+        "low": 4028.66,
+        "close": 4035.51
       },
       {
-        "time": 1793191500,
-        "open": 4059,
-        "high": 4059.31,
-        "low": 4055.48,
-        "close": 4056.65
+        "time": 1793277600,
+        "open": 4033.98,
+        "high": 4033.98,
+        "low": 4029.31,
+        "close": 4030.68
       },
       {
-        "time": 1793191800,
-        "open": 4056.76,
-        "high": 4058.56,
-        "low": 4056.76,
-        "close": 4057.38
+        "time": 1793277900,
+        "open": 4031.11,
+        "high": 4031.82,
+        "low": 4028.4,
+        "close": 4029.05
       },
       {
-        "time": 1793192100,
-        "open": 4056.97,
-        "high": 4058.36,
-        "low": 4056.13,
-        "close": 4058.36
+        "time": 1793278200,
+        "open": 4028.92,
+        "high": 4028.92,
+        "low": 4024.18,
+        "close": 4024.34
       },
       {
-        "time": 1793192400,
-        "open": 4058.36,
-        "high": 4062.53,
-        "low": 4058.34,
-        "close": 4058.99
+        "time": 1793278500,
+        "open": 4024.74,
+        "high": 4027.86,
+        "low": 4024.1,
+        "close": 4026.89
       },
       {
-        "time": 1793192700,
-        "open": 4059.46,
-        "high": 4060.53,
-        "low": 4059.24,
-        "close": 4060.53
+        "time": 1793278800,
+        "open": 4026.83,
+        "high": 4031.86,
+        "low": 4026.83,
+        "close": 4031.54
       },
       {
-        "time": 1793193000,
-        "open": 4060.77,
-        "high": 4061.2,
-        "low": 4058.77,
-        "close": 4058.77
+        "time": 1793279100,
+        "open": 4030.66,
+        "high": 4032.75,
+        "low": 4028.83,
+        "close": 4030.61
       },
       {
-        "time": 1793193300,
-        "open": 4058.56,
-        "high": 4058.71,
-        "low": 4056.15,
-        "close": 4056.35
+        "time": 1793279400,
+        "open": 4030.61,
+        "high": 4032.92,
+        "low": 4030.02,
+        "close": 4031.85
       },
       {
-        "time": 1793193600,
-        "open": 4056.35,
-        "high": 4057.15,
-        "low": 4055.48,
-        "close": 4057.15
+        "time": 1793279700,
+        "open": 4032.22,
+        "high": 4035.86,
+        "low": 4030.43,
+        "close": 4030.43
       },
       {
-        "time": 1793193900,
-        "open": 4057.48,
-        "high": 4057.57,
-        "low": 4055.48,
-        "close": 4056.14
+        "time": 1793280000,
+        "open": 4030.01,
+        "high": 4034.12,
+        "low": 4027.86,
+        "close": 4029.51
       },
       {
-        "time": 1793194200,
-        "open": 4056.14,
-        "high": 4056.37,
-        "low": 4052.39,
-        "close": 4052.81
+        "time": 1793280300,
+        "open": 4030.21,
+        "high": 4030.98,
+        "low": 4027.06,
+        "close": 4030.65
       },
       {
-        "time": 1793194500,
-        "open": 4052.39,
-        "high": 4055.97,
-        "low": 4051.12,
-        "close": 4051.97
+        "time": 1793280600,
+        "open": 4030.26,
+        "high": 4035.64,
+        "low": 4025.94,
+        "close": 4035.46
       },
       {
-        "time": 1793194800,
-        "open": 4052.77,
-        "high": 4056.03,
-        "low": 4052.77,
-        "close": 4054.18
+        "time": 1793280900,
+        "open": 4035.64,
+        "high": 4040.63,
+        "low": 4032.27,
+        "close": 4036.17
       },
       {
-        "time": 1793195100,
-        "open": 4054.3,
-        "high": 4055.12,
-        "low": 4052.24,
-        "close": 4054.69
+        "time": 1793281200,
+        "open": 4036.17,
+        "high": 4039.89,
+        "low": 4026.68,
+        "close": 4027.05
       },
       {
-        "time": 1793195400,
-        "open": 4054.69,
-        "high": 4054.69,
-        "low": 4052.98,
-        "close": 4053.51
+        "time": 1793281500,
+        "open": 4026.68,
+        "high": 4033.56,
+        "low": 4026.68,
+        "close": 4033.31
       },
       {
-        "time": 1793195700,
-        "open": 4053.5,
-        "high": 4054.6,
-        "low": 4052.01,
-        "close": 4052.93
+        "time": 1793281800,
+        "open": 4033.85,
+        "high": 4033.85,
+        "low": 4026.27,
+        "close": 4026.71
       },
       {
-        "time": 1793196000,
-        "open": 4053.18,
-        "high": 4053.7,
-        "low": 4050.77,
-        "close": 4051.85
+        "time": 1793282100,
+        "open": 4027.3,
+        "high": 4032.65,
+        "low": 4026.27,
+        "close": 4029.46
       },
       {
-        "time": 1793196300,
-        "open": 4051.84,
-        "high": 4052.72,
-        "low": 4050.24,
-        "close": 4052.71
+        "time": 1793282400,
+        "open": 4029.58,
+        "high": 4032.82,
+        "low": 4029.58,
+        "close": 4032.66
       },
       {
-        "time": 1793196600,
-        "open": 4052.4,
-        "high": 4052.92,
-        "low": 4050.21,
-        "close": 4051.33
+        "time": 1793282700,
+        "open": 4034.57,
+        "high": 4035.44,
+        "low": 4026.81,
+        "close": 4026.82
       },
       {
-        "time": 1793196900,
-        "open": 4051.33,
-        "high": 4051.55,
-        "low": 4050.12,
-        "close": 4051.53
+        "time": 1793283000,
+        "open": 4027.36,
+        "high": 4027.9,
+        "low": 4024.14,
+        "close": 4027.86
       },
       {
-        "time": 1793197200,
-        "open": 4051.9,
-        "high": 4051.9,
-        "low": 4047.76,
-        "close": 4047.76
+        "time": 1793283300,
+        "open": 4028.26,
+        "high": 4032.81,
+        "low": 4027.19,
+        "close": 4031.46
       },
       {
-        "time": 1793197500,
-        "open": 4047.75,
-        "high": 4048.18,
-        "low": 4045.4,
-        "close": 4045.4
+        "time": 1793283600,
+        "open": 4031.45,
+        "high": 4034.67,
+        "low": 4029.33,
+        "close": 4029.33
       },
       {
-        "time": 1793197800,
-        "open": 4045.3,
-        "high": 4047.57,
-        "low": 4043.23,
-        "close": 4043.33
+        "time": 1793283900,
+        "open": 4029.33,
+        "high": 4034.66,
+        "low": 4028.26,
+        "close": 4034.66
       },
       {
-        "time": 1793198100,
-        "open": 4043.33,
-        "high": 4043.96,
-        "low": 4040.37,
-        "close": 4041.33
+        "time": 1793284200,
+        "open": 4033.94,
+        "high": 4035.23,
+        "low": 4032.61,
+        "close": 4033.36
       },
       {
-        "time": 1793198400,
-        "open": 4041.32,
-        "high": 4046.79,
-        "low": 4040.98,
-        "close": 4046.79
+        "time": 1793284500,
+        "open": 4033.61,
+        "high": 4037.06,
+        "low": 4033.17,
+        "close": 4035.75
       },
       {
-        "time": 1793198700,
-        "open": 4044.61,
-        "high": 4046.74,
-        "low": 4043.57,
-        "close": 4046.49
+        "time": 1793284800,
+        "open": 4035.75,
+        "high": 4040.43,
+        "low": 4034.69,
+        "close": 4040
       },
       {
-        "time": 1793199000,
-        "open": 4046.49,
-        "high": 4046.58,
-        "low": 4043.87,
-        "close": 4045.56
+        "time": 1793285100,
+        "open": 4039.99,
+        "high": 4040.75,
+        "low": 4032.62,
+        "close": 4033.49
       },
       {
-        "time": 1793199300,
-        "open": 4045.56,
-        "high": 4045.56,
-        "low": 4043.78,
-        "close": 4045.08
+        "time": 1793285400,
+        "open": 4033.49,
+        "high": 4037.85,
+        "low": 4033.49,
+        "close": 4035.95
       },
       {
-        "time": 1793199600,
-        "open": 4044.75,
-        "high": 4047.98,
-        "low": 4044.75,
-        "close": 4046.67
+        "time": 1793285700,
+        "open": 4035.25,
+        "high": 4035.25,
+        "low": 4030.98,
+        "close": 4030.98
       },
       {
-        "time": 1793199900,
-        "open": 4046.67,
-        "high": 4047.48,
-        "low": 4046.02,
-        "close": 4047.12
+        "time": 1793286000,
+        "open": 4030.78,
+        "high": 4031.86,
+        "low": 4029,
+        "close": 4029.22
       },
       {
-        "time": 1793200200,
-        "open": 4047.71,
-        "high": 4048.55,
-        "low": 4047.17,
-        "close": 4047.96
+        "time": 1793286300,
+        "open": 4029.23,
+        "high": 4030.31,
+        "low": 4029.22,
+        "close": 4029.47
       },
       {
-        "time": 1793200500,
-        "open": 4047.33,
-        "high": 4048.37,
-        "low": 4047.33,
-        "close": 4047.55
+        "time": 1793286600,
+        "open": 4029.23,
+        "high": 4030.28,
+        "low": 4027.56,
+        "close": 4029.49
       },
       {
-        "time": 1793200800,
-        "open": 4048.11,
-        "high": 4049.69,
-        "low": 4048.11,
-        "close": 4049.05
+        "time": 1793286900,
+        "open": 4029.8,
+        "high": 4029.8,
+        "low": 4026.26,
+        "close": 4026.42
       },
       {
-        "time": 1793201100,
-        "open": 4048.54,
-        "high": 4049.21,
-        "low": 4048.54,
-        "close": 4049.2
+        "time": 1793287200,
+        "open": 4026.42,
+        "high": 4028.4,
+        "low": 4025.59,
+        "close": 4026.43
       },
       {
-        "time": 1793201400,
-        "open": 4047.17,
-        "high": 4047.45,
-        "low": 4044.72,
-        "close": 4047.45
+        "time": 1793287500,
+        "open": 4026.43,
+        "high": 4029.18,
+        "low": 4026.43,
+        "close": 4027.86
       },
       {
-        "time": 1793201700,
-        "open": 4047.43,
-        "high": 4048.24,
-        "low": 4046.71,
-        "close": 4048.24
+        "time": 1793287800,
+        "open": 4028.19,
+        "high": 4031.8,
+        "low": 4027.87,
+        "close": 4030.03
       },
       {
-        "time": 1793202000,
-        "open": 4048.88,
-        "high": 4049.85,
-        "low": 4048.57,
-        "close": 4049.36
+        "time": 1793288100,
+        "open": 4030.22,
+        "high": 4031.65,
+        "low": 4030.22,
+        "close": 4030.27
       },
       {
-        "time": 1793202300,
-        "open": 4049.23,
-        "high": 4049.24,
-        "low": 4048.57,
-        "close": 4048.57
+        "time": 1793288400,
+        "open": 4030.23,
+        "high": 4030.23,
+        "low": 4029.18,
+        "close": 4029.18
       }
     ],
     "plan": null,
-    "updated_at": "2026-10-28T15:47:04.876Z"
+    "updated_at": "2026-10-29T15:40:38.089Z"
   },
   "levels": {
-    "day": "2026-10-28",
-    "asian_high": 4060.76,
-    "asian_low": 4049.16,
-    "prev_day_high": 4063.75,
-    "prev_day_low": 4040.37
+    "day": "2026-10-29",
+    "asian_high": 4042.82,
+    "asian_low": 4028.56,
+    "prev_day_high": 4042.82,
+    "prev_day_low": 4024.1
   },
   "signals": [],
   "trades": [],
   "decision_log": [
     {
-      "id": "metaapi-log-1793202428604",
-      "time": "2026-10-28T15:47:08.604Z",
+      "id": "metaapi-log-1793288437865",
+      "time": "2026-10-29T15:40:37.865Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Désactivé. Mode surveillance uniquement."
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793202421472",
-      "time": "2026-10-28T15:47:01.472Z",
+      "id": "metaapi-log-1793288436866",
+      "time": "2026-10-29T15:40:36.866Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour undefined (undefined lot). Tout signal valide sera routé directement en direct."
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "log-live-1793200100517",
-      "time": "2026-10-28T15:08:20.517Z",
+      "id": "metaapi-log-1793288435867",
+      "time": "2026-10-29T15:40:35.867Z",
       "level": "info",
-      "message": "Terminal de trading connecté au flux réel XAUUSD. Surveillance active."
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288434897",
+      "time": "2026-10-29T15:40:34.897Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288432953",
+      "time": "2026-10-29T15:40:32.953Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288431929",
+      "time": "2026-10-29T15:40:31.929Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288431004",
+      "time": "2026-10-29T15:40:31.004Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288427930",
+      "time": "2026-10-29T15:40:27.930Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288426850",
+      "time": "2026-10-29T15:40:26.850Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288425880",
+      "time": "2026-10-29T15:40:25.880Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288424859",
+      "time": "2026-10-29T15:40:24.859Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288423954",
+      "time": "2026-10-29T15:40:23.955Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288422954",
+      "time": "2026-10-29T15:40:22.954Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288421850",
+      "time": "2026-10-29T15:40:21.850Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288420951",
+      "time": "2026-10-29T15:40:20.951Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288419847",
+      "time": "2026-10-29T15:40:19.847Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288418920",
+      "time": "2026-10-29T15:40:18.920Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288417898",
+      "time": "2026-10-29T15:40:17.898Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288416946",
+      "time": "2026-10-29T15:40:16.946Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288415851",
+      "time": "2026-10-29T15:40:15.851Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288414846",
+      "time": "2026-10-29T15:40:14.846Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288413797",
+      "time": "2026-10-29T15:40:13.797Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288412880",
+      "time": "2026-10-29T15:40:12.880Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288411858",
+      "time": "2026-10-29T15:40:11.858Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288410830",
+      "time": "2026-10-29T15:40:10.830Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288409851",
+      "time": "2026-10-29T15:40:09.851Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288408829",
+      "time": "2026-10-29T15:40:08.829Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288407787",
+      "time": "2026-10-29T15:40:07.787Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288406780",
+      "time": "2026-10-29T15:40:06.780Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288405784",
+      "time": "2026-10-29T15:40:05.784Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288404787",
+      "time": "2026-10-29T15:40:04.787Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288403783",
+      "time": "2026-10-29T15:40:03.783Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288402783",
+      "time": "2026-10-29T15:40:02.783Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288401817",
+      "time": "2026-10-29T15:40:01.817Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288400796",
+      "time": "2026-10-29T15:40:00.796Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288399878",
+      "time": "2026-10-29T15:39:59.878Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288398779",
+      "time": "2026-10-29T15:39:58.779Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288397829",
+      "time": "2026-10-29T15:39:57.830Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288396798",
+      "time": "2026-10-29T15:39:56.798Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288395783",
+      "time": "2026-10-29T15:39:55.783Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288394863",
+      "time": "2026-10-29T15:39:54.863Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288393835",
+      "time": "2026-10-29T15:39:53.835Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288392809",
+      "time": "2026-10-29T15:39:52.809Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288391780",
+      "time": "2026-10-29T15:39:51.780Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288390777",
+      "time": "2026-10-29T15:39:50.777Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288389777",
+      "time": "2026-10-29T15:39:49.777Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288388767",
+      "time": "2026-10-29T15:39:48.767Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288387769",
+      "time": "2026-10-29T15:39:47.769Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288386765",
+      "time": "2026-10-29T15:39:46.765Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793288385832",
+      "time": "2026-10-29T15:39:45.832Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     }
   ],
   "settings": {
@@ -631,15 +913,18 @@
       "api_token": ""
     },
     "metaapi": {
-      "token": "",
-      "account_id": "",
-      "auto_trade_enabled": false,
+      "token": "eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIzNWE3NGQ2ZWM1NmEwNWUwMWNlZmYyYjA0YzYyODRkZSIsImFjY2Vzc1J1bGVzIjpbeyJpZCI6InRyYWRpbmctYWNjb3VudC1tYW5hZ2VtZW50LWFwaSIsIm1ldGhvZHMiOlsidHJhZGluZy1hY2NvdW50LW1hbmFnZW1lbnQtYXBpOnJlc3Q6cHVibGljOio6KiJdLCJyb2xlcyI6WyJyZWFkZXIiXSwicmVzb3VyY2VzIjpbImFjY291bnQ6JFVTRVJfSUQkOjdkZmZlYzJhLTY4OWQtNGVmNS1iNmViLTg0Njk3OGVmYzg1OCJdfSx7ImlkIjoibWV0YWFwaS1yZXN0LWFwaSIsIm1ldGhvZHMiOlsibWV0YWFwaS1hcGk6cmVzdDpwdWJsaWM6KjoqIl0sInJvbGVzIjpbInJlYWRlciIsIndyaXRlciJdLCJyZXNvdXJjZXMiOlsiYWNjb3VudDokVVNFUl9JRCQ6N2RmZmVjMmEtNjg5ZC00ZWY1LWI2ZWItODQ2OTc4ZWZjODU4Il19LHsiaWQiOiJtZXRhYXBpLXJwYy1hcGkiLCJtZXRob2RzIjpbIm1ldGFhcGktYXBpOndzOnB1YmxpYzoqOioiXSwicm9sZXMiOlsicmVhZGVyIiwid3JpdGVyIl0sInJlc291cmNlcyI6WyJhY2NvdW50OiRVU0VSX0lEJDo3ZGZmZWMyYS02ODlkLTRlZjUtYjZlYi04NDY5NzhlZmM4NTgiXX0seyJpZCI6Im1ldGFhcGktcmVhbC10aW1lLXN0cmVhbWluZy1hcGkiLCJtZXRob2RzIjpbIm1ldGFhcGktYXBpOndzOnB1YmxpYzoqOioiXSwicm9sZXMiOlsicmVhZGVyIiwid3JpdGVyIl0sInJlc291cmNlcyI6WyJhY2NvdW50OiRVU0VSX0lEJDo3ZGZmZWMyYS02ODlkLTRlZjUtYjZlYi04NDY5NzhlZmM4NTgiXX0seyJpZCI6Im1ldGFzdGF0cy1hcGkiLCJtZXRob2RzIjpbIm1ldGFzdGF0cy1hcGk6cmVzdDpwdWJsaWM6KjoqIl0sInJvbGVzIjpbInJlYWRlciJdLCJyZXNvdXJjZXMiOlsiYWNjb3VudDokVVNFUl9JRCQ6N2RmZmVjMmEtNjg5ZC00ZWY1LWI2ZWItODQ2OTc4ZWZjODU4Il19LHsiaWQiOiJyaXNrLW1hbmFnZW1lbnQtYXBpIiwibWV0aG9kcyI6WyJyaXNrLW1hbmFnZW1lbnQtYXBpOnJlc3Q6cHVibGljOio6KiJdLCJyb2xlcyI6WyJyZWFkZXIiXSwicmVzb3VyY2VzIjpbImFjY291bnQ6JFVTRVJfSUQkOjdkZmZlYzJhLTY4OWQtNGVmNS1iNmViLTg0Njk3OGVmYzg1OCJdfV0sImlnbm9yZVJhdGVMaW1pdHMiOmZhbHNlLCJ0b2tlbklkIjoiMjAyMTAyMTMiLCJpbXBlcnNvbmF0ZWQiOmZhbHNlLCJyZWFsVXNlcklkIjoiMzVhNzRkNmVjNTZhMDVlMDFjZWZmMmIwNGM2Mjg0ZGUiLCJpYXQiOjE3OTMyMDQ2MjAsImV4cCI6MTgwMDk4MDYyMH0.Rse_kOPJJxbvaw4kLLRH5sRNd48beRno3xXI_kSVHQG950llYo61X4RwpLtii88BAovgXiqQoZxo27LAZ-UNl92c2lXH8fa9xbkpP28oWue36ZHVcJvPBhZ9XIpTD47FEoB7KvwjwNV5SQpAQCJbNC5UBOfQsax7jspgbC62VjlHGREvawBub39PCuxWEhRvCxY4kDmiEKVpNcSZE7oKdRHcMM2v5wj7CEyJ9eT1Whf42d1xb5VvCg7EGPFL0yS--BGvwJjbF1ezteFX5DRzR7heM6OIoOodLpMlN4D4tKgkzadiUOrZTQ4xkidR0r18aG3TmHS2GzJ0oTratt7ChN0XbfUKds6Fl_FvssP99udZRT3XJdY4HtJdeXozBaq7snExHZghbTGbeevrtAQyh49XnY6dAK2__u710cUOFTWlUzMF6mSc_eKqDKrMihdMCJL3kMAaAtWcS2pM5zPZGKGXsf2l5YQLV-1q7IyjyL6FDkOGWlWG8VmOAmdbscLCs66mcaS7KwRmf5C0Xbd1VHtKw4NairsxIlDxQvootAVD6AkP72Nd9wHA65SQrl4lS1DIYEiJQe5crfAZLz4xcNGTV3RpRwMYRSNxFbyT8om1rQxNLD_hyF6KQ8Wg9JzybLwVFCr1xYahUs6Vl889MM1QoITtM3Tl8zZLW9bYyVk",
+      "account_id": "7dffec2a-689d-4ef5-b6eb-846978efc858",
+      "auto_trade_enabled": true,
       "connected": false,
       "balance": null,
       "equity": null,
       "server_name": "",
       "platform": "mt5",
-      "last_sync": null
+      "last_sync": null,
+      "symbol": "GOLD",
+      "lot_size": 0.01,
+      "region": "new-york"
     }
   },
   "is_demo_data": false,
@@ -649,35 +934,35 @@
     {
       "tf": "H4",
       "trend": "Baissier",
-      "bullOb": "4037.87 - 4040.37",
-      "bearOb": "4063.75 - 4066.95",
-      "distancePct": 0.37,
+      "bullOb": "4021.60 - 4024.10",
+      "bearOb": "4042.82 - 4046.02",
+      "distancePct": 0.34,
       "stars": 3,
       "confText": "Biais vendeur HTF"
     },
     {
       "tf": "H1",
       "trend": "Baissier",
-      "bullOb": "4040.37 - 4042.17",
-      "bearOb": "4055.77 - 4057.57",
-      "distancePct": 0.22,
+      "bullOb": "4024.14 - 4025.94",
+      "bearOb": "4038.95 - 4040.75",
+      "distancePct": 0.29,
       "stars": 3,
       "confText": "Zone institutionnelle active"
     },
     {
       "tf": "M15",
-      "trend": "Haissier",
-      "bullOb": "4041.57 - 4042.87",
-      "bearOb": "4055.07 - 4056.37",
-      "distancePct": 0.17,
+      "trend": "Baissier",
+      "bullOb": "4025.34 - 4026.64",
+      "bearOb": "4038.25 - 4039.55",
+      "distancePct": 0.24,
       "stars": 2,
       "confText": "Scénario en formation"
     },
     {
       "tf": "M5",
-      "trend": "Baissier",
-      "bullOb": "4045.77 - 4047.07",
-      "bearOb": "4050.07 - 4051.37",
+      "trend": "Haissier",
+      "bullOb": "4026.38 - 4027.68",
+      "bearOb": "4030.68 - 4031.98",
       "distancePct": 0.07,
       "stars": 2,
       "confText": "Imbalance M5 surveillée"
@@ -685,8 +970,8 @@
     {
       "tf": "M3",
       "trend": "Baissier",
-      "bullOb": "4047.37 - 4047.97",
-      "bearOb": "4049.17 - 4049.77",
+      "bullOb": "4027.98 - 4028.58",
+      "bearOb": "4029.78 - 4030.38",
       "distancePct": 0.03,
       "stars": 1,
       "confText": "Micro-structure en veille"
@@ -710,14 +995,163 @@
     "api_token": ""
   },
   "metaapi": {
-    "token": "",
-    "account_id": "",
-    "auto_trade_enabled": false,
+    "token": "eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIzNWE3NGQ2ZWM1NmEwNWUwMWNlZmYyYjA0YzYyODRkZSIsImFjY2Vzc1J1bGVzIjpbeyJpZCI6InRyYWRpbmctYWNjb3VudC1tYW5hZ2VtZW50LWFwaSIsIm1ldGhvZHMiOlsidHJhZGluZy1hY2NvdW50LW1hbmFnZW1lbnQtYXBpOnJlc3Q6cHVibGljOio6KiJdLCJyb2xlcyI6WyJyZWFkZXIiXSwicmVzb3VyY2VzIjpbImFjY291bnQ6JFVTRVJfSUQkOjdkZmZlYzJhLTY4OWQtNGVmNS1iNmViLTg0Njk3OGVmYzg1OCJdfSx7ImlkIjoibWV0YWFwaS1yZXN0LWFwaSIsIm1ldGhvZHMiOlsibWV0YWFwaS1hcGk6cmVzdDpwdWJsaWM6KjoqIl0sInJvbGVzIjpbInJlYWRlciIsIndyaXRlciJdLCJyZXNvdXJjZXMiOlsiYWNjb3VudDokVVNFUl9JRCQ6N2RmZmVjMmEtNjg5ZC00ZWY1LWI2ZWItODQ2OTc4ZWZjODU4Il19LHsiaWQiOiJtZXRhYXBpLXJwYy1hcGkiLCJtZXRob2RzIjpbIm1ldGFhcGktYXBpOndzOnB1YmxpYzoqOioiXSwicm9sZXMiOlsicmVhZGVyIiwid3JpdGVyIl0sInJlc291cmNlcyI6WyJhY2NvdW50OiRVU0VSX0lEJDo3ZGZmZWMyYS02ODlkLTRlZjUtYjZlYi04NDY5NzhlZmM4NTgiXX0seyJpZCI6Im1ldGFhcGktcmVhbC10aW1lLXN0cmVhbWluZy1hcGkiLCJtZXRob2RzIjpbIm1ldGFhcGktYXBpOndzOnB1YmxpYzoqOioiXSwicm9sZXMiOlsicmVhZGVyIiwid3JpdGVyIl0sInJlc291cmNlcyI6WyJhY2NvdW50OiRVU0VSX0lEJDo3ZGZmZWMyYS02ODlkLTRlZjUtYjZlYi04NDY5NzhlZmM4NTgiXX0seyJpZCI6Im1ldGFzdGF0cy1hcGkiLCJtZXRob2RzIjpbIm1ldGFzdGF0cy1hcGk6cmVzdDpwdWJsaWM6KjoqIl0sInJvbGVzIjpbInJlYWRlciJdLCJyZXNvdXJjZXMiOlsiYWNjb3VudDokVVNFUl9JRCQ6N2RmZmVjMmEtNjg5ZC00ZWY1LWI2ZWItODQ2OTc4ZWZjODU4Il19LHsiaWQiOiJyaXNrLW1hbmFnZW1lbnQtYXBpIiwibWV0aG9kcyI6WyJyaXNrLW1hbmFnZW1lbnQtYXBpOnJlc3Q6cHVibGljOio6KiJdLCJyb2xlcyI6WyJyZWFkZXIiXSwicmVzb3VyY2VzIjpbImFjY291bnQ6JFVTRVJfSUQkOjdkZmZlYzJhLTY4OWQtNGVmNS1iNmViLTg0Njk3OGVmYzg1OCJdfV0sImlnbm9yZVJhdGVMaW1pdHMiOmZhbHNlLCJ0b2tlbklkIjoiMjAyMTAyMTMiLCJpbXBlcnNvbmF0ZWQiOmZhbHNlLCJyZWFsVXNlcklkIjoiMzVhNzRkNmVjNTZhMDVlMDFjZWZmMmIwNGM2Mjg0ZGUiLCJpYXQiOjE3OTMyMDQ2MjAsImV4cCI6MTgwMDk4MDYyMH0.Rse_kOPJJxbvaw4kLLRH5sRNd48beRno3xXI_kSVHQG950llYo61X4RwpLtii88BAovgXiqQoZxo27LAZ-UNl92c2lXH8fa9xbkpP28oWue36ZHVcJvPBhZ9XIpTD47FEoB7KvwjwNV5SQpAQCJbNC5UBOfQsax7jspgbC62VjlHGREvawBub39PCuxWEhRvCxY4kDmiEKVpNcSZE7oKdRHcMM2v5wj7CEyJ9eT1Whf42d1xb5VvCg7EGPFL0yS--BGvwJjbF1ezteFX5DRzR7heM6OIoOodLpMlN4D4tKgkzadiUOrZTQ4xkidR0r18aG3TmHS2GzJ0oTratt7ChN0XbfUKds6Fl_FvssP99udZRT3XJdY4HtJdeXozBaq7snExHZghbTGbeevrtAQyh49XnY6dAK2__u710cUOFTWlUzMF6mSc_eKqDKrMihdMCJL3kMAaAtWcS2pM5zPZGKGXsf2l5YQLV-1q7IyjyL6FDkOGWlWG8VmOAmdbscLCs66mcaS7KwRmf5C0Xbd1VHtKw4NairsxIlDxQvootAVD6AkP72Nd9wHA65SQrl4lS1DIYEiJQe5crfAZLz4xcNGTV3RpRwMYRSNxFbyT8om1rQxNLD_hyF6KQ8Wg9JzybLwVFCr1xYahUs6Vl889MM1QoITtM3Tl8zZLW9bYyVk",
+    "account_id": "7dffec2a-689d-4ef5-b6eb-846978efc858",
+    "auto_trade_enabled": true,
     "connected": false,
     "balance": null,
     "equity": null,
     "server_name": "",
     "platform": "mt5",
-    "last_sync": null
+    "last_sync": null,
+    "symbol": "GOLD",
+    "lot_size": 0.01,
+    "region": "new-york"
+  },
+  "future_scenarios": [
+    {
+      "id": "scen-flip-sell",
+      "title": "Scénario A : VENTE Flip MDT (Tendance Maîtresse)",
+      "type": "flip_sell",
+      "direction": "SELL",
+      "triggerCondition": "SI une bougie M15 CLÔTURE sous la ligne verte (4026.38 $) → VENTE IMMÉDIATE",
+      "zoneName": "Ligne MDT 5m + H1",
+      "entry": 4026.38,
+      "stop_loss": 4030.88,
+      "take_profit_1": 4024.13,
+      "take_profit_2": 4020.78,
+      "take_profit_3": 4015.18,
+      "risk_points": 4.5,
+      "risk_pips": 45,
+      "rr_ratio": 2.5,
+      "confluences_count": 6,
+      "confluences_max": 7,
+      "stars": 5,
+      "stars_text": "★★★★★",
+      "checklist": {
+        "htf_trend": true,
+        "clean_zone": true,
+        "liquidity_sweep": true,
+        "bos_structure": true,
+        "mdt_line": false,
+        "high_volume": true,
+        "risk_reward_ok": true
+      },
+      "status": "approche",
+      "recommended_lot": 0.02
+    },
+    {
+      "id": "scen-limit-sell",
+      "title": "Scénario B : SELL LIMIT sur Bearish OB H1",
+      "type": "limit_sell",
+      "direction": "SELL",
+      "triggerCondition": "SELL LIMIT posé sur l'OB vendeur 4042.02 $ (sans chasser le prix)",
+      "zoneName": "OB- H1 / Liq High",
+      "entry": 4042.02,
+      "stop_loss": 4044.62,
+      "take_profit_1": 4039.92,
+      "take_profit_2": 4027.68,
+      "take_profit_3": 4025.1,
+      "risk_points": 2.6,
+      "risk_pips": 26,
+      "rr_ratio": 2.2,
+      "confluences_count": 5,
+      "confluences_max": 7,
+      "stars": 4,
+      "stars_text": "★★★★☆",
+      "checklist": {
+        "htf_trend": true,
+        "clean_zone": true,
+        "liquidity_sweep": true,
+        "bos_structure": false,
+        "mdt_line": true,
+        "high_volume": true,
+        "risk_reward_ok": true
+      },
+      "status": "pret",
+      "recommended_lot": 0.03
+    },
+    {
+      "id": "scen-limit-buy",
+      "title": "Scénario C : BUY LIMIT sur Bullish OB / FVG",
+      "type": "limit_buy",
+      "direction": "BUY",
+      "triggerCondition": "BUY LIMIT posé au contact du FVG structure 4025.30 $ après sweep",
+      "zoneName": "FVG+ Structure M15",
+      "entry": 4025.3,
+      "stop_loss": 4022.9,
+      "take_profit_1": 4027.2,
+      "take_profit_2": 4031.18,
+      "take_profit_3": 4041.32,
+      "risk_points": 2.4,
+      "risk_pips": 24,
+      "rr_ratio": 2.8,
+      "confluences_count": 4,
+      "confluences_max": 7,
+      "stars": 4,
+      "stars_text": "★★★★☆",
+      "checklist": {
+        "htf_trend": false,
+        "clean_zone": true,
+        "liquidity_sweep": true,
+        "bos_structure": true,
+        "mdt_line": false,
+        "high_volume": true,
+        "risk_reward_ok": true
+      },
+      "status": "en_attente",
+      "recommended_lot": 0.02
+    },
+    {
+      "id": "scen-flip-buy",
+      "title": "Scénario D : ACHAT Flip MDT (Reprise Haussière)",
+      "type": "flip_buy",
+      "direction": "BUY",
+      "triggerCondition": "SI une bougie CLÔTURE au-dessus de la résistance dynamique 4032.28 $",
+      "zoneName": "Breakout MDT Pivot",
+      "entry": 4032.28,
+      "stop_loss": 4027.98,
+      "take_profit_1": 4034.43,
+      "take_profit_2": 4038.73,
+      "take_profit_3": 4044.28,
+      "risk_points": 4.3,
+      "risk_pips": 43,
+      "rr_ratio": 2,
+      "confluences_count": 3,
+      "confluences_max": 7,
+      "stars": 3,
+      "stars_text": "★★★☆☆",
+      "checklist": {
+        "htf_trend": false,
+        "clean_zone": true,
+        "liquidity_sweep": false,
+        "bos_structure": true,
+        "mdt_line": false,
+        "high_volume": false,
+        "risk_reward_ok": true
+      },
+      "status": "contre_tendance",
+      "recommended_lot": 0.01
+    }
+  ],
+  "stream_latency_ms": 15,
+  "mdt_engine": {
+    "running": true,
+    "profile": "HFT Micro-Scalper",
+    "timeframe": "1m",
+    "auto_pilot": true,
+    "req_score": 2,
+    "current_score": 0,
+    "active_confluences": [],
+    "trend_direction": 1,
+    "trend_line": null,
+    "micro_high": null,
+    "micro_low": null,
+    "armed_retest": null,
+    "candles_scanned": 7,
+    "last_scan_time": "2026-10-29T15:40:38.232Z",
+    "last_signal": null,
+    "target_profit_usd": 1,
+    "multi_fire_count": 3
   }
 }

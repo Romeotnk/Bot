@@ -208,6 +208,26 @@ export interface FutureScenario {
   recommended_lot: number;
 }
 
+export interface MdtEngineTelemetry {
+  running: boolean;
+  profile: 'Starter' | 'Intraday Clean' | 'Sniper A+' | 'HFT Micro-Scalper';
+  timeframe: '1m' | '5m' | '15m';
+  auto_pilot: boolean;
+  req_score: number;
+  current_score: number;
+  active_confluences: string[];
+  trend_direction: number;
+  trend_line: number | null;
+  micro_high: number | null;
+  micro_low: number | null;
+  armed_retest: { side: 'BUY' | 'SELL'; level: number; bar: number } | null;
+  candles_scanned: number;
+  last_scan_time: string;
+  last_signal: string | null;
+  target_profit_usd: number;
+  multi_fire_count: number;
+}
+
 export interface DashboardState {
   bot_status: BotStatus;
   levels: Levels;
@@ -223,6 +243,7 @@ export interface DashboardState {
   future_scenarios?: FutureScenario[];
   broker?: BrokerAccountConfig;
   metaapi?: MetaApiConfig;
+  mdt_engine?: MdtEngineTelemetry;
   stream_latency_ms?: number;
 }
 

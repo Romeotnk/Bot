@@ -21,6 +21,15 @@ interface StateContextType {
   saveMetaApiConfig: (config: Partial<MetaApiConfig>) => Promise<MetaApiConfig>;
   syncMetaApiAccount: () => Promise<any>;
   executeMetaApiTrade: (params: { action: 'BUY' | 'SELL'; symbol?: string; volume?: number; stopLoss?: number; takeProfit?: number; comment?: string }) => Promise<any>;
+  updateMdtEngineConfig: (config: {
+    profile?: 'Starter' | 'Intraday Clean' | 'Sniper A+' | 'HFT Micro-Scalper';
+    timeframe?: '1m' | '5m' | '15m';
+    auto_pilot?: boolean;
+    target_profit_usd?: number;
+    multi_fire_count?: number;
+  }) => Promise<void>;
+  forceMdtScan: () => Promise<void>;
+  forceMdtTestTrade: (side?: 'BUY' | 'SELL') => Promise<void>;
   advanceDemoSequence: () => Promise<void>;
   setBotState: (newState: BotState) => Promise<void>;
   clearToRealState: () => Promise<void>;
@@ -367,6 +376,59 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   };
 
+  const updateMdtEngineConfig = async (config: {
+    profile?: 'Starter' | 'Intraday Clean' | 'Sniper A+' | 'HFT Micro-Scalper';
+    timeframe?: '1m' | '5m' | '15m';
+    auto_pilot?: boolean;
+    target_profit_usd?: number;
+    multi_fire_count?: number;
+  }) => {
+    try {
+      const res = await fetch('/api/mdt/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(config),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.mdt_engine) {
+          setState((prev) => (prev ? { ...prev, mdt_engine: data.mdt_engine } : null));
+        }
+      }
+    } catch (e) {
+      console.error('Error updating MDT config:', e);
+    }
+  };
+
+  const forceMdtScan = async () => {
+    try {
+      const res = await fetch('/api/mdt/scan-now', { method: 'POST' });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.mdt_engine) {
+          setState((prev) => (prev ? { ...prev, mdt_engine: data.mdt_engine } : null));
+        }
+      }
+    } catch (e) {
+      console.error('Error scanning MDT:', e);
+    }
+  };
+
+  const forceMdtTestTrade = async (side: 'BUY' | 'SELL' = 'BUY') => {
+    try {
+      const res = await fetch('/api/mdt/test-fire', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ side }),
+      });
+      if (res.ok) {
+        await fetchState();
+      }
+    } catch (e) {
+      console.error('Error test fire MDT:', e);
+    }
+  };
+
   return (
     <StateContext.Provider
       value={{
@@ -389,6 +451,9 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         saveMetaApiConfig,
         syncMetaApiAccount,
         executeMetaApiTrade,
+        updateMdtEngineConfig,
+        forceMdtScan,
+        forceMdtTestTrade,
         advanceDemoSequence,
         setBotState,
         clearToRealState,

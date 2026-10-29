@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
+import { MdtEngine } from './scripts/mdtEngine.js';
 
 dotenv.config();
 
@@ -153,6 +154,165 @@ function saveStateToDisk() {
     fs.writeFileSync(STATE_FILE, JSON.stringify(appState, null, 2), 'utf-8');
   } catch (e) {
     // ignore
+  }
+}
+
+// -------------------------------------------------------------
+// Autonomous MDT Engine (From Pine v5 MdtEngine specification)
+// -------------------------------------------------------------
+let mdtEngineProfile = 'HFT Micro-Scalper';
+let mdtTimeframe = '1m';
+let mdtAutoPilot = true;
+let mdtTargetProfitUsd = 1.00;
+let mdtMultiFireCount = 3;
+let lastEvaluatedCandleTime = 0;
+
+let mdtEngine = new MdtEngine({
+  profile: mdtEngineProfile,
+  symbol: appState.metaapi?.symbol || 'GOLD',
+});
+
+function evaluateMdtCandle(k, allCandles) {
+  if (!k) return;
+  const candleTime = k.time;
+  const isNew = candleTime !== lastEvaluatedCandleTime;
+
+  const closes = allCandles && allCandles.length > 0 ? allCandles.map((c) => c.close) : [k.close];
+  const avgClose = closes.reduce((a, b) => a + b, 0) / (closes.length || 1);
+  const htf = {
+    ema1: avgClose,
+    ema2: avgClose * 0.998,
+  };
+
+  const events = mdtEngine.onCandle(
+    {
+      time: new Date(k.time * 1000),
+      open: k.open,
+      high: k.high,
+      low: k.low,
+      close: k.close,
+      volume: 120,
+    },
+    htf
+  );
+
+  const engStatus = {
+    profile: mdtEngineProfile,
+    reqScore: mdtEngine.reqScore,
+    lastScore: mdtEngine.lastScore || 0,
+    atr: mdtEngine.atr ? Math.round(mdtEngine.atr * 100) / 100 : null,
+    trendDirection: mdtEngine.td,
+    trendLine: mdtEngine.st ? Math.round(mdtEngine.st * 100) / 100 : null,
+    microHigh: mdtEngine.microHigh ? Math.round(mdtEngine.microHigh * 100) / 100 : null,
+    microLow: mdtEngine.microLow ? Math.round(mdtEngine.microLow * 100) / 100 : null,
+    armedRetest: mdtEngine.armL
+      ? { side: 'BUY', level: Math.round((mdtEngine.armL.level || 0) * 100) / 100, bar: mdtEngine.armL.bar }
+      : mdtEngine.armS
+      ? { side: 'SELL', level: Math.round((mdtEngine.armS.level || 0) * 100) / 100, bar: mdtEngine.armS.bar }
+      : null,
+    dayR: Math.round(mdtEngine.dayR * 100) / 100,
+    candlesAnalyzed: mdtEngine.bars.length,
+    activeConfluences: mdtEngine.activeConfluences || [],
+    lastEvent: mdtEngine.lastEvent,
+  };
+
+  appState.mdt_engine = {
+    running: true,
+    profile: mdtEngineProfile,
+    timeframe: mdtTimeframe,
+    auto_pilot: mdtAutoPilot,
+    req_score: engStatus.reqScore,
+    current_score: engStatus.lastScore,
+    active_confluences: engStatus.activeConfluences,
+    trend_direction: engStatus.trendDirection,
+    trend_line: engStatus.trendLine,
+    micro_high: engStatus.microHigh,
+    micro_low: engStatus.microLow,
+    armed_retest: engStatus.armedRetest,
+    candles_scanned: engStatus.candlesAnalyzed,
+    last_scan_time: new Date().toISOString(),
+    last_signal: engStatus.lastEvent ? `${engStatus.lastEvent.action} @ ${engStatus.lastEvent.entry || engStatus.lastEvent.price}` : null,
+    target_profit_usd: mdtTargetProfitUsd,
+    multi_fire_count: mdtMultiFireCount,
+  };
+
+  if (isNew) {
+    lastEvaluatedCandleTime = candleTime;
+  }
+
+  for (const ev of events) {
+    if (ev.action === 'ACHAT' || ev.action === 'VENTE') {
+      const side = ev.action === 'ACHAT' ? 'BUY' : 'SELL';
+      const lot = Number(ev.lot) || (appState.metaapi?.lot_size || 0.01);
+      const sl = ev.sl || (side === 'BUY' ? k.close - 2.5 : k.close + 2.5);
+      const tp = ev.tp1 || (side === 'BUY' ? k.close + 1.0 : k.close - 1.0);
+
+      appState.signals.unshift({
+        id: `mdt-sig-${Date.now()}`,
+        time: new Date().toISOString(),
+        strategy: `MDT Engine [${mdtEngineProfile}] (Score: ${ev.score ?? 5}/7)`,
+        side,
+        entry: ev.entry || k.close,
+        stop_loss: sl,
+        take_profit: tp,
+        rr: 1.0,
+        status: 'pris',
+        filter: 'aucun',
+        reason_fr: `Signal autonome MDT détecté avec ${ev.score ?? 5}/7 confluences sur bougie clôturée.`,
+      });
+
+      appState.logs.unshift({
+        id: `mdt-log-${Date.now()}`,
+        time: new Date().toISOString(),
+        level: 'info',
+        message: `🎯 [Moteur MDT Autonome] Signal ${ev.action} généré ! Entrée: ${ev.entry || k.close} $, SL: ${sl.toFixed(2)} $, TP1: ${tp.toFixed(2)} $ (Confluences: ${ev.score ?? 5}/7).`,
+      });
+
+      if (mdtAutoPilot) {
+        const count = mdtEngineProfile === 'HFT Micro-Scalper' ? mdtMultiFireCount : 1;
+        const targetDelta = mdtTargetProfitUsd / (lot * 100);
+        for (let i = 0; i < count; i++) {
+          const tradeId = `hft-tr-${Date.now()}-${i + 1}`;
+          const tradeTp = side === 'BUY' ? k.close + targetDelta : k.close - targetDelta;
+          const tradeSl = side === 'BUY' ? k.close - 2.5 : k.close + 2.5;
+
+          appState.trades.unshift({
+            id: tradeId,
+            opened_at: new Date().toISOString(),
+            closed_at: null,
+            side,
+            entry: k.close,
+            exit: null,
+            stop_loss: Number(tradeSl.toFixed(2)),
+            take_profit: Number(tradeTp.toFixed(2)),
+            r_result: 0,
+            pnl_usd: 0,
+            strategy: `HFT Micro-Scalp Target $${mdtTargetProfitUsd.toFixed(2)}`,
+            mode: appState.broker?.account_type || 'demo',
+            volume: lot,
+            is_hft_micro: true,
+            target_profit_usd: mdtTargetProfitUsd,
+          });
+        }
+        appState.bot_status.state = 'en_trade';
+
+        if (appState.metaapi?.auto_trade_enabled && appState.metaapi?.token && appState.metaapi?.account_id) {
+          const sym = appState.metaapi.symbol || 'GOLD';
+          for (let c = 0; c < count; c++) {
+            executeMetaApiOrder({
+              action: side,
+              symbol: sym,
+              volume: lot,
+              stopLoss: sl,
+              takeProfit: tp,
+              comment: `MDT Autonome ${c + 1}/${count}`,
+            }).catch((e) => console.error('[MetaApi Auto Order Error]:', e));
+          }
+        }
+      }
+      saveStateToDisk();
+      broadcastStateUpdate();
+    }
   }
 }
 
@@ -564,6 +724,127 @@ app.post('/api/hft/multi-fire', async (req, res) => {
           volume: safeLot,
           comment: `HFT Stack ${i + 1}/${safeCount}`,
         }).catch((e) => console.error('[MetaApi Multi-Fire Error]:', e));
+      }
+    }
+
+    res.json({ success: true, count: openedTrades.length, trades: openedTrades });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// MDT Engine Configuration & Control Endpoints
+app.post('/api/mdt/config', (req, res) => {
+  try {
+    const { profile, timeframe, auto_pilot, target_profit_usd, multi_fire_count } = req.body;
+    if (profile) mdtEngineProfile = profile;
+    if (timeframe) mdtTimeframe = timeframe;
+    if (auto_pilot !== undefined) mdtAutoPilot = Boolean(auto_pilot);
+    if (target_profit_usd !== undefined && Number(target_profit_usd) > 0) {
+      mdtTargetProfitUsd = Number(target_profit_usd);
+    }
+    if (multi_fire_count !== undefined && Number(multi_fire_count) > 0) {
+      mdtMultiFireCount = Math.min(Math.max(Number(multi_fire_count), 1), 5);
+    }
+
+    mdtEngine = new MdtEngine({
+      profile: mdtEngineProfile,
+      symbol: appState.metaapi?.symbol || 'GOLD',
+    });
+
+    if (appState.mdt_engine) {
+      appState.mdt_engine.profile = mdtEngineProfile;
+      appState.mdt_engine.timeframe = mdtTimeframe;
+      appState.mdt_engine.auto_pilot = mdtAutoPilot;
+      appState.mdt_engine.target_profit_usd = mdtTargetProfitUsd;
+      appState.mdt_engine.multi_fire_count = mdtMultiFireCount;
+      appState.mdt_engine.req_score = mdtEngine.reqScore;
+    }
+
+    appState.logs.unshift({
+      id: `log-mdt-cfg-${Date.now()}`,
+      time: new Date().toISOString(),
+      level: 'info',
+      message: `[Moteur MDT] Réglages : Profil ${mdtEngineProfile} (${mdtTimeframe}) · Pilote auto : ${mdtAutoPilot ? 'ACTIF' : 'DÉSACTIVÉ'} · Cible HFT : $${mdtTargetProfitUsd} · Multi-tir : ${mdtMultiFireCount}x.`,
+    });
+
+    saveStateToDisk();
+    broadcastStateUpdate();
+    res.json({ success: true, mdt_engine: appState.mdt_engine });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+app.post('/api/mdt/scan-now', (_req, res) => {
+  try {
+    if (appState.candles && appState.candles.length > 0) {
+      evaluateMdtCandle(appState.candles[appState.candles.length - 1], appState.candles);
+    }
+    saveStateToDisk();
+    broadcastStateUpdate();
+    res.json({ success: true, mdt_engine: appState.mdt_engine });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/mdt/test-fire', (req, res) => {
+  try {
+    const side = (req.body?.side || 'BUY').toUpperCase();
+    const p = appState.bot_status.last_price || 3385.40;
+    const safeLot = appState.metaapi?.lot_size || 0.01;
+    const count = mdtMultiFireCount || 3;
+    const targetDelta = mdtTargetProfitUsd / (safeLot * 100);
+    const slDelta = 2.50;
+    const openedTrades = [];
+
+    for (let i = 0; i < count; i++) {
+      const tradeId = `hft-tr-${Date.now()}-${i + 1}`;
+      const tp = side === 'BUY' ? p + targetDelta : p - targetDelta;
+      const sl = side === 'BUY' ? p - slDelta : p + slDelta;
+
+      const newTrade = {
+        id: tradeId,
+        opened_at: new Date().toISOString(),
+        closed_at: null,
+        side,
+        entry: p,
+        exit: null,
+        stop_loss: Number(sl.toFixed(2)),
+        take_profit: Number(tp.toFixed(2)),
+        r_result: 0,
+        pnl_usd: 0,
+        strategy: `Test Forcé MDT Target $${mdtTargetProfitUsd.toFixed(2)}`,
+        mode: appState.broker?.account_type || 'demo',
+        volume: safeLot,
+        is_hft_micro: true,
+        target_profit_usd: mdtTargetProfitUsd,
+      };
+      appState.trades.unshift(newTrade);
+      openedTrades.push(newTrade);
+    }
+
+    appState.bot_status.state = 'en_trade';
+    appState.logs.unshift({
+      id: `log-test-fire-${Date.now()}`,
+      time: new Date().toISOString(),
+      level: 'info',
+      message: `[MDT Test Forcé] ${count} positions ${side} déclenchées à ${p.toFixed(2)} $. Cible: $${mdtTargetProfitUsd.toFixed(2)}.`,
+    });
+
+    saveStateToDisk();
+    broadcastStateUpdate();
+
+    if (appState.metaapi?.auto_trade_enabled && appState.metaapi?.token && appState.metaapi?.account_id) {
+      const sym = appState.metaapi.symbol || 'GOLD';
+      for (let c = 0; c < count; c++) {
+        executeMetaApiOrder({
+          action: side,
+          symbol: sym,
+          volume: safeLot,
+          comment: `Test Forcé ${c + 1}/${count}`,
+        }).catch((e) => console.error('[MetaApi Test Fire Error]:', e));
       }
     }
 
@@ -1093,6 +1374,9 @@ setInterval(async () => {
 
       appState.stream_latency_ms = Math.floor(Math.random() * 12) + 12;
       appState.bot_status.updated_at = new Date().toISOString();
+
+      // Run continuous embedded MDT engine evaluation on the active market candles
+      evaluateMdtCandle(lastCandle, candles);
 
       // Auto-closer for HFT micro-trades when target profit ($0.60 to $2.00) is reached
       for (const trade of appState.trades) {
