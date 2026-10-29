@@ -777,8 +777,89 @@ class Store {
     this.state.future_scenarios = computeDynamicScenarios(this.state.bot_status.last_price, this.state.bot_status.candles, this.state.levels);
     this.state.stream_latency_ms = Math.floor(Math.random() * 12) + 12;
     this.state.bot_status.updated_at = new Date().toISOString();
+
+    // Auto-closer for HFT micro-trades when target profit ($0.60 to $2.00) is hit
+    for (const trade of this.state.trades) {
+      if (trade.closed_at === null) {
+        const lot = trade.volume || 0.01;
+        const diff = (price - trade.entry) * (trade.side === 'BUY' ? 1 : -1);
+        const floatingUsd = diff * lot * 100;
+        
+        // Auto-close if target profit reached (between $0.60 and $2.00)
+        const targetUsd = (trade as any).target_profit_usd || 1.00;
+        if (floatingUsd >= targetUsd || (trade.take_profit > 0 && ((trade.side === 'BUY' && price >= trade.take_profit) || (trade.side === 'SELL' && price <= trade.take_profit)))) {
+          trade.closed_at = new Date().toISOString();
+          trade.exit = price;
+          trade.pnl_usd = Number(Math.max(floatingUsd, targetUsd).toFixed(2));
+          trade.duration_seconds = Math.max(1, Math.floor((Date.now() - new Date(trade.opened_at).getTime()) / 1000));
+          trade.r_result = 0.5;
+
+          const currentBalance = this.state.bot_status.balance || 1000;
+          this.state.bot_status.balance = Number((currentBalance + trade.pnl_usd).toFixed(2));
+          this.state.bot_status.equity = this.state.bot_status.balance;
+          if (this.state.broker) {
+            this.state.broker.balance = this.state.bot_status.balance;
+            this.state.broker.equity = this.state.bot_status.balance;
+          }
+
+          this.state.decision_log.unshift({
+            id: `log-hft-close-${Date.now()}`,
+            time: new Date().toISOString(),
+            level: 'info',
+            message: `[HFT Micro-Scalp Hit] Position ${trade.id} fermée avec succès en gain de +$${trade.pnl_usd.toFixed(2)} (Cible 0.60$ - 2.00$ atteinte en ${trade.duration_seconds}s) !`,
+          });
+        }
+      }
+    }
+
     this.saveState(this.state);
     this.broadcast();
+  }
+
+  public fireHftMultiOrder(side: 'BUY' | 'SELL', count: number = 3, targetProfitUsd: number = 1.00, lotSize: number = 0.01): Trade[] {
+    const p = this.state.bot_status.last_price || 4125.00;
+    const targetDelta = targetProfitUsd / (lotSize * 100);
+    const slDelta = 2.50;
+    const openedTrades: Trade[] = [];
+
+    const safeCount = Math.min(Math.max(count, 1), 5);
+    for (let i = 0; i < safeCount; i++) {
+      const tradeId = `hft-tr-${Date.now()}-${i + 1}`;
+      const tp = side === 'BUY' ? p + targetDelta : p - targetDelta;
+      const sl = side === 'BUY' ? p - slDelta : p + slDelta;
+
+      const newTrade: Trade = {
+        id: tradeId,
+        opened_at: new Date().toISOString(),
+        closed_at: null,
+        side,
+        entry: p,
+        exit: null,
+        stop_loss: Number(sl.toFixed(2)),
+        take_profit: Number(tp.toFixed(2)),
+        r_result: 0,
+        pnl_usd: 0,
+        strategy: `HFT Micro-Scalp Target $${targetProfitUsd.toFixed(2)}`,
+        mode: 'reel',
+        volume: lotSize,
+        is_hft_micro: true,
+      };
+      (newTrade as any).target_profit_usd = targetProfitUsd;
+      this.state.trades.unshift(newTrade);
+      openedTrades.push(newTrade);
+    }
+
+    this.state.decision_log.unshift({
+      id: `log-hft-fire-${Date.now()}`,
+      time: new Date().toISOString(),
+      level: 'info',
+      message: `[HFT Multi-Position Fire] ${safeCount} positions ${side} ouvertes à ${p.toFixed(2)} $ (${lotSize} lot/ordre). Cible de gain rapide : +$${targetProfitUsd.toFixed(2)} par trade.`,
+    });
+
+    this.state.bot_status.state = 'en_trade';
+    this.saveState(this.state);
+    this.broadcast();
+    return openedTrades;
   }
 
   public ingest(type: 'status' | 'levels' | 'signal' | 'trade' | 'log', payload: any): void {

@@ -4,6 +4,7 @@ import { TradingChart } from '../components/TradingChart';
 import { TradingViewChart } from '../components/TradingViewChart';
 import { FutureScenariosCard } from '../components/FutureScenariosCard';
 import { HftExecutionConsole } from '../components/HftExecutionConsole';
+import { HftHitRateTracker } from '../components/HftHitRateTracker';
 import { MdtRadarTable } from '../components/MdtRadarTable';
 import { MdtChecklistModal } from '../components/MdtChecklistModal';
 import { SafetyGauges } from '../components/SafetyGauges';
@@ -221,14 +222,30 @@ export const DashboardPage: React.FC = () => {
               <span>Checklist MDT</span>
             </button>
 
-            <button
-              onClick={() => setIsBrokerModalOpen(true)}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-mono font-semibold bg-[#141824] text-cyan-300 hover:text-white border border-cyan-500/30 hover:border-cyan-400 transition active:scale-95 shadow-sm cursor-pointer"
-              title="Connecter et piloter le compte démo courtier (XM Global, MT5, Exness, Deriv)"
-            >
-              <Cpu className="w-3.5 h-3.5 text-cyan-400" />
-              <span>{state?.broker?.connected ? `${state.broker.broker_type} Démo (${state.broker.last_ping_ms}ms)` : 'Lier Démo Courtier'}</span>
-            </button>
+            {/* Unified Broker & MetaApi Connect Status */}
+            {(() => {
+              const isAccountConnected = Boolean(state?.metaapi?.connected || state?.broker?.connected);
+              const accountLabel = state?.metaapi?.connected
+                ? `MetaApi MT5 ($${(state.metaapi.balance || bot_status.balance || 1000).toLocaleString('fr-FR')})`
+                : state?.broker?.connected
+                  ? `${state.broker.broker_type} Démo (${state.broker.last_ping_ms || 18}ms)`
+                  : 'Lier Démo Courtier';
+
+              return (
+                <button
+                  onClick={() => setIsBrokerModalOpen(true)}
+                  className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-mono font-semibold transition active:scale-95 shadow-sm cursor-pointer ${
+                    isAccountConnected
+                      ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/40 shadow-sm shadow-emerald-500/20'
+                      : 'bg-[#141824] text-cyan-300 hover:text-white border border-cyan-500/30 hover:border-cyan-400'
+                  }`}
+                  title="Gérer les comptes courtiers connectés (MetaApi MT5, XM Global, Exness, Deriv)"
+                >
+                  <Cpu className={`w-3.5 h-3.5 ${isAccountConnected ? 'text-emerald-400' : 'text-cyan-400'}`} />
+                  <span>{isAccountConnected ? `✓ ${accountLabel}` : 'Lier Démo Courtier'}</span>
+                </button>
+              );
+            })()}
 
             <button
               onClick={() => setIsPineScriptModalOpen(true)}
@@ -587,6 +604,9 @@ export const DashboardPage: React.FC = () => {
 
       {/* CONSOLE D'EXÉCUTION HFT & MICRO-SCALPING ULTRA-BASSE LATENCE */}
       <HftExecutionConsole currentPrice={lastPrice} />
+
+      {/* TRACKER DE PERFORMANCE & HIT RATE HFT (MICRO-GAINS 0,60 $ A 2,00 $) */}
+      <HftHitRateTracker currentPrice={lastPrice} />
 
       {/* SCÉNARIOS FUTURS & CONFLUENCES EN ÉTOILES (FLIP MDT & ORDRES LIMIT SUR ZONES) */}
       <FutureScenariosCard

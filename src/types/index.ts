@@ -77,6 +77,9 @@ export interface Trade {
   pnl_usd: number;
   strategy: string;
   mode: TradingMode;
+  volume?: number;
+  duration_seconds?: number;
+  is_hft_micro?: boolean;
 }
 
 export interface DecisionLog {

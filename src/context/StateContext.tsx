@@ -52,6 +52,29 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         setLatencyMs(roundTrip > 0 ? roundTrip : 12);
         setState(data);
         setLastHeartbeat(Date.now());
+
+        // Auto-rehydrate MetaApi credentials from localStorage if server was restarted
+        try {
+          const stored = localStorage.getItem('metaapi_persisted_config');
+          if (stored) {
+            const parsed = JSON.parse(stored);
+            if (parsed.token && parsed.account_id && (!data.metaapi?.token || !data.metaapi?.connected)) {
+              fetch('/api/metaapi/config', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(parsed),
+              }).then(() => {
+                fetch('/api/metaapi/sync-account', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(parsed),
+                });
+              });
+            }
+          }
+        } catch (e) {
+          // ignore
+        }
       }
     } catch (err) {
       console.error('Failed to fetch state:', err);
@@ -197,6 +220,14 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const saveMetaApiConfig = async (config: Partial<MetaApiConfig>): Promise<MetaApiConfig> => {
+    try {
+      const stored = localStorage.getItem('metaapi_persisted_config');
+      const parsed = stored ? JSON.parse(stored) : {};
+      localStorage.setItem('metaapi_persisted_config', JSON.stringify({ ...parsed, ...config }));
+    } catch (e) {
+      // ignore
+    }
+
     const res = await fetch('/api/metaapi/config', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

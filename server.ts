@@ -675,6 +675,39 @@ app.post('/api/metaapi/trade', async (req: Request, res: Response) => {
   }
 });
 
+// Multi-Position HFT Fire (Stacking micro-trades targeting $0.60 to $2.00)
+app.post('/api/hft/multi-fire', (req: Request, res: Response) => {
+  try {
+    const { side, count, targetProfitUsd, lotSize } = req.body;
+    if (!side || (side !== 'BUY' && side !== 'SELL')) {
+      res.status(400).json({ error: 'Direction requise (BUY ou SELL).' });
+      return;
+    }
+    const safeCount = Number(count) || 3;
+    const safeTarget = Number(targetProfitUsd) || 1.00;
+    const safeLot = Number(lotSize) || 0.01;
+
+    const openedTrades = store.fireHftMultiOrder(side, safeCount, safeTarget, safeLot);
+
+    // If MetaApi is connected and auto-trade is enabled, route them to MetaApi
+    const currentState = store.getState();
+    if (currentState.metaapi?.connected && currentState.metaapi?.auto_trade_enabled) {
+      for (let i = 0; i < safeCount; i++) {
+        executeMetaApiOrder({
+          action: side,
+          symbol: currentState.metaapi.symbol || 'GOLD',
+          volume: safeLot,
+          comment: `HFT Micro-Stack ${i + 1}/${safeCount}`,
+        }).catch((e) => console.error('[MetaApi Multi-Fire Error]:', e));
+      }
+    }
+
+    res.json({ success: true, count: openedTrades.length, trades: openedTrades });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Advance scenario step (interactive demo)
 app.post('/api/demo/advance-sequence', (_req: Request, res: Response) => {
   const result = store.advanceDemoSequence();

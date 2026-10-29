@@ -58,14 +58,6 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onSelectPage }) => 
 
   return (
     <header className="sticky top-0 z-40 w-full bg-[#080a11]/95 backdrop-blur-xl border-b border-white/[0.08]">
-      {/* 1. Alerte d'inactivité si aucune donnée reçue */}
-      {isBotUnresponsive && (
-        <div className="bg-[#ff6b5b]/15 border-b border-[#ff6b5b]/40 px-4 py-2 flex items-center justify-center gap-2 text-xs font-semibold text-[#ff6b5b]">
-          <AlertTriangle className="w-4 h-4 shrink-0 animate-bounce" />
-          <span>Le flux est silencieux depuis plus de {Math.max(minutesSinceLastUpdate, 2)} minutes. Vérifiez vos alertes TradingView ou votre robot.</span>
-        </div>
-      )}
-
       {/* 2. Top Bar Ticker & Institutional Micro-Telemetry */}
       <div className="flex items-center justify-between px-4 sm:px-6 py-1.5 bg-[#05060a] border-b border-white/[0.06] text-[11px] font-mono">
         <div className="flex items-center gap-3 flex-wrap">
@@ -97,6 +89,27 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onSelectPage }) => 
 
         {/* Right side telemetry */}
         <div className="flex items-center gap-3 text-zinc-400 text-[11px]">
+          {/* Unified Connected Account Badge */}
+          {state?.metaapi?.connected || state?.broker?.connected ? (
+            <button
+              onClick={() => setIsBrokerModalOpen(true)}
+              className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/35 text-[10px] cursor-pointer hover:bg-emerald-500/25 transition shadow-sm shadow-emerald-500/20"
+              title="Compte courtier connecté et prêt pour les ordres automatiques"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span>{state?.metaapi?.connected ? `MetaApi MT5 ($${(state.metaapi.balance || state.bot_status?.balance || 1000).toLocaleString('fr-FR')})` : `${state?.broker?.broker_type} Démo`}</span>
+            </button>
+          ) : (
+            <button
+              onClick={() => setIsBrokerModalOpen(true)}
+              className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-700 text-[10px] cursor-pointer"
+              title="Lier un compte MetaApi MT5 ou Démo Courtier"
+            >
+              <Cpu className="w-3 h-3 text-cyan-400" />
+              <span>Lier Compte Démo / MT5</span>
+            </button>
+          )}
+
           {/* Mode Pill */}
           {isReal ? (
             <span className="flex items-center gap-1.5 px-2 py-0.5 rounded font-bold uppercase tracking-wider bg-rose-500/15 text-rose-400 border border-rose-500/30 text-[10px]">
@@ -121,7 +134,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onSelectPage }) => 
             title="Activer ou désactiver l'actualisation en temps réel"
           >
             <RefreshCw className={`w-2.5 h-2.5 ${isAutoRefresh ? 'animate-spin' : ''}`} />
-            <span>{isAutoRefresh ? 'Direct (3.5s)' : 'Pause'}</span>
+            <span>{isAutoRefresh ? 'Direct (1s)' : 'Pause'}</span>
           </button>
 
           <span className="hidden md:inline font-mono text-zinc-300">vdohinnon22@gmail.com</span>
