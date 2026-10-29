@@ -1,69 +1,13 @@
 {
   "bot_status": {
-    "state": "surveillance",
+    "state": "en_trade",
     "mode": "simulation",
     "symbol": "GOLD (XAUUSD)",
     "timeframe": "5m",
-    "last_price": 4029.18,
+    "last_price": 4022.13,
     "equity": null,
     "balance": null,
     "candles": [
-      {
-        "time": 1793264700,
-        "open": 4030.95,
-        "high": 4040.88,
-        "low": 4030.25,
-        "close": 4039.25
-      },
-      {
-        "time": 1793265000,
-        "open": 4038.9,
-        "high": 4038.9,
-        "low": 4034.6,
-        "close": 4034.6
-      },
-      {
-        "time": 1793265300,
-        "open": 4034.53,
-        "high": 4036.07,
-        "low": 4030.32,
-        "close": 4030.32
-      },
-      {
-        "time": 1793265600,
-        "open": 4030.01,
-        "high": 4034.04,
-        "low": 4030,
-        "close": 4031.81
-      },
-      {
-        "time": 1793265900,
-        "open": 4032.02,
-        "high": 4033.09,
-        "low": 4030.03,
-        "close": 4030.73
-      },
-      {
-        "time": 1793266200,
-        "open": 4030.73,
-        "high": 4031.06,
-        "low": 4029.42,
-        "close": 4029.42
-      },
-      {
-        "time": 1793266500,
-        "open": 4029.28,
-        "high": 4031.47,
-        "low": 4028.56,
-        "close": 4031.47
-      },
-      {
-        "time": 1793266800,
-        "open": 4031.64,
-        "high": 4031.64,
-        "low": 4030.77,
-        "close": 4031.36
-      },
       {
         "time": 1793267100,
         "open": 4031.46,
@@ -564,321 +508,435 @@
       {
         "time": 1793288400,
         "open": 4030.23,
-        "high": 4030.23,
-        "low": 4029.18,
-        "close": 4029.18
+        "high": 4030.61,
+        "low": 4028.12,
+        "close": 4028.59
+      },
+      {
+        "time": 1793288700,
+        "open": 4028.59,
+        "high": 4028.69,
+        "low": 4025.27,
+        "close": 4025.27
+      },
+      {
+        "time": 1793289000,
+        "open": 4025.28,
+        "high": 4030.42,
+        "low": 4025.28,
+        "close": 4029.16
+      },
+      {
+        "time": 1793289300,
+        "open": 4029.14,
+        "high": 4030.1,
+        "low": 4028.45,
+        "close": 4028.45
+      },
+      {
+        "time": 1793289600,
+        "open": 4028.46,
+        "high": 4028.46,
+        "low": 4026.01,
+        "close": 4027.92
+      },
+      {
+        "time": 1793289900,
+        "open": 4027.91,
+        "high": 4027.91,
+        "low": 4022.57,
+        "close": 4023.06
+      },
+      {
+        "time": 1793290200,
+        "open": 4022.66,
+        "high": 4023.99,
+        "low": 4018.26,
+        "close": 4022.47
+      },
+      {
+        "time": 1793290500,
+        "open": 4022.47,
+        "high": 4023.27,
+        "low": 4020.68,
+        "close": 4022.71
+      },
+      {
+        "time": 1793290800,
+        "open": 4021.9,
+        "high": 4022.13,
+        "low": 4021.72,
+        "close": 4022.13
       }
     ],
     "plan": null,
-    "updated_at": "2026-10-29T15:40:38.089Z"
+    "updated_at": "2026-10-29T16:21:29.933Z"
   },
   "levels": {
     "day": "2026-10-29",
     "asian_high": 4042.82,
-    "asian_low": 4028.56,
+    "asian_low": 4024.18,
     "prev_day_high": 4042.82,
-    "prev_day_low": 4024.1
+    "prev_day_low": 4018.26
   },
   "signals": [],
-  "trades": [],
+  "trades": [
+    {
+      "id": "hft-tr-1793290745927-3",
+      "opened_at": "2026-10-29T16:19:05.927Z",
+      "closed_at": null,
+      "side": "BUY",
+      "entry": 4022.12,
+      "exit": null,
+      "stop_loss": 4019.62,
+      "take_profit": 4023.12,
+      "r_result": 0,
+      "pnl_usd": 0,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1
+    },
+    {
+      "id": "hft-tr-1793290745927-2",
+      "opened_at": "2026-10-29T16:19:05.927Z",
+      "closed_at": null,
+      "side": "BUY",
+      "entry": 4022.12,
+      "exit": null,
+      "stop_loss": 4019.62,
+      "take_profit": 4023.12,
+      "r_result": 0,
+      "pnl_usd": 0,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1
+    },
+    {
+      "id": "hft-tr-1793290745927-1",
+      "opened_at": "2026-10-29T16:19:05.927Z",
+      "closed_at": null,
+      "side": "BUY",
+      "entry": 4022.12,
+      "exit": null,
+      "stop_loss": 4019.62,
+      "take_profit": 4023.12,
+      "r_result": 0,
+      "pnl_usd": 0,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1
+    }
+  ],
   "decision_log": [
     {
-      "id": "metaapi-log-1793288437865",
-      "time": "2026-10-29T15:40:37.865Z",
+      "id": "metaapi-log-1793290890654",
+      "time": "2026-10-29T16:21:30.654Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288436866",
-      "time": "2026-10-29T15:40:36.866Z",
+      "id": "metaapi-log-1793290889655",
+      "time": "2026-10-29T16:21:29.655Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288435867",
-      "time": "2026-10-29T15:40:35.867Z",
+      "id": "metaapi-log-1793290888634",
+      "time": "2026-10-29T16:21:28.634Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288434897",
-      "time": "2026-10-29T15:40:34.897Z",
+      "id": "metaapi-log-1793290887508",
+      "time": "2026-10-29T16:21:27.508Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288432953",
-      "time": "2026-10-29T15:40:32.953Z",
+      "id": "metaapi-log-1793290886506",
+      "time": "2026-10-29T16:21:26.506Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288431929",
-      "time": "2026-10-29T15:40:31.929Z",
+      "id": "metaapi-log-1793290885602",
+      "time": "2026-10-29T16:21:25.602Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288431004",
-      "time": "2026-10-29T15:40:31.004Z",
+      "id": "metaapi-log-1793290884516",
+      "time": "2026-10-29T16:21:24.516Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288427930",
-      "time": "2026-10-29T15:40:27.930Z",
+      "id": "metaapi-log-1793290883349",
+      "time": "2026-10-29T16:21:23.349Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288426850",
-      "time": "2026-10-29T15:40:26.850Z",
+      "id": "metaapi-log-1793290882079",
+      "time": "2026-10-29T16:21:22.079Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288425880",
-      "time": "2026-10-29T15:40:25.880Z",
+      "id": "metaapi-log-1793290880953",
+      "time": "2026-10-29T16:21:20.953Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288424859",
-      "time": "2026-10-29T15:40:24.859Z",
+      "id": "metaapi-log-1793290879815",
+      "time": "2026-10-29T16:21:19.815Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288423954",
-      "time": "2026-10-29T15:40:23.955Z",
+      "id": "metaapi-log-1793290878491",
+      "time": "2026-10-29T16:21:18.491Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288422954",
-      "time": "2026-10-29T15:40:22.954Z",
+      "id": "metaapi-log-1793290877371",
+      "time": "2026-10-29T16:21:17.371Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288421850",
-      "time": "2026-10-29T15:40:21.850Z",
+      "id": "metaapi-log-1793290876134",
+      "time": "2026-10-29T16:21:16.134Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288420951",
-      "time": "2026-10-29T15:40:20.951Z",
+      "id": "metaapi-log-1793290874921",
+      "time": "2026-10-29T16:21:14.921Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288419847",
-      "time": "2026-10-29T15:40:19.847Z",
+      "id": "metaapi-log-1793290873783",
+      "time": "2026-10-29T16:21:13.783Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288418920",
-      "time": "2026-10-29T15:40:18.920Z",
+      "id": "metaapi-log-1793290872692",
+      "time": "2026-10-29T16:21:12.692Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288417898",
-      "time": "2026-10-29T15:40:17.898Z",
+      "id": "metaapi-log-1793290871607",
+      "time": "2026-10-29T16:21:11.607Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288416946",
-      "time": "2026-10-29T15:40:16.946Z",
+      "id": "metaapi-log-1793290870605",
+      "time": "2026-10-29T16:21:10.605Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288415851",
-      "time": "2026-10-29T15:40:15.851Z",
+      "id": "metaapi-log-1793290869647",
+      "time": "2026-10-29T16:21:09.647Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288414846",
-      "time": "2026-10-29T15:40:14.846Z",
+      "id": "metaapi-log-1793290868792",
+      "time": "2026-10-29T16:21:08.792Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288413797",
-      "time": "2026-10-29T15:40:13.797Z",
+      "id": "metaapi-log-1793290861951",
+      "time": "2026-10-29T16:21:01.951Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288412880",
-      "time": "2026-10-29T15:40:12.880Z",
+      "id": "metaapi-log-1793290860956",
+      "time": "2026-10-29T16:21:00.956Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288411858",
-      "time": "2026-10-29T15:40:11.858Z",
+      "id": "metaapi-log-1793290859909",
+      "time": "2026-10-29T16:20:59.909Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288410830",
-      "time": "2026-10-29T15:40:10.830Z",
+      "id": "metaapi-log-1793290858890",
+      "time": "2026-10-29T16:20:58.890Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288409851",
-      "time": "2026-10-29T15:40:09.851Z",
+      "id": "metaapi-log-1793290857580",
+      "time": "2026-10-29T16:20:57.580Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288408829",
-      "time": "2026-10-29T15:40:08.829Z",
+      "id": "metaapi-log-1793290851662",
+      "time": "2026-10-29T16:20:51.662Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288407787",
-      "time": "2026-10-29T15:40:07.787Z",
+      "id": "metaapi-log-1793290850813",
+      "time": "2026-10-29T16:20:50.813Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288406780",
-      "time": "2026-10-29T15:40:06.780Z",
+      "id": "metaapi-log-1793290845140",
+      "time": "2026-10-29T16:20:45.140Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288405784",
-      "time": "2026-10-29T15:40:05.784Z",
+      "id": "metaapi-log-1793290843985",
+      "time": "2026-10-29T16:20:43.985Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288404787",
-      "time": "2026-10-29T15:40:04.787Z",
+      "id": "metaapi-log-1793290843062",
+      "time": "2026-10-29T16:20:43.062Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288403783",
-      "time": "2026-10-29T15:40:03.783Z",
+      "id": "metaapi-log-1793290842037",
+      "time": "2026-10-29T16:20:42.037Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288402783",
-      "time": "2026-10-29T15:40:02.783Z",
+      "id": "metaapi-log-1793290841121",
+      "time": "2026-10-29T16:20:41.121Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288401817",
-      "time": "2026-10-29T15:40:01.817Z",
+      "id": "metaapi-log-1793290840003",
+      "time": "2026-10-29T16:20:40.003Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288400796",
-      "time": "2026-10-29T15:40:00.796Z",
+      "id": "metaapi-log-1793290838929",
+      "time": "2026-10-29T16:20:38.929Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288399878",
-      "time": "2026-10-29T15:39:59.878Z",
+      "id": "metaapi-log-1793290837904",
+      "time": "2026-10-29T16:20:37.904Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288398779",
-      "time": "2026-10-29T15:39:58.779Z",
+      "id": "metaapi-log-1793290831904",
+      "time": "2026-10-29T16:20:31.904Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288397829",
-      "time": "2026-10-29T15:39:57.830Z",
+      "id": "metaapi-log-1793290830876",
+      "time": "2026-10-29T16:20:30.876Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288396798",
-      "time": "2026-10-29T15:39:56.798Z",
+      "id": "metaapi-log-1793290829656",
+      "time": "2026-10-29T16:20:29.656Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288395783",
-      "time": "2026-10-29T15:39:55.783Z",
+      "id": "metaapi-log-1793290828623",
+      "time": "2026-10-29T16:20:28.623Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288394863",
-      "time": "2026-10-29T15:39:54.863Z",
+      "id": "metaapi-log-1793290827322",
+      "time": "2026-10-29T16:20:27.322Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288393835",
-      "time": "2026-10-29T15:39:53.835Z",
+      "id": "metaapi-log-1793290826372",
+      "time": "2026-10-29T16:20:26.372Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288392809",
-      "time": "2026-10-29T15:39:52.809Z",
+      "id": "metaapi-log-1793290825283",
+      "time": "2026-10-29T16:20:25.283Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288391780",
-      "time": "2026-10-29T15:39:51.780Z",
+      "id": "metaapi-log-1793290824451",
+      "time": "2026-10-29T16:20:24.451Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288390777",
-      "time": "2026-10-29T15:39:50.777Z",
+      "id": "metaapi-log-1793290822484",
+      "time": "2026-10-29T16:20:22.484Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288389777",
-      "time": "2026-10-29T15:39:49.777Z",
+      "id": "metaapi-log-1793290821353",
+      "time": "2026-10-29T16:20:21.353Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288388767",
-      "time": "2026-10-29T15:39:48.767Z",
+      "id": "metaapi-log-1793290820112",
+      "time": "2026-10-29T16:20:20.112Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288387769",
-      "time": "2026-10-29T15:39:47.769Z",
+      "id": "metaapi-log-1793290819104",
+      "time": "2026-10-29T16:20:19.104Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288386765",
-      "time": "2026-10-29T15:39:46.765Z",
+      "id": "metaapi-log-1793290818024",
+      "time": "2026-10-29T16:20:18.024Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     },
     {
-      "id": "metaapi-log-1793288385832",
-      "time": "2026-10-29T15:39:45.832Z",
+      "id": "metaapi-log-1793290817122",
+      "time": "2026-10-29T16:20:17.122Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+    },
+    {
+      "id": "metaapi-log-1793290816029",
+      "time": "2026-10-29T16:20:16.029Z",
       "level": "info",
       "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
     }
@@ -934,35 +992,35 @@
     {
       "tf": "H4",
       "trend": "Baissier",
-      "bullOb": "4021.60 - 4024.10",
+      "bullOb": "4015.76 - 4018.26",
       "bearOb": "4042.82 - 4046.02",
-      "distancePct": 0.34,
+      "distancePct": 0.51,
       "stars": 3,
       "confText": "Biais vendeur HTF"
     },
     {
       "tf": "H1",
       "trend": "Baissier",
-      "bullOb": "4024.14 - 4025.94",
+      "bullOb": "4018.26 - 4020.06",
       "bearOb": "4038.95 - 4040.75",
-      "distancePct": 0.29,
+      "distancePct": 0.46,
       "stars": 3,
       "confText": "Zone institutionnelle active"
     },
     {
       "tf": "M15",
       "trend": "Baissier",
-      "bullOb": "4025.34 - 4026.64",
+      "bullOb": "4019.46 - 4020.76",
       "bearOb": "4038.25 - 4039.55",
-      "distancePct": 0.24,
+      "distancePct": 0.41,
       "stars": 2,
       "confText": "Scénario en formation"
     },
     {
       "tf": "M5",
-      "trend": "Haissier",
-      "bullOb": "4026.38 - 4027.68",
-      "bearOb": "4030.68 - 4031.98",
+      "trend": "Baissier",
+      "bullOb": "4019.33 - 4020.63",
+      "bearOb": "4023.63 - 4024.93",
       "distancePct": 0.07,
       "stars": 2,
       "confText": "Imbalance M5 surveillée"
@@ -970,8 +1028,8 @@
     {
       "tf": "M3",
       "trend": "Baissier",
-      "bullOb": "4027.98 - 4028.58",
-      "bearOb": "4029.78 - 4030.38",
+      "bullOb": "4020.93 - 4021.53",
+      "bearOb": "4022.73 - 4023.33",
       "distancePct": 0.03,
       "stars": 1,
       "confText": "Micro-structure en veille"
@@ -1014,13 +1072,13 @@
       "title": "Scénario A : VENTE Flip MDT (Tendance Maîtresse)",
       "type": "flip_sell",
       "direction": "SELL",
-      "triggerCondition": "SI une bougie M15 CLÔTURE sous la ligne verte (4026.38 $) → VENTE IMMÉDIATE",
+      "triggerCondition": "SI une bougie M15 CLÔTURE sous la ligne verte (4019.33 $) → VENTE IMMÉDIATE",
       "zoneName": "Ligne MDT 5m + H1",
-      "entry": 4026.38,
-      "stop_loss": 4030.88,
-      "take_profit_1": 4024.13,
-      "take_profit_2": 4020.78,
-      "take_profit_3": 4015.18,
+      "entry": 4019.33,
+      "stop_loss": 4023.83,
+      "take_profit_1": 4017.08,
+      "take_profit_2": 4013.73,
+      "take_profit_3": 4008.13,
       "risk_points": 4.5,
       "risk_pips": 45,
       "rr_ratio": 2.5,
@@ -1050,8 +1108,8 @@
       "entry": 4042.02,
       "stop_loss": 4044.62,
       "take_profit_1": 4039.92,
-      "take_profit_2": 4027.68,
-      "take_profit_3": 4025.1,
+      "take_profit_2": 4020.63,
+      "take_profit_3": 4019.26,
       "risk_points": 2.6,
       "risk_pips": 26,
       "rr_ratio": 2.2,
@@ -1076,12 +1134,12 @@
       "title": "Scénario C : BUY LIMIT sur Bullish OB / FVG",
       "type": "limit_buy",
       "direction": "BUY",
-      "triggerCondition": "BUY LIMIT posé au contact du FVG structure 4025.30 $ après sweep",
+      "triggerCondition": "BUY LIMIT posé au contact du FVG structure 4019.46 $ après sweep",
       "zoneName": "FVG+ Structure M15",
-      "entry": 4025.3,
-      "stop_loss": 4022.9,
-      "take_profit_1": 4027.2,
-      "take_profit_2": 4031.18,
+      "entry": 4019.46,
+      "stop_loss": 4017.06,
+      "take_profit_1": 4021.36,
+      "take_profit_2": 4024.13,
       "take_profit_3": 4041.32,
       "risk_points": 2.4,
       "risk_pips": 24,
@@ -1107,13 +1165,13 @@
       "title": "Scénario D : ACHAT Flip MDT (Reprise Haussière)",
       "type": "flip_buy",
       "direction": "BUY",
-      "triggerCondition": "SI une bougie CLÔTURE au-dessus de la résistance dynamique 4032.28 $",
+      "triggerCondition": "SI une bougie CLÔTURE au-dessus de la résistance dynamique 4025.23 $",
       "zoneName": "Breakout MDT Pivot",
-      "entry": 4032.28,
-      "stop_loss": 4027.98,
-      "take_profit_1": 4034.43,
-      "take_profit_2": 4038.73,
-      "take_profit_3": 4044.28,
+      "entry": 4025.23,
+      "stop_loss": 4020.93,
+      "take_profit_1": 4027.38,
+      "take_profit_2": 4031.68,
+      "take_profit_3": 4037.23,
       "risk_points": 4.3,
       "risk_pips": 43,
       "rr_ratio": 2,
@@ -1134,22 +1192,24 @@
       "recommended_lot": 0.01
     }
   ],
-  "stream_latency_ms": 15,
+  "stream_latency_ms": 16,
   "mdt_engine": {
     "running": true,
     "profile": "HFT Micro-Scalper",
     "timeframe": "1m",
     "auto_pilot": true,
     "req_score": 2,
-    "current_score": 0,
-    "active_confluences": [],
-    "trend_direction": 1,
-    "trend_line": null,
-    "micro_high": null,
-    "micro_low": null,
+    "current_score": 2,
+    "active_confluences": [
+      "Tendance HTF Alignée"
+    ],
+    "trend_direction": -1,
+    "trend_line": 4022.27,
+    "micro_high": 4022.13,
+    "micro_low": 4021.72,
     "armed_retest": null,
-    "candles_scanned": 7,
-    "last_scan_time": "2026-10-29T15:40:38.232Z",
+    "candles_scanned": 158,
+    "last_scan_time": "2026-10-29T16:21:29.933Z",
     "last_signal": null,
     "target_profit_usd": 1,
     "multi_fire_count": 3
