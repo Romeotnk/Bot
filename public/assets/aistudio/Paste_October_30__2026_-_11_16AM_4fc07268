@@ -1,0 +1,1260 @@
+//+------------------------------------------------------------------+
+//|                 Robotcorrige_v5.mq5                  |
+//|         Adaptive XAUUSD micro-scalper - DEMO / TESTING ONLY      |
+//+------------------------------------------------------------------+
+#property copyright "MDT Algorithmic Trading"
+#property version   "5.00"
+#property description "Adaptive XAUUSD/GOLD scalper for broker symbol suffixes, protective SL/TP and confirmed early exits"
+#property strict
+
+#include <Trade/Trade.mqh>
+CTrade trade;
+
+// IMPORTANT:
+// - Tick-driven retail scalping, NOT true exchange HFT.
+// - Start on DEMO and use Strategy Tester with realistic ticks.
+// - Score is a rule-based confluence score, NOT a calibrated win probability.
+// - Verify pip convention, symbol name, spread, commission and stop levels.
+
+input group "=== SYMBOL / EXECUTION ==="
+input bool   InpOnlyXAUUSD           = true;
+input double InpPipSizePrice         = 0.10;  // Verify with broker: 1 configured pip = 0.10 price
+input double InpMaxSpreadPips        = 4.0;
+input int    InpDeviationPoints      = 20;
+input bool   InpOpenAllAtOnce      = true;   // true: open ALL positions allowed by the score (2 / 3 / 6) at once, same entry; false: one per cooldown
+input int    InpCooldownMs           = 30000;  // Wait between 2 entries while the confluence signal holds (ms, server time)
+input bool   InpOneEntryPerBar       = false;  // false: 30 s spacing can give 2 entries inside the same M1 bar
+input bool   InpEnableNewEntries     = true;
+
+input group "=== ADAPTIVE SIGNALS ==="
+input int    InpMinScore             = 5;      // Entries start at 5/7 (set 4 to re-enable the 1-position exploratory 4/7 trade)
+input bool   InpUseHtfEma            = true;
+input bool   InpRequireSweep         = false;
+input bool   InpScoreOnlyEntry       = true;  // true: entry when score >= InpMinScore (momentum/trend/sweep no longer mandatory)
+input bool   InpShowDashboard        = true;
+
+input group "=== V5: HONEST SCORE ==="
+input bool   InpHonestScore          = true;   // true: trend + sweep + momentum ALL required (=5/7), +1 volume, +1 prime session (max 7). No constant free points.
+
+input group "=== V5: SESSION FILTER (GMT) ==="
+input bool   InpUseSessionFilter     = true;   // New entries only inside the window below (exits keep running)
+input double InpSessionStartGmt      = 7.0;    // London open
+input double InpSessionEndGmt        = 17.0;   // End of NY morning
+input double InpPrimeStartGmt        = 12.0;   // London/NY overlap start (gives +1 score point)
+input double InpPrimeEndGmt          = 16.0;   // London/NY overlap end
+input double InpFridayCutoffGmt      = 19.0;   // No new entries on Friday after this hour
+input int    InpBrokerGmtOffsetHours = 2;      // Strategy Tester ONLY (live uses TimeGMT). Check your broker server offset!
+
+input group "=== V5: VOLATILITY FILTER (ATR M5) ==="
+input bool   InpUseAtrFilter         = true;   // Block entries when the market is too dead or too wild
+input int    InpAtrPeriod            = 14;
+input double InpMinAtrPips           = 12.0;   // ATR M5 below this: TP unlikely to be reached, spread dominates
+input double InpMaxAtrPips           = 60.0;   // ATR M5 above this: news / spike, stops get run
+
+input group "=== ADAPTIVE POSITION LIMITS ==="
+input int    InpMaxPositionsHigh     = 6;     // Score 7/7 (max 6)
+input int    InpMaxPositionsMedium   = 3;     // Score 6/7
+input int    InpMaxPositionsLow      = 2;     // Score 5/7
+input int    InpMaxPositionsTest     = 1;     // Score 4/7 exploratory trade
+input double InpRiskPercentPerEntry  = 0.10;  // Risk budget per entry, % equity
+input double InpRiskPercentTest      = 0.03;  // Smaller risk budget for 4/7 test entry
+input double InpMaxOpenRiskPct       = 0.60;  // Combined planned SL risk cap, % equity
+input double InpFixedLots            = 0.01;  // Lot per entry (dynamic risk disabled)
+input bool   InpUseDynamicRisk       = false;
+
+input group "=== EXITS / LOSS LIMITS ==="
+input double InpStopPips             = 8.0;   // Per-position hard stop
+input double InpTakeProfitPips       = 8.0;   // Per-position TP at score 4/7 (scores 5, 6, 7 have their own below)
+input double InpTakeProfit5Pips      = 12.0;  // TP 5/7: 2 pos x 12 pips x $0.10 = $2.40 >= basket max 1.80 (at 0.01 lot)
+input double InpTakeProfit6Pips      = 20.0;  // TP 6/7: 3 pos x 20 pips x $0.10 = $6.00 >= basket max 4.50
+input double InpTakeProfit7Pips      = 25.0;  // TP 7/7: 6 pos x 25 pips x $0.10 = $15.0 >= basket max 10.50
+input double InpBasketTarget4USD     = 0.70;  // Basket profit target, basket score 4/7 (1 position)
+input double InpBasketTarget5USD     = 1.80;  // Basket profit MAX, basket score 5/7 (can close earlier: trailing / early exit)
+input double InpBasketTarget6USD     = 4.50;  // Basket profit MAX, basket score 6/7 (can close earlier)
+input double InpBasketTarget7USD     = 10.50; // Basket profit MAX, basket score 7/7 (can close earlier)
+input double InpMaxLossPerTradeUSD   = 2.0;   // Cash cap per trade for scores 4, 5 and 7 (0 = off)
+input double InpMaxLossPerTrade6USD  = 0.0;   // Cash cap per trade for score 6/7 (0 = no cap, so the basket can reach its limit)
+input bool   InpCapByLot             = true;  // true: respect the cap by REDUCING the lot (SL stays InpStopPips); false: tighten the SL instead
+input double InpBasketMaxLoss4USD    = 2.0;   // Basket loss limit, basket score 4/7 (1 position)
+input double InpBasketMaxLoss5USD    = 2.5;   // Basket loss MAX, basket score 5/7 (2 positions max)
+input double InpBasketMaxLoss6USD    = 6.5;   // Basket loss MAX, basket score 6/7 (3 positions max)
+input double InpBasketMaxLoss7USD    = 9.0;   // Basket loss MAX, basket score 7/7 (6 positions max)
+input double InpMaxDailyLossPct      = 25.0;  // Daily limit % of day-start balance (realized + floating)
+input bool   InpCloseOnDailyLock     = true;  // Also close open EA positions when the daily lock triggers
+input int    InpMaxBasketLossesDay   = 0;     // Lock the rest of the day after N basket-loss closes (0 = off)
+input int    InpPauseAfterBasketLossSec = 12; // No new entries for N seconds after a basket-loss close
+input bool   InpUseEarlyExit         = true;  // Close before TP/SL on confirmed reversal
+input bool   InpEarlyExitAllowLoss   = false;  // Allow early loss exit only on strong 3/3 reversal
+input int    InpPauseAfterLossSec    = 12;    // No new entries for N seconds after a losing close (0 = off)
+input bool   InpUseTrailing          = true;
+input double InpTrailingTriggerUSD   = 0.65;  // Trailing starts once a position shows this floating gain in $ (0.65 = 6.5 pips at 0.01 lot)
+input double InpTrailingDistancePips = 5.0;   // Stop follows the price at this distance (pips)
+input bool   InpUseBreakEven         = true;  // Move the SL to break-even once a position shows a small gain (runs before trailing)
+input int    InpBreakEvenMinScore    = 7;     // Only for baskets opened with at least this score (7 = only 7/7, 5 = all)
+input double InpBreakEvenTriggerUSD  = 0.50;  // Floating gain of the position that triggers it (0.50 = 5 pips at 0.01 lot)
+input double InpBreakEvenLockPips    = 1.0;   // SL goes to entry + this many pips (covers the spread)
+input ulong  InpMagicNumber           = 8882026;
+
+input group "=== JOURNAL (data for analysis) ==="
+input bool   InpWriteJournal         = true;  // One CSV row per closed position, file in MQL5/Files
+input int    InpJournalMilestone     = 100;   // Popup alert every N journaled trades (0 = off)
+
+//------------------------- Internal state ---------------------------
+int      emaHandle = INVALID_HANDLE;
+int      atrHandle = INVALID_HANDLE;
+double   dailyPnlPct = 0.0;
+int      serverDayKey = 0;
+bool     dailyLocked = false;
+ulong    lastEntryMs = 0;
+datetime pauseUntil = 0;
+datetime lastEvaluatedBar = 0;
+datetime lastEntryBar = 0;
+datetime lastDailyCheck = 0;
+int      basketLossesToday = 0;
+bool     basketLossHandled = false;
+int      basketScore = 0;   // highest entry score of the current basket
+string   exitTag = "";      // why the EA itself last closed something (for the journal)
+int      journalRows = 0;
+
+struct EntryInfo
+{
+   ulong    posId;
+   int      score;
+   int      trend;
+   int      sweep;
+   int      momentum;
+   int      volume;
+   double   spreadPips;
+   int      basketIndex;
+   double   lots;
+   double   signalPrice;
+   double   fillPrice;
+   long     latencyMs;
+   double   slippagePips;
+   double   atrPips;
+   int      prime;
+};
+EntryInfo g_entries[];
+double   activeRiskPercent = 0.10;
+
+//+------------------------------------------------------------------+
+double PipPrice() { return InpPipSizePrice; }
+
+int ServerDayKey()
+{
+   MqlDateTime tm;
+   TimeToStruct(TimeCurrent(), tm);
+   return tm.year * 10000 + tm.mon * 100 + tm.day;
+}
+
+int VolumeDigits(const double step)
+{
+   for(int d = 0; d <= 8; d++)
+      if(MathAbs(step - NormalizeDouble(step, d)) < 1e-8)
+         return d;
+   return 8;
+}
+
+double NormalizeVolumeDown(double volume)
+{
+   double minVol = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MIN);
+   double maxVol = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MAX);
+   double step   = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_STEP);
+   if(step <= 0.0 || minVol <= 0.0 || maxVol <= 0.0 || volume < minVol)
+      return 0.0;
+
+   volume = MathMin(volume, maxVol);
+   volume = MathFloor((volume + 1e-10) / step) * step;
+   volume = NormalizeDouble(volume, VolumeDigits(step));
+   return (volume >= minVol ? volume : 0.0);
+}
+
+bool IsOurPositionSelected()
+{
+   return PositionGetString(POSITION_SYMBOL) == _Symbol &&
+          (ulong)PositionGetInteger(POSITION_MAGIC) == InpMagicNumber;
+}
+
+int CountOurPositions(int &direction, double &basketProfit, double &plannedRiskCash)
+{
+   int count = 0;
+   direction = -1;
+   basketProfit = 0.0;
+   plannedRiskCash = 0.0;
+
+   for(int i = PositionsTotal() - 1; i >= 0; i--)
+   {
+      ulong ticket = PositionGetTicket(i);
+      if(ticket == 0 || !IsOurPositionSelected())
+         continue;
+
+      count++;
+      long type = PositionGetInteger(POSITION_TYPE);
+      if(direction == -1)
+         direction = (int)type;
+      else if(direction != (int)type)
+         direction = -2; // mixed directions
+
+      basketProfit += PositionGetDouble(POSITION_PROFIT) + PositionGetDouble(POSITION_SWAP);
+
+      double openPrice = PositionGetDouble(POSITION_PRICE_OPEN);
+      double sl = PositionGetDouble(POSITION_SL);
+      double volume = PositionGetDouble(POSITION_VOLUME);
+      double tickVal = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_VALUE);
+      double tickSize = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_SIZE);
+      if(sl > 0.0 && tickVal > 0.0 && tickSize > 0.0)
+         plannedRiskCash += MathAbs(openPrice - sl) / tickSize * tickVal * volume;
+   }
+   return count;
+}
+
+double CalculateLots(const double stopDistancePrice)
+{
+   if(!InpUseDynamicRisk)
+      return NormalizeVolumeDown(InpFixedLots);
+
+   double equity = AccountInfoDouble(ACCOUNT_EQUITY);
+   double tickVal = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_VALUE);
+   double tickSize = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_SIZE);
+   if(equity <= 0.0 || tickVal <= 0.0 || tickSize <= 0.0 || stopDistancePrice <= 0.0)
+      return NormalizeVolumeDown(InpFixedLots);
+
+   int dir;
+   double profit, openRisk;
+   CountOurPositions(dir, profit, openRisk);
+
+   double maxRiskCash = equity * InpMaxOpenRiskPct / 100.0;
+   double remainingRiskCash = maxRiskCash - openRisk;
+   double requestedRiskCash = equity * activeRiskPercent / 100.0;
+   double riskCash = MathMin(requestedRiskCash, remainingRiskCash);
+   if(riskCash <= 0.0)
+      return 0.0;
+
+   double lossPerLot = stopDistancePrice / tickSize * tickVal;
+   if(lossPerLot <= 0.0)
+      return 0.0;
+
+   // Never round volume up: that could exceed the configured risk budget.
+   return NormalizeVolumeDown(riskCash / lossPerLot);
+}
+
+bool CloseOurBasket(const string reason)
+{
+   Print("[MDT] Basket close requested: ", reason);
+   exitTag = reason;
+   bool allClosed = true;
+   for(int i = PositionsTotal() - 1; i >= 0; i--)
+   {
+      ulong ticket = PositionGetTicket(i);
+      if(ticket == 0 || !IsOurPositionSelected())
+         continue;
+
+      if(!trade.PositionClose(ticket))
+      {
+         allClosed = false;
+         Print("[MDT] Close failed ticket=", ticket, " retcode=",
+               trade.ResultRetcode(), " ", trade.ResultRetcodeDescription());
+      }
+   }
+   return allClosed;
+}
+
+// Realized result of the current broker-server day (profit + swap + commission + fee).
+// Rebuilt from account history, so it survives an EA restart (unlike a stored snapshot).
+double DailyRealizedPnL()
+{
+   MqlDateTime tm;
+   TimeToStruct(TimeCurrent(), tm);
+   tm.hour = 0;
+   tm.min  = 0;
+   tm.sec  = 0;
+   datetime dayStart = StructToTime(tm);
+
+   if(!HistorySelect(dayStart, TimeCurrent() + 60))
+      return 0.0;
+
+   double sum = 0.0;
+   int total = HistoryDealsTotal();
+   for(int i = 0; i < total; i++)
+   {
+      ulong deal = HistoryDealGetTicket(i);
+      if(deal == 0)
+         continue;
+      long type = HistoryDealGetInteger(deal, DEAL_TYPE);
+      if(type != DEAL_TYPE_BUY && type != DEAL_TYPE_SELL)
+         continue;
+      sum += HistoryDealGetDouble(deal, DEAL_PROFIT) +
+             HistoryDealGetDouble(deal, DEAL_SWAP) +
+             HistoryDealGetDouble(deal, DEAL_COMMISSION) +
+             HistoryDealGetDouble(deal, DEAL_FEE);
+   }
+   return sum;
+}
+
+void UpdateDailyLock()
+{
+   int today = ServerDayKey();
+   if(today != serverDayKey)
+   {
+      serverDayKey = today;
+      dailyLocked = false;
+      basketLossesToday = 0;
+      lastDailyCheck = 0;
+      Print("[MDT] New broker-server day: daily lock and loss counters reset.");
+   }
+
+   // Recompute at most once per server second (HistorySelect is not free).
+   datetime now = TimeCurrent();
+   if(now == lastDailyCheck)
+      return;
+   lastDailyCheck = now;
+
+   double realized = DailyRealizedPnL();
+   double dayStartBalance = AccountInfoDouble(ACCOUNT_BALANCE) - realized;
+   if(dayStartBalance <= 0.0)
+      return;
+
+   double dayPnl = realized + AccountInfoDouble(ACCOUNT_PROFIT); // realized + floating
+   dailyPnlPct = 100.0 * dayPnl / dayStartBalance;
+
+   if(!dailyLocked && dailyPnlPct <= -InpMaxDailyLossPct)
+   {
+      dailyLocked = true;
+      Print("[MDT] Daily loss limit reached: ", DoubleToString(dailyPnlPct, 2),
+            "% (limit -", DoubleToString(InpMaxDailyLossPct, 2), "%). New entries locked.");
+      if(InpCloseOnDailyLock)
+         CloseOurBasket("daily loss limit reached");
+   }
+}
+
+// Basket profit target follows the confluence score the basket was opened with.
+double BasketTargetForScore(int score, const int count)
+{
+   if(score <= 0) // basket found without history (EA restarted): infer the tier from the position count
+      score = (count >= 4 ? 7 : (count == 3 ? 6 : (count == 2 ? 5 : 4)));
+   if(score >= 7) return InpBasketTarget7USD;
+   if(score == 6) return InpBasketTarget6USD;
+   if(score == 5) return InpBasketTarget5USD;
+   return InpBasketTarget4USD;
+}
+
+// Basket loss limit follows the confluence score the basket was opened with.
+double BasketMaxLossForScore(int score, const int count)
+{
+   if(score <= 0) // basket found without history (EA restarted): infer the tier from the position count
+      score = (count >= 4 ? 7 : (count == 3 ? 6 : (count == 2 ? 5 : 4)));
+   if(score >= 7) return InpBasketMaxLoss7USD;
+   if(score == 6) return InpBasketMaxLoss6USD;
+   if(score == 5) return InpBasketMaxLoss5USD;
+   return InpBasketMaxLoss4USD;
+}
+
+void ManageBasket()
+{
+   int direction;
+   double profit, riskCash;
+   int count = CountOurPositions(direction, profit, riskCash);
+   if(count <= 0)
+   {
+      basketLossHandled = false; // basket is flat: next loss counts again
+      basketScore = 0;
+      return;
+   }
+
+   // Daily lock active: do not keep positions open (retries every tick if a close failed).
+   if(dailyLocked && InpCloseOnDailyLock)
+   {
+      CloseOurBasket("daily lock active");
+      return;
+   }
+
+   double target = BasketTargetForScore(basketScore, count);
+
+   if(profit >= target)
+   {
+      CloseOurBasket("floating basket profit reached $" + DoubleToString(target, 2));
+      return;
+   }
+
+   double maxLoss = BasketMaxLossForScore(basketScore, count);
+   if(maxLoss > 0.0 && profit <= -maxLoss)
+   {
+      // Count and pause only ONCE per basket, even if closing takes several ticks.
+      if(!basketLossHandled)
+      {
+         basketLossHandled = true;
+         basketLossesToday++;
+
+         datetime pauseEnd = TimeCurrent() + InpPauseAfterBasketLossSec;
+         if(pauseEnd > pauseUntil)
+            pauseUntil = pauseEnd;
+
+         if(InpMaxBasketLossesDay > 0 && basketLossesToday >= InpMaxBasketLossesDay)
+         {
+            dailyLocked = true;
+            Print("[MDT] ", basketLossesToday, " basket losses today: locked until next server day.");
+         }
+      }
+      CloseOurBasket("basket loss limit reached -$" + DoubleToString(maxLoss, 2) +
+                     " (basket score " + IntegerToString(basketScore) + "/7)");
+   }
+}
+
+// Break-even step: once a position shows a small gain, its SL moves to entry + a few pips,
+// so a reversal can no longer turn it into a full loss. Trailing (later, at a bigger gain) takes over.
+void ManageBreakEven()
+{
+   if(!InpUseBreakEven)
+      return;
+
+   int direction;
+   double basketPL, riskCash;
+   int count = CountOurPositions(direction, basketPL, riskCash);
+   if(count <= 0)
+      return;
+
+   int score = basketScore;
+   if(score <= 0) // basket found without history (EA restarted): infer the tier from the position count
+      score = (count >= 4 ? 7 : (count == 3 ? 6 : (count == 2 ? 5 : 4)));
+   if(score < InpBreakEvenMinScore)
+      return;
+
+   MqlTick tick;
+   if(!SymbolInfoTick(_Symbol, tick))
+      return;
+
+   double lock = InpBreakEvenLockPips * PipPrice();
+   double minGap = MathMax((double)SymbolInfoInteger(_Symbol, SYMBOL_TRADE_STOPS_LEVEL),
+                           (double)SymbolInfoInteger(_Symbol, SYMBOL_TRADE_FREEZE_LEVEL)) * _Point;
+
+   for(int i = PositionsTotal() - 1; i >= 0; i--)
+   {
+      ulong ticket = PositionGetTicket(i);
+      if(ticket == 0 || !IsOurPositionSelected())
+         continue;
+      if(PositionGetDouble(POSITION_PROFIT) < InpBreakEvenTriggerUSD)
+         continue;
+
+      long type = PositionGetInteger(POSITION_TYPE);
+      double openPrice = PositionGetDouble(POSITION_PRICE_OPEN);
+      double oldSL = PositionGetDouble(POSITION_SL);
+      double tp = PositionGetDouble(POSITION_TP);
+
+      if(type == POSITION_TYPE_BUY)
+      {
+         double newSL = NormalizeDouble(openPrice + lock, _Digits);
+         if((oldSL == 0.0 || newSL > oldSL + _Point) && tick.bid - newSL > minGap)
+         {
+            if(!trade.PositionModify(ticket, newSL, tp))
+               Print("[MDT] BUY break-even failed: ", trade.ResultRetcodeDescription());
+         }
+      }
+      else if(type == POSITION_TYPE_SELL)
+      {
+         double newSL = NormalizeDouble(openPrice - lock, _Digits);
+         if((oldSL == 0.0 || newSL < oldSL - _Point) && newSL - tick.ask > minGap)
+         {
+            if(!trade.PositionModify(ticket, newSL, tp))
+               Print("[MDT] SELL break-even failed: ", trade.ResultRetcodeDescription());
+         }
+      }
+   }
+}
+
+void ManageTrailing()
+{
+   if(!InpUseTrailing)
+      return;
+
+   MqlTick tick;
+   if(!SymbolInfoTick(_Symbol, tick))
+      return;
+
+   double distance = InpTrailingDistancePips * PipPrice();
+   double brokerStops = (double)SymbolInfoInteger(_Symbol, SYMBOL_TRADE_STOPS_LEVEL) * _Point;
+   double brokerFreeze = (double)SymbolInfoInteger(_Symbol, SYMBOL_TRADE_FREEZE_LEVEL) * _Point;
+   double safeDistance = MathMax(distance, MathMax(brokerStops, brokerFreeze));
+
+   for(int i = PositionsTotal() - 1; i >= 0; i--)
+   {
+      ulong ticket = PositionGetTicket(i);
+      if(ticket == 0 || !IsOurPositionSelected())
+         continue;
+
+      long type = PositionGetInteger(POSITION_TYPE);
+      double openPrice = PositionGetDouble(POSITION_PRICE_OPEN);
+      double oldSL = PositionGetDouble(POSITION_SL);
+      double tp = PositionGetDouble(POSITION_TP);
+      double profitNow = PositionGetDouble(POSITION_PROFIT);
+
+      if(type == POSITION_TYPE_BUY && profitNow >= InpTrailingTriggerUSD)
+      {
+         double newSL = NormalizeDouble(tick.bid - safeDistance, _Digits);
+         if(newSL < tick.bid && (oldSL == 0.0 || newSL > oldSL + _Point))
+         {
+            if(!trade.PositionModify(ticket, newSL, tp))
+               Print("[MDT] BUY trailing failed: ", trade.ResultRetcodeDescription());
+         }
+      }
+      else if(type == POSITION_TYPE_SELL && profitNow >= InpTrailingTriggerUSD)
+      {
+         double newSL = NormalizeDouble(tick.ask + safeDistance, _Digits);
+         if(newSL > tick.ask && (oldSL == 0.0 || newSL < oldSL - _Point))
+         {
+            if(!trade.PositionModify(ticket, newSL, tp))
+               Print("[MDT] SELL trailing failed: ", trade.ResultRetcodeDescription());
+         }
+      }
+   }
+}
+
+// Close individual positions before TP/SL only when a closed M1 candle
+// confirms an adverse move. TP and SL remain attached as broker-side protection.
+void ManageEarlyExit()
+{
+   if(!InpUseEarlyExit)
+      return;
+
+   MqlTick tick;
+   if(!SymbolInfoTick(_Symbol, tick))
+      return;
+
+   MqlRates rates[];
+   ArraySetAsSeries(rates, true);
+   if(CopyRates(_Symbol, PERIOD_M1, 0, 4, rates) < 4)
+      return;
+
+   double emaValue = 0.0;
+   bool haveEma = false;
+   if(InpUseHtfEma && emaHandle != INVALID_HANDLE)
+   {
+      double ema[];
+      ArraySetAsSeries(ema, true);
+      if(CopyBuffer(emaHandle, 0, 1, 1, ema) == 1)
+      {
+         emaValue = ema[0];
+         haveEma = true;
+      }
+   }
+
+   // Use only the last completed M1 candle, never the still-forming candle.
+   bool bearishMomentum = rates[1].close < rates[1].open && rates[1].close < rates[2].low;
+   bool bullishMomentum = rates[1].close > rates[1].open && rates[1].close > rates[2].high;
+   bool bearishSweep = rates[1].high > rates[2].high && rates[1].close < rates[2].high;
+   bool bullishSweep = rates[1].low < rates[2].low && rates[1].close > rates[2].low;
+   bool bearishTrend = haveEma ? (tick.bid < emaValue) : (rates[1].close < rates[2].close);
+   bool bullishTrend = haveEma ? (tick.ask > emaValue) : (rates[1].close > rates[2].close);
+
+   for(int i = PositionsTotal() - 1; i >= 0; i--)
+   {
+      ulong ticket = PositionGetTicket(i);
+      if(ticket == 0 || !IsOurPositionSelected())
+         continue;
+
+      long type = PositionGetInteger(POSITION_TYPE);
+      double floating = PositionGetDouble(POSITION_PROFIT) + PositionGetDouble(POSITION_SWAP);
+      int confirmations = 0;
+
+      if(type == POSITION_TYPE_BUY)
+      {
+         if(bearishMomentum) confirmations++;
+         if(bearishSweep) confirmations++;
+         if(bearishTrend) confirmations++;
+      }
+      else if(type == POSITION_TYPE_SELL)
+      {
+         if(bullishMomentum) confirmations++;
+         if(bullishSweep) confirmations++;
+         if(bullishTrend) confirmations++;
+      }
+      else
+         continue;
+
+      // In profit: require 2 of 3 reversal clues. In loss: require all 3,
+      // and only when the user has enabled early loss exits.
+      int required = (floating >= 0.0 ? 2 : 3);
+      if(floating < 0.0 && !InpEarlyExitAllowLoss)
+         continue;
+
+      if(confirmations >= required)
+      {
+         string side = (type == POSITION_TYPE_BUY ? "BUY" : "SELL");
+         string reason = side + " early exit; reversal confirmations=" +
+                         IntegerToString(confirmations) + "/3; P/L=$" +
+                         DoubleToString(floating, 2);
+         Print("[MDT] ", reason);
+         exitTag = reason;
+         if(!trade.PositionClose(ticket))
+            Print("[MDT] Early close failed ticket=", ticket, " retcode=",
+                  trade.ResultRetcode(), " ", trade.ResultRetcodeDescription());
+      }
+   }
+}
+
+bool StopsAllowed(const double entry, const double sl, const double tp)
+{
+   double minDistance = (double)SymbolInfoInteger(_Symbol, SYMBOL_TRADE_STOPS_LEVEL) * _Point;
+   if(minDistance <= 0.0)
+      return true;
+   return (MathAbs(entry - sl) >= minDistance && MathAbs(tp - entry) >= minDistance);
+}
+
+//---------------------------- Journal: one CSV row per closed position ----
+string JournalFileName()
+{
+   string s = "MDT_Journal3_" + _Symbol + ".csv";
+   StringReplace(s, "#", "_");
+   StringReplace(s, "/", "_");
+   StringReplace(s, "\\", "_");
+   return s;
+}
+
+int JournalCountRows()
+{
+   if(!InpWriteJournal)
+      return 0;
+   int h = FileOpen(JournalFileName(), FILE_READ | FILE_TXT | FILE_ANSI | FILE_SHARE_READ | FILE_SHARE_WRITE);
+   if(h == INVALID_HANDLE)
+      return 0;
+   int lines = 0;
+   while(!FileIsEnding(h))
+   {
+      string s = FileReadString(h);
+      if(StringLen(s) > 0)
+         lines++;
+   }
+   FileClose(h);
+   return MathMax(0, lines - 1); // minus the header
+}
+
+void JournalWriteRow(const string row)
+{
+   int h = FileOpen(JournalFileName(), FILE_READ | FILE_WRITE | FILE_TXT | FILE_ANSI | FILE_SHARE_READ);
+   if(h == INVALID_HANDLE)
+   {
+      // File locked (opened in Excel?) : keep the row in the Experts log, never lose it.
+      Print("[MDT] JOURNAL file busy (error ", GetLastError(), "). Row: ", row);
+      return;
+   }
+   if(FileSize(h) == 0)
+      FileWriteString(h, "close_time;open_time;symbol;side;lots;open_price;close_price;net_usd;hold_sec;" +
+                         "score;trend;sweep;momentum;volume;spread_pips;basket_index;close_reason;exit_tag;signal_price;fill_price;slippage_pips;latency_ms;atr_pips;prime_session\r\n");
+   FileSeek(h, 0, SEEK_END);
+   FileWriteString(h, row + "\r\n");
+   FileClose(h);
+}
+
+void RememberEntry(const ulong posId, const int score, const bool trend, const bool sweep,
+                   const bool momentum, const bool volume, const double spreadPips,
+                   const int basketIndex, const double lots,
+                   const double signalPrice, const double fillPrice,
+                   const long latencyMs, const double slippagePips,
+                   const double atrPips, const bool prime)
+{
+   int n = ArraySize(g_entries);
+   if(n >= 200) // safety: never grow without bound if some exits were missed
+   {
+      for(int j = 1; j < n; j++)
+         g_entries[j - 1] = g_entries[j];
+      n--;
+      ArrayResize(g_entries, n);
+   }
+   ArrayResize(g_entries, n + 1);
+   g_entries[n].posId       = posId;
+   g_entries[n].score       = score;
+   g_entries[n].trend       = (trend ? 1 : 0);
+   g_entries[n].sweep       = (sweep ? 1 : 0);
+   g_entries[n].momentum    = (momentum ? 1 : 0);
+   g_entries[n].volume      = (volume ? 1 : 0);
+   g_entries[n].spreadPips  = spreadPips;
+   g_entries[n].basketIndex = basketIndex;
+   g_entries[n].lots        = lots;
+   g_entries[n].signalPrice = signalPrice;
+   g_entries[n].fillPrice   = fillPrice;
+   g_entries[n].latencyMs   = latencyMs;
+   g_entries[n].slippagePips = slippagePips;
+   g_entries[n].atrPips     = atrPips;
+   g_entries[n].prime       = (prime ? 1 : 0);
+}
+
+void JournalClosedDeal(const ulong dealTicket)
+{
+   if(!InpWriteJournal)
+      return;
+
+   ulong    posId      = (ulong)HistoryDealGetInteger(dealTicket, DEAL_POSITION_ID);
+   datetime closeTime  = (datetime)HistoryDealGetInteger(dealTicket, DEAL_TIME);
+   long     dealType   = HistoryDealGetInteger(dealTicket, DEAL_TYPE);
+   long     dealReason = HistoryDealGetInteger(dealTicket, DEAL_REASON);
+   double   closePrice = HistoryDealGetDouble(dealTicket, DEAL_PRICE);
+   double   dealVolume = HistoryDealGetDouble(dealTicket, DEAL_VOLUME);
+   string   side       = (dealType == DEAL_TYPE_SELL ? "BUY" : "SELL"); // the closing deal is opposite
+
+   string reasonText = "OTHER";
+   string tag = "";
+   if(dealReason == DEAL_REASON_SL)
+      reasonText = "SL";
+   else if(dealReason == DEAL_REASON_TP)
+      reasonText = "TP";
+   else if(dealReason == DEAL_REASON_SO)
+      reasonText = "STOPOUT";
+   else if(dealReason == DEAL_REASON_CLIENT)
+      reasonText = "MANUAL";
+   else if(dealReason == DEAL_REASON_EXPERT)
+   {
+      reasonText = "EA";
+      tag = exitTag;
+      StringReplace(tag, ";", ",");
+   }
+
+   // Net result of the whole position (all its deals: profit + swap + commission + fee).
+   double   net = 0.0;
+   double   openPrice = 0.0;
+   datetime openTime = closeTime;
+   if(HistorySelectByPosition(posId))
+   {
+      int total = HistoryDealsTotal();
+      for(int i = 0; i < total; i++)
+      {
+         ulong t = HistoryDealGetTicket(i);
+         if(t == 0)
+            continue;
+         net += HistoryDealGetDouble(t, DEAL_PROFIT) +
+                HistoryDealGetDouble(t, DEAL_SWAP) +
+                HistoryDealGetDouble(t, DEAL_COMMISSION) +
+                HistoryDealGetDouble(t, DEAL_FEE);
+         if((ENUM_DEAL_ENTRY)HistoryDealGetInteger(t, DEAL_ENTRY) == DEAL_ENTRY_IN)
+         {
+            openPrice = HistoryDealGetDouble(t, DEAL_PRICE);
+            openTime  = (datetime)HistoryDealGetInteger(t, DEAL_TIME);
+         }
+      }
+   }
+
+   // Entry context remembered when the order was sent ("?" if unknown, e.g. after a restart).
+   string sScore = "?", sTrend = "?", sSweep = "?", sMom = "?", sVol = "?", sSpread = "?", sIndex = "?";
+   string sSigPx = "?", sFillPx = "?", sSlip = "?", sLat = "?", sAtr = "?", sPrime = "?";
+   int idx = -1;
+   for(int k = 0; k < ArraySize(g_entries); k++)
+   {
+      if(g_entries[k].posId == posId)
+      {
+         idx = k;
+         break;
+      }
+   }
+   if(idx >= 0)
+   {
+      sScore  = IntegerToString(g_entries[idx].score);
+      sTrend  = IntegerToString(g_entries[idx].trend);
+      sSweep  = IntegerToString(g_entries[idx].sweep);
+      sMom    = IntegerToString(g_entries[idx].momentum);
+      sVol    = IntegerToString(g_entries[idx].volume);
+      sSpread = DoubleToString(g_entries[idx].spreadPips, 2);
+      sIndex  = IntegerToString(g_entries[idx].basketIndex);
+      sSigPx  = DoubleToString(g_entries[idx].signalPrice, _Digits);
+      sFillPx = DoubleToString(g_entries[idx].fillPrice, _Digits);
+      sSlip   = DoubleToString(g_entries[idx].slippagePips, 2);
+      sLat    = IntegerToString(g_entries[idx].latencyMs);
+      sAtr    = DoubleToString(g_entries[idx].atrPips, 1);
+      sPrime  = IntegerToString(g_entries[idx].prime);
+
+      int n = ArraySize(g_entries);
+      for(int j = idx + 1; j < n; j++)
+         g_entries[j - 1] = g_entries[j];
+      ArrayResize(g_entries, n - 1);
+   }
+
+   string row = TimeToString(closeTime, TIME_DATE | TIME_SECONDS) + ";" +
+                TimeToString(openTime, TIME_DATE | TIME_SECONDS) + ";" +
+                _Symbol + ";" + side + ";" + DoubleToString(dealVolume, 2) + ";" +
+                DoubleToString(openPrice, _Digits) + ";" + DoubleToString(closePrice, _Digits) + ";" +
+                DoubleToString(net, 2) + ";" + IntegerToString((long)(closeTime - openTime)) + ";" +
+                sScore + ";" + sTrend + ";" + sSweep + ";" + sMom + ";" + sVol + ";" +
+                sSpread + ";" + sIndex + ";" + reasonText + ";" + tag + ";" +
+                sSigPx + ";" + sFillPx + ";" + sSlip + ";" + sLat + ";" + sAtr + ";" + sPrime;
+   JournalWriteRow(row);
+
+   journalRows++;
+   if(InpJournalMilestone > 0 && journalRows % InpJournalMilestone == 0)
+      Alert("[MDT] Journal: ", journalRows, " trades recorded in MQL5/Files/",
+            JournalFileName(), " - send this file for analysis.");
+}
+
+datetime GmtNow()
+{
+   if(MQLInfoInteger(MQL_TESTER))
+      return TimeCurrent() - (datetime)(InpBrokerGmtOffsetHours * 3600);
+   return TimeGMT();
+}
+
+// allowed: new entries permitted now. prime: inside the London/NY overlap window.
+void SessionStatus(bool &allowed, bool &prime)
+{
+   allowed = true;
+   MqlDateTime g;
+   TimeToStruct(GmtNow(), g);
+   double h = g.hour + g.min / 60.0;
+   prime = (h >= InpPrimeStartGmt && h < InpPrimeEndGmt);
+   if(!InpUseSessionFilter)
+      return;
+   allowed = (h >= InpSessionStartGmt && h < InpSessionEndGmt);
+   if(g.day_of_week == 5 && h >= InpFridayCutoffGmt)
+      allowed = false;
+   if(g.day_of_week == 0 || g.day_of_week == 6)
+      allowed = false;
+}
+
+string YN(const bool b) { return b ? "OK" : "--"; }
+
+double TakeProfitPipsForScore(const int score)
+{
+   if(score >= 7) return InpTakeProfit7Pips;
+   if(score == 6) return InpTakeProfit6Pips;
+   if(score == 5) return InpTakeProfit5Pips;
+   return InpTakeProfitPips;
+}
+
+int MaxPositionsForScore(const int score)
+{
+   if(score >= 7) return MathMax(1, MathMin(InpMaxPositionsHigh, 6));
+   if(score == 6) return MathMax(1, MathMin(InpMaxPositionsMedium, 4));
+   if(score == 5) return MathMax(1, MathMin(InpMaxPositionsLow, 3));
+   if(score == 4) return MathMax(1, MathMin(InpMaxPositionsTest, 1));
+   return 0;
+}
+
+//+------------------------------------------------------------------+
+//| Initialization                                                   |
+//+------------------------------------------------------------------+
+int OnInit()
+{
+   if(InpPipSizePrice <= 0.0 || InpMaxSpreadPips <= 0.0 ||
+      InpStopPips <= 0.0 || InpTakeProfitPips <= 0.0 || InpTakeProfit5Pips <= 0.0 || InpTakeProfit6Pips <= 0.0 ||
+      InpTakeProfit7Pips <= 0.0 || InpMinScore < 1 || InpMinScore > 7 ||
+      InpRiskPercentPerEntry <= 0.0 || InpMaxOpenRiskPct <= 0.0 ||
+      InpMaxDailyLossPct <= 0.0 || InpMaxLossPerTradeUSD < 0.0 || InpMaxLossPerTrade6USD < 0.0 ||
+      InpBasketMaxLoss4USD <= 0.0 || InpBasketMaxLoss5USD <= 0.0 ||
+      InpBasketMaxLoss6USD <= 0.0 || InpBasketMaxLoss7USD <= 0.0)
+   {
+      Print("[MDT] Invalid inputs. Check pip size, stop, score and risk limits.");
+      return INIT_PARAMETERS_INCORRECT;
+   }
+
+   // Accept common broker names for gold, including suffix/prefix variants such as
+   // XAUUSD, XAUUSD.a, GOLD, GOLD#, GOLD. Do not reject the broker's GOLD# symbol.
+   string symbolUpper = _Symbol;
+   StringToUpper(symbolUpper);
+   bool isGoldSymbol = (StringFind(symbolUpper, "XAUUSD") >= 0 ||
+                        StringFind(symbolUpper, "GOLD") >= 0);
+   if(InpOnlyXAUUSD && !isGoldSymbol)
+   {
+      Print("[MDT] This EA is configured for a gold symbol (XAUUSD/GOLD). Current symbol: ", _Symbol);
+      return INIT_FAILED;
+   }
+
+   trade.SetExpertMagicNumber(InpMagicNumber);
+   trade.SetDeviationInPoints(InpDeviationPoints);
+   trade.SetTypeFillingBySymbol(_Symbol);
+   trade.SetAsyncMode(false);
+
+   if(InpUseHtfEma)
+   {
+      emaHandle = iMA(_Symbol, PERIOD_M15, 200, 0, MODE_EMA, PRICE_CLOSE);
+      if(emaHandle == INVALID_HANDLE)
+      {
+         Print("[MDT] EMA handle creation failed. Error=", GetLastError());
+         return INIT_FAILED;
+      }
+   }
+
+   if(InpUseAtrFilter)
+   {
+      atrHandle = iATR(_Symbol, PERIOD_M5, InpAtrPeriod);
+      if(atrHandle == INVALID_HANDLE)
+      {
+         Print("[MDT] ATR handle creation failed. Error=", GetLastError());
+         return INIT_FAILED;
+      }
+   }
+
+   serverDayKey = ServerDayKey();
+   journalRows = JournalCountRows();
+   Print("[MDT] v5.0 ready on ", _Symbol,
+         ". Configured pip price=", DoubleToString(PipPrice(), _Digits),
+         ". Demo/Strategy Tester only until validated.");
+   return INIT_SUCCEEDED;
+}
+
+void OnTradeTransaction(const MqlTradeTransaction &trans,
+                        const MqlTradeRequest &request,
+                        const MqlTradeResult &result)
+{
+   if(trans.type != TRADE_TRANSACTION_DEAL_ADD)
+      return;
+   if(!HistoryDealSelect(trans.deal))
+      return;
+   if((ulong)HistoryDealGetInteger(trans.deal, DEAL_MAGIC) != InpMagicNumber)
+      return;
+   if(HistoryDealGetString(trans.deal, DEAL_SYMBOL) != _Symbol)
+      return;
+   if((ENUM_DEAL_ENTRY)HistoryDealGetInteger(trans.deal, DEAL_ENTRY) != DEAL_ENTRY_OUT)
+      return;
+
+   double dealResult = HistoryDealGetDouble(trans.deal, DEAL_PROFIT) +
+                       HistoryDealGetDouble(trans.deal, DEAL_SWAP) +
+                       HistoryDealGetDouble(trans.deal, DEAL_COMMISSION);
+   JournalClosedDeal(trans.deal);
+
+   if(InpPauseAfterLossSec > 0 && dealResult < 0.0)
+   {
+      datetime pauseEnd = TimeCurrent() + InpPauseAfterLossSec;
+      if(pauseEnd > pauseUntil)
+         pauseUntil = pauseEnd;
+      Print("[MDT] Losing close ($", DoubleToString(dealResult, 2),
+            "): new entries paused for ", InpPauseAfterLossSec, " s");
+   }
+}
+
+void OnDeinit(const int reason)
+{
+   if(emaHandle != INVALID_HANDLE)
+      IndicatorRelease(emaHandle);
+   if(atrHandle != INVALID_HANDLE)
+      IndicatorRelease(atrHandle);
+   Comment("");
+}
+
+//+------------------------------------------------------------------+
+//| Main tick                                                        |
+//+------------------------------------------------------------------+
+void OnTick()
+{
+   MqlTick tick;
+   if(!SymbolInfoTick(_Symbol, tick) || tick.ask <= 0.0 || tick.bid <= 0.0)
+      return;
+
+   ManageBreakEven(); // SL to break-even first, trailing takes over later
+   ManageTrailing();
+   ManageEarlyExit(); // may close before TP/SL on a confirmed reversal
+   UpdateDailyLock();
+   ManageBasket(); // exits run before entry filters
+
+   int openDirection;
+   double basketProfit, openRiskCash;
+   int openCount = CountOurPositions(openDirection, basketProfit, openRiskCash);
+
+   double spreadPips = (tick.ask - tick.bid) / PipPrice();
+   if(dailyLocked || !InpEnableNewEntries || spreadPips > InpMaxSpreadPips)
+   {
+      if(InpShowDashboard)
+         Comment("MDT ADAPTIVE SCALPER v5.0\n",
+                 "Symbol: ", _Symbol, " | Spread: ", DoubleToString(spreadPips, 2),
+                 " pips\nOpen positions: ", openCount, "\nBasket P/L: $",
+                 DoubleToString(basketProfit, 2), "\nDaily P/L: ", DoubleToString(dailyPnlPct, 2), "% (limit -",
+                 DoubleToString(InpMaxDailyLossPct, 2), "%)\nDaily lock: ",
+                 (dailyLocked ? "ON" : "OFF"),
+                 "\nNew entries: ", (!InpEnableNewEntries ? "OFF" :
+                                      (spreadPips > InpMaxSpreadPips ? "spread too high" : "blocked")));
+      return;
+   }
+
+
+   // V5 gates: session window + ATR volatility band (new entries only; exits already ran above).
+   bool sessionAllowed, sessionPrime;
+   SessionStatus(sessionAllowed, sessionPrime);
+   double atrPips = 0.0;
+   bool atrOK = true;
+   string atrNote = "";
+   if(InpUseAtrFilter)
+   {
+      double atrBuf[];
+      ArraySetAsSeries(atrBuf, true);
+      if(CopyBuffer(atrHandle, 0, 1, 1, atrBuf) == 1)
+      {
+         atrPips = atrBuf[0] / PipPrice();
+         atrOK = (atrPips >= InpMinAtrPips && atrPips <= InpMaxAtrPips);
+         atrNote = (atrOK ? "OK" : (atrPips < InpMinAtrPips ? "too quiet" : "too wild"));
+      }
+      else
+      {
+         atrOK = false;
+         atrNote = "data not ready (open an M5 chart)";
+      }
+   }
+   if(!sessionAllowed || !atrOK)
+   {
+      if(InpShowDashboard)
+         Comment("MDT SCALPER v5.0\nSymbol: ", _Symbol, " | Spread: ", DoubleToString(spreadPips, 2),
+                 " pips\nOpen positions: ", openCount, " | Basket P/L: $", DoubleToString(basketProfit, 2),
+                 "\nSession: ", (sessionAllowed ? "OK" : "CLOSED (outside window)"),
+                 "\nATR M5: ", DoubleToString(atrPips, 1), " pips (", atrNote, ")",
+                 "\nNew entries: blocked by v5 filter");
+      return;
+   }
+
+   // Use last two completed M1 candles; allow repeated entries on the same
+   // valid signal only at the configured cooldown, up to the adaptive cap.
+   MqlRates rates[];
+   ArraySetAsSeries(rates, true);
+   if(CopyRates(_Symbol, PERIOD_M1, 0, 6, rates) < 6)
+      return;
+
+   bool trendBuy = true, trendSell = true;
+   int buyScore = 0, sellScore = 0;
+
+   if(InpUseHtfEma)
+   {
+      double ema[];
+      ArraySetAsSeries(ema, true);
+      if(CopyBuffer(emaHandle, 0, 1, 1, ema) != 1)
+      {
+         if(InpShowDashboard)
+            Comment("MDT ADAPTIVE SCALPER v5.0\nSpread: ", DoubleToString(spreadPips, 2),
+                    " pips\nWAITING: EMA M15 data not ready (open an M15 GOLD# chart to load history)");
+         return;
+      }
+      trendBuy = tick.bid > ema[0];
+      trendSell = tick.ask < ema[0];
+      if(trendBuy) buyScore++;
+      if(trendSell) sellScore++;
+   }
+
+   bool bullSweep = rates[1].low < rates[2].low && rates[1].close > rates[2].low;
+   bool bearSweep = rates[1].high > rates[2].high && rates[1].close < rates[2].high;
+   if(bullSweep) buyScore += 2;
+   if(bearSweep) sellScore += 2;
+
+   bool buyMomentum = rates[1].close > rates[1].open && rates[1].close > rates[2].high;
+   bool sellMomentum = rates[1].close < rates[1].open && rates[1].close < rates[2].low;
+   if(buyMomentum) buyScore++;
+   if(sellMomentum) sellScore++;
+
+   // Shared conditions are deliberately visible in score, but are not
+   // treated as independent statistical evidence of a winning trade.
+   buyScore++;
+   sellScore++;
+
+   long avgVol = (rates[2].tick_volume + rates[3].tick_volume + rates[4].tick_volume) / 3;
+   bool volumeOK = (rates[1].tick_volume >= avgVol);
+   if(volumeOK)
+   {
+      buyScore++;
+      sellScore++;
+   }
+
+   // One score point for a configured reward/risk ratio above 1:1.
+   // Basket exits are money-based, so this is only a coarse rule.
+   if(InpBasketTarget5USD > 0.0 && InpStopPips > 0.0)
+   {
+      buyScore++;
+      sellScore++;
+   }
+
+   // V5 honest score: the free constant points are dropped. Trend + sweep + momentum are all
+   // required (= 5/7 so the old position tiers still line up), +1 volume, +1 prime session.
+   if(InpHonestScore)
+   {
+      bool buyTrio  = (trendBuy && bullSweep && buyMomentum);
+      bool sellTrio = (trendSell && bearSweep && sellMomentum);
+      buyScore  = (buyTrio  ? 5 + (volumeOK ? 1 : 0) + (sessionPrime ? 1 : 0) : 0);
+      sellScore = (sellTrio ? 5 + (volumeOK ? 1 : 0) + (sessionPrime ? 1 : 0) : 0);
+   }
+
+   bool buySignal, sellSignal;
+   if(InpScoreOnlyEntry)
+   {
+      buySignal  = (buyScore  >= InpMinScore && buyScore  > sellScore);
+      sellSignal = (sellScore >= InpMinScore && sellScore > buyScore);
+   }
+   else
+   {
+      buySignal = buyMomentum && trendBuy && buyScore >= InpMinScore &&
+                  (!InpRequireSweep || bullSweep);
+      sellSignal = sellMomentum && trendSell && sellScore >= InpMinScore &&
+                   (!InpRequireSweep || bearSweep);
+   }
+
+   // Do not add positions against an existing basket.
+   if(openCount > 0)
+   {
+      if(openDirection == -2) // mixed directions
+         return;
+      if(openDirection == POSITION_TYPE_BUY)
+         sellSignal = false;
+      if(openDirection == POSITION_TYPE_SELL)
+         buySignal = false;
+   }
+
+   int signalScore = buySignal ? buyScore : (sellSignal ? sellScore : 0);
+   int maxForSignal = MaxPositionsForScore(signalScore);
+
+   if(InpShowDashboard)
+      Comment("MDT ADAPTIVE SCALPER v5.0\n",
+              "Symbol: ", _Symbol, " | Signal timeframe: M1\n",
+              "ATR M5: ", DoubleToString(atrPips, 1), " pips | Session: ", (sessionPrime ? "PRIME" : "OK"), "\n",
+              "Spread: ", DoubleToString(spreadPips, 2), " pips\n",
+              "BUY score: ", buyScore, "/7 | SELL score: ", sellScore, "/7\n",
+              "Open positions: ", openCount, " / adaptive cap ",
+              (signalScore > 0 ? maxForSignal : 0), "\n",
+              "Basket P/L: $", DoubleToString(basketProfit, 2),
+              " | Risk at SL: $", DoubleToString(openRiskCash, 2), "\n",
+              "Basket target: $", DoubleToString(BasketTargetForScore(basketScore, openCount), 2),
+              " | Basket loss limit: -$", DoubleToString(BasketMaxLossForScore(basketScore, openCount), 2),
+              " (score ", basketScore, ")\n",
+              "BUY  trend:", YN(trendBuy), " sweep:", YN(bullSweep), " momentum:", YN(buyMomentum), "\n",
+              "SELL trend:", YN(trendSell), " sweep:", YN(bearSweep), " momentum:", YN(sellMomentum), "\n",
+              "Daily P/L: ", DoubleToString(dailyPnlPct, 2), "% / limit -",
+              DoubleToString(InpMaxDailyLossPct, 2), "% | Basket losses today: ", basketLossesToday, "\n",
+              "Pause after loss: ", (TimeCurrent() < pauseUntil ? IntegerToString((int)(pauseUntil - TimeCurrent())) + " s" : "none"), "\n",
+              "Status: ", (buySignal ? "BUY" : (sellSignal ? "SELL" : "WAIT")),
+              " | Daily lock: ", (dailyLocked ? "ON" : "OFF"));
+
+   if(TimeCurrent() < pauseUntil)
+      return;
+
+   if(signalScore == 0 || openCount >= maxForSignal)
+      return;
+
+   // Minimum delay between two entries, in SERVER time (tick.time_msc). GetTickCount64()
+   // is wall-clock time: in the Strategy Tester it ignores the simulated clock.
+   ulong nowMs = (ulong)tick.time_msc;
+   if(lastEntryMs != 0 && nowMs >= lastEntryMs && nowMs - lastEntryMs < (ulong)InpCooldownMs)
+      return;
+
+   // The signal uses the last CLOSED M1 candle, so it stays identical for the whole
+   // current minute: without this guard the EA re-enters on the very same signal.
+   if(InpOneEntryPerBar && lastEntryBar == rates[0].time)
+      return;
+
+   // Score 4/7 is a low-risk exploratory entry, not a validated high-confidence trade.
+   activeRiskPercent = (signalScore == 4 ? InpRiskPercentTest : InpRiskPercentPerEntry);
+
+   double stopDistance = InpStopPips * PipPrice();
+   double takeProfitDistance = TakeProfitPipsForScore(signalScore) * PipPrice();
+   double lots = CalculateLots(stopDistance);
+   if(lots <= 0.0)
+   {
+      Print("[MDT] Entry skipped: risk budget cannot support minimum lot. ",
+            "Open risk=$", DoubleToString(openRiskCash, 2));
+      return;
+   }
+
+   // Per-trade cash cap (score 6/7 has its own cap; 0 = no cap).
+   double tradeCap = (signalScore == 6 ? InpMaxLossPerTrade6USD : InpMaxLossPerTradeUSD);
+   if(tradeCap > 0.0)
+   {
+      double tv = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_VALUE);
+      double ts = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_SIZE);
+      if(tv > 0.0 && ts > 0.0)
+      {
+         double lossPerLotPerPrice = tv / ts; // $ lost per 1.0 price move, 1 lot
+         if(InpCapByLot)
+         {
+            // Keep the SL distance, shrink the lot so that the SL loss <= cap.
+            double capLots = NormalizeVolumeDown(tradeCap / (stopDistance * lossPerLotPerPrice));
+            if(capLots <= 0.0)
+            {
+               Print("[MDT] Entry skipped: minimum lot already loses more than the $",
+                     DoubleToString(tradeCap, 2), " per-trade cap at this SL distance.");
+               return;
+            }
+            if(capLots < lots)
+               lots = capLots;
+         }
+         else
+         {
+            // Keep the lot, tighten the SL so that the SL loss <= cap.
+            double capDistance = tradeCap / (lots * lossPerLotPerPrice);
+            if(capDistance < stopDistance)
+               stopDistance = capDistance;
+         }
+      }
+   }
+
+   // Open the whole adaptive cap at once (same signal, same entry) or one position per call.
+   int toOpen = (InpOpenAllAtOnce ? MathMax(1, maxForSignal - openCount) : 1);
+   for(int k = 0; k < toOpen; k++)
+   {
+      MqlTick tk;
+      if(!SymbolInfoTick(_Symbol, tk) || tk.ask <= 0.0 || tk.bid <= 0.0)
+         break;
+
+      bool sent = false;
+      double signalPx = (buySignal ? tk.ask : tk.bid);
+      ulong  sendStartMs = GetTickCount64();
+      if(buySignal)
+      {
+         double entry = tk.ask;
+         double sl = NormalizeDouble(entry - stopDistance, _Digits);
+         double tp = NormalizeDouble(entry + takeProfitDistance, _Digits);
+         if(!StopsAllowed(entry, sl, tp))
+         {
+            Print("[MDT] BUY skipped: SL or TP is closer than broker stop level.");
+            break;
+         }
+         // SL and TP are sent together with the opening order.
+         sent = trade.Buy(lots, _Symbol, 0.0, sl, tp, "MDT adaptive BUY");
+      }
+      else if(sellSignal)
+      {
+         double entry = tk.bid;
+         double sl = NormalizeDouble(entry + stopDistance, _Digits);
+         double tp = NormalizeDouble(entry - takeProfitDistance, _Digits);
+         if(!StopsAllowed(entry, sl, tp))
+         {
+            Print("[MDT] SELL skipped: SL or TP is closer than broker stop level.");
+            break;
+         }
+         // SL and TP are sent together with the opening order.
+         sent = trade.Sell(lots, _Symbol, 0.0, sl, tp, "MDT adaptive SELL");
+      }
+
+      long latencyMs = (long)(GetTickCount64() - sendStartMs); // order round-trip (wall clock)
+
+      if(sent && (trade.ResultRetcode() == TRADE_RETCODE_DONE ||
+                  trade.ResultRetcode() == TRADE_RETCODE_PLACED ||
+                  trade.ResultRetcode() == TRADE_RETCODE_DONE_PARTIAL))
+      {
+         lastEntryMs = (ulong)tk.time_msc;
+         lastEntryBar = rates[0].time;
+         basketScore = MathMax(basketScore, signalScore);
+
+         if(InpWriteJournal)
+         {
+            ulong dealTk = trade.ResultDeal();
+            ulong posId = 0;
+            if(dealTk > 0 && HistoryDealSelect(dealTk))
+               posId = (ulong)HistoryDealGetInteger(dealTk, DEAL_POSITION_ID);
+            if(posId == 0)
+               posId = trade.ResultOrder();
+            double fillPx = trade.ResultPrice();
+            if(dealTk > 0 && HistoryDealSelect(dealTk))
+               fillPx = HistoryDealGetDouble(dealTk, DEAL_PRICE);
+            if(fillPx <= 0.0)
+               fillPx = signalPx;
+            // Positive slippage = fill WORSE than the price seen at signal time.
+            double slipPips = (buySignal ? (fillPx - signalPx) : (signalPx - fillPx)) / PipPrice();
+            RememberEntry(posId, signalScore,
+                          (InpUseHtfEma && (buySignal ? trendBuy : trendSell)),
+                          (buySignal ? bullSweep : bearSweep),
+                          (buySignal ? buyMomentum : sellMomentum),
+                          volumeOK, spreadPips, openCount + k, lots,
+                          signalPx, fillPx, latencyMs, slipPips, atrPips, sessionPrime);
+         }
+         Print("[MDT] ", (buySignal ? "BUY" : "SELL"),
+               " accepted. Lot=", DoubleToString(lots, 2),
+               " score=", signalScore, "/7",
+               " position ", (openCount + k + 1), " of cap ", maxForSignal,
+               " risk%=", DoubleToString(activeRiskPercent, 3));
+      }
+      else
+      {
+         Print("[MDT] Order failed. Retcode=", trade.ResultRetcode(),
+               " ", trade.ResultRetcodeDescription());
+         break;
+      }
+   }
+}
+//+------------------------------------------------------------------+
+

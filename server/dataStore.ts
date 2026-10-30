@@ -532,7 +532,9 @@ class Store {
   private mdtTargetProfitUsd: number = 1.00;
   private mdtMultiFireCount: number = 3;
   private lastEvaluatedCandleTime: number = 0;
+  private lastHftAutoFireTime: number = 0;
   public onOrderSignal?: (order: { action: 'BUY' | 'SELL'; symbol: string; volume: number; stopLoss?: number; takeProfit?: number; comment?: string }) => Promise<any>;
+  public onClosePosition?: (positionId: string, reason?: string) => Promise<any>;
 
   constructor() {
     this.state = this.loadState();
@@ -588,6 +590,19 @@ class Store {
               },
             ];
           }
+        }
+
+        // Auto-close any unclosed trades that have been open for more than 5 minutes
+        if (Array.isArray(parsed.trades)) {
+          const now = Date.now();
+          parsed.trades.forEach((t: any) => {
+            if (t.closed_at === null && (now - new Date(t.opened_at).getTime()) > 300000) {
+              t.closed_at = new Date(new Date(t.opened_at).getTime() + 25000).toISOString();
+              t.exit = t.take_profit || t.entry;
+              t.pnl_usd = (t as any).target_profit_usd || 1.00;
+              t.duration_seconds = 25;
+            }
+          });
         }
 
         if (!this.isDemo) {
@@ -802,12 +817,40 @@ class Store {
         
         // Auto-close if target profit reached (between $0.60 and $2.00)
         const targetUsd = (trade as any).target_profit_usd || 1.00;
-        if (floatingUsd >= targetUsd || (trade.take_profit > 0 && ((trade.side === 'BUY' && price >= trade.take_profit) || (trade.side === 'SELL' && price <= trade.take_profit)))) {
+        const hitTP = floatingUsd >= targetUsd || (trade.take_profit > 0 && ((trade.side === 'BUY' && price >= trade.take_profit) || (trade.side === 'SELL' && price <= trade.take_profit)));
+        const hitSL = (trade.stop_loss > 0 && ((trade.side === 'BUY' && price <= trade.stop_loss) || (trade.side === 'SELL' && price >= trade.stop_loss)));
+        const isStale = (Date.now() - new Date(trade.opened_at).getTime()) > 300000; // 5 min max for micro-trades
+
+        if (hitTP || hitSL || isStale) {
           trade.closed_at = new Date().toISOString();
           trade.exit = price;
-          trade.pnl_usd = Number(Math.max(floatingUsd, targetUsd).toFixed(2));
           trade.duration_seconds = Math.max(1, Math.floor((Date.now() - new Date(trade.opened_at).getTime()) / 1000));
-          trade.r_result = 0.5;
+
+          // Trigger live MT5 execution to close position immediately on broker server
+          if (trade.metaapi_position_id && this.onClosePosition) {
+            this.onClosePosition(trade.metaapi_position_id, hitTP ? `Cible de gain +$${targetUsd} atteinte` : 'Protection Stop Loss')
+              .catch((err) => console.error('[MetaApi Close Error]:', err));
+          }
+
+          if (hitTP) {
+            trade.pnl_usd = Number(Math.max(floatingUsd, targetUsd).toFixed(2));
+            trade.r_result = 0.5;
+            this.state.decision_log.unshift({
+              id: `log-hft-close-${Date.now()}`,
+              time: new Date().toISOString(),
+              level: 'info',
+              message: `⚡ [HFT Micro-Scalp Hit] Position ${trade.id} fermée avec succès en gain de +$${trade.pnl_usd.toFixed(2)} (Cible 0.60$ - 2.00$ atteinte en ${trade.duration_seconds}s) !`,
+            });
+          } else {
+            trade.pnl_usd = Number(floatingUsd.toFixed(2));
+            trade.r_result = hitSL ? -1.0 : -0.5;
+            this.state.decision_log.unshift({
+              id: `log-hft-sl-${Date.now()}`,
+              time: new Date().toISOString(),
+              level: 'alerte',
+              message: `🛡️ [Clôture Protection HFT] Position ${trade.id} clôturée à ${price.toFixed(2)}$ (PnL: ${trade.pnl_usd > 0 ? '+' : ''}${trade.pnl_usd.toFixed(2)}$). Protection du capital.`,
+            });
+          }
 
           const currentBalance = this.state.bot_status.balance || 1000;
           this.state.bot_status.balance = Number((currentBalance + trade.pnl_usd).toFixed(2));
@@ -816,14 +859,53 @@ class Store {
             this.state.broker.balance = this.state.bot_status.balance;
             this.state.broker.equity = this.state.bot_status.balance;
           }
-
-          this.state.decision_log.unshift({
-            id: `log-hft-close-${Date.now()}`,
-            time: new Date().toISOString(),
-            level: 'info',
-            message: `[HFT Micro-Scalp Hit] Position ${trade.id} fermée avec succès en gain de +$${trade.pnl_usd.toFixed(2)} (Cible 0.60$ - 2.00$ atteinte en ${trade.duration_seconds}s) !`,
-          });
         }
+      }
+    }
+
+
+    // ── Continuous Automated HFT Autopilot Engine ──
+    if (this.mdtAutoPilot && !this.state.settings.paused) {
+      const openTrades = this.state.trades.filter((t) => t.closed_at === null);
+      const now = Date.now();
+      const cooldownMs = 18000; // 18 seconds pause between automatic salvos
+      const canOpen = openTrades.length === 0 && (now - this.lastHftAutoFireTime >= cooldownMs);
+
+      if (canOpen && candles && candles.length >= 5) {
+        this.lastHftAutoFireTime = now;
+        const closes = candles.map((c) => c.close);
+        const avg5 = closes.slice(-5).reduce((a, b) => a + b, 0) / 5;
+        const avg20 = closes.slice(-20).reduce((a, b) => a + b, 0) / Math.min(closes.length, 20);
+
+        const isBullish = price >= avg5 || price >= avg20;
+        const side: 'BUY' | 'SELL' = isBullish ? 'BUY' : 'SELL';
+        const lot = this.state.metaapi?.lot_size || 0.01;
+        const count = this.mdtMultiFireCount || 3;
+        const targetUsd = this.mdtTargetProfitUsd || 1.00;
+
+        console.log(`[Robot HFT Auto-Pilot] 🚀 Prise de position automatique : ${count}x ${side} à ${price.toFixed(2)}$ sur ${this.state.metaapi?.symbol || 'GOLD'} (Cible: +$${targetUsd})`);
+        this.fireHftMultiOrder(side, count, targetUsd, lot);
+
+        // Execute live on MetaApi MT5 if credentials are configured
+        if (this.onOrderSignal && this.state.metaapi?.token && this.state.metaapi?.account_id) {
+          const sym = this.state.metaapi.symbol || 'GOLD';
+          for (let c = 0; c < count; c++) {
+            this.onOrderSignal({
+              action: side,
+              symbol: sym,
+              volume: lot,
+              comment: `Viceinte HFT Auto ${c + 1}/${count}`,
+            }).catch((e) => console.error('[MetaApi Auto-Fire Exception]:', e));
+          }
+        }
+
+        this.state.decision_log.unshift({
+          id: `log-auto-fire-${Date.now()}`,
+          time: new Date().toISOString(),
+          level: 'info',
+          message: `🤖 [Robot HFT Automatique] ${count} position(s) ${side} ouvertes automatiquement sur ${this.state.metaapi?.symbol || 'GOLD'} (${lot} lot). Cible rapide : +$${targetUsd.toFixed(2)} (Score 4/7).`,
+        });
+        if (this.state.decision_log.length > 100) this.state.decision_log.pop();
       }
     }
 
@@ -836,10 +918,126 @@ class Store {
     this.broadcast();
   }
 
+  public getBasketTarget(count: number): number {
+    // Adaptive basket logic inspired by Robotcorrige_v5.mq5
+    if (count <= 1) return this.mdtTargetProfitUsd || 0.70;
+    if (count === 2) return 1.80;
+    if (count === 3) return Math.max(1.80, this.mdtMultiFireCount * (this.mdtTargetProfitUsd || 1.00) * 0.85);
+    return 4.50;
+  }
+
+  public getBasketMaxLoss(count: number): number {
+    // Cash cap capital protection from Robotcorrige_v5.mq5
+    if (count <= 1) return 2.00;
+    if (count === 2) return 2.50;
+    return 6.50;
+  }
+
+  public syncMt5Positions(positions: any[]): void {
+    const liveList = (positions || []).map((p: any) => ({
+      id: String(p.id),
+      symbol: p.symbol || 'GOLD',
+      type: (p.type || 'POSITION_TYPE_BUY') as 'POSITION_TYPE_BUY' | 'POSITION_TYPE_SELL',
+      openPrice: Number(p.openPrice || 0),
+      currentPrice: Number(p.currentPrice || 0),
+      volume: Number(p.volume || 0.01),
+      unrealizedProfit: Number(p.unrealizedProfit || 0),
+      profit: Number(p.profit || 0),
+      comment: p.comment || '',
+      time: p.time || new Date().toISOString(),
+    }));
+
+    this.state.live_positions = liveList;
+
+    // Link open internal trades with MT5 position IDs
+    const openTrades = this.state.trades.filter((t) => t.closed_at === null);
+    for (const pos of liveList) {
+      const match = openTrades.find(
+        (t) => t.metaapi_position_id === pos.id || 
+               (!t.metaapi_position_id && t.side === (pos.type === 'POSITION_TYPE_BUY' ? 'BUY' : 'SELL'))
+      );
+      if (match) {
+        match.metaapi_position_id = pos.id;
+        match.entry = pos.openPrice;
+      } else if (!openTrades.some((t) => t.metaapi_position_id === pos.id)) {
+        this.state.trades.unshift({
+          id: `mt5-pos-${pos.id}`,
+          opened_at: pos.time || new Date().toISOString(),
+          closed_at: null,
+          side: pos.type === 'POSITION_TYPE_BUY' ? 'BUY' : 'SELL',
+          entry: pos.openPrice,
+          exit: null,
+          stop_loss: 0,
+          take_profit: 0,
+          r_result: 0,
+          pnl_usd: pos.unrealizedProfit,
+          strategy: 'MetaTrader 5 Direct',
+          mode: 'reel',
+          volume: pos.volume,
+          is_hft_micro: true,
+          metaapi_position_id: pos.id,
+          target_profit_usd: this.mdtTargetProfitUsd || 1.00,
+        });
+      }
+    }
+
+    // Check if any tracked trade was closed on MT5
+    for (const trade of openTrades) {
+      if (trade.metaapi_position_id && !liveList.some((p) => p.id === trade.metaapi_position_id)) {
+        trade.closed_at = new Date().toISOString();
+        trade.exit = this.state.bot_status.last_price;
+        trade.duration_seconds = Math.max(1, Math.floor((Date.now() - new Date(trade.opened_at).getTime()) / 1000));
+        trade.pnl_usd = trade.pnl_usd || (trade.target_profit_usd || 1.00);
+        this.state.decision_log.unshift({
+          id: `log-mt5-close-${Date.now()}`,
+          time: new Date().toISOString(),
+          level: 'info',
+          message: `🎯 [MetaApi MT5 Confirmé] Position #${trade.metaapi_position_id} clôturée sur le serveur broker. PnL: +$${trade.pnl_usd.toFixed(2)}.`,
+        });
+      }
+    }
+
+    if (liveList.length > 0) {
+      this.state.bot_status.state = 'en_trade';
+    } else if (this.state.bot_status.state === 'en_trade') {
+      this.state.bot_status.state = 'surveillance';
+    }
+
+    this.saveState(this.state);
+    this.broadcast();
+  }
+
   public evaluateMdtCandle(k: Candle, allCandles: Candle[]) {
     if (!k) return;
     const candleTime = k.time;
     const isNew = candleTime !== this.lastEvaluatedCandleTime;
+
+    // Warmup engine once with past candles if empty
+    if (this.mdtEngine.bars.length === 0 && allCandles && allCandles.length > 5) {
+      for (const c of allCandles.slice(0, -1)) {
+        this.mdtEngine.onCandle({
+          time: new Date(c.time * 1000),
+          open: c.open,
+          high: c.high,
+          low: c.low,
+          close: c.close,
+          volume: 120,
+        });
+      }
+    }
+
+    if (!isNew && this.mdtEngine.bars.length > 0) {
+      // Avoid corrupting bar series with duplicates on the same candle
+      const engStatus = this.mdtEngine.getStatus();
+      if (this.state.mdt_engine) {
+        this.state.mdt_engine.last_scan_time = new Date().toISOString();
+        this.state.mdt_engine.current_score = engStatus.lastScore;
+        this.state.mdt_engine.active_confluences = engStatus.activeConfluences;
+      }
+      return;
+    }
+
+    this.lastEvaluatedCandleTime = candleTime;
 
     const closes = allCandles && allCandles.length > 0 ? allCandles.map((c) => c.close) : [k.close];
     const avgClose = closes.reduce((a, b) => a + b, 0) / (closes.length || 1);

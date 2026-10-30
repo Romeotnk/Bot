@@ -80,6 +80,8 @@ export interface Trade {
   volume?: number;
   duration_seconds?: number;
   is_hft_micro?: boolean;
+  target_profit_usd?: number;
+  metaapi_position_id?: string;
 }
 
 export interface DecisionLog {
@@ -228,6 +230,19 @@ export interface MdtEngineTelemetry {
   multi_fire_count: number;
 }
 
+export interface MetaApiLivePosition {
+  id: string;
+  symbol: string;
+  type: 'POSITION_TYPE_BUY' | 'POSITION_TYPE_SELL';
+  openPrice: number;
+  currentPrice: number;
+  volume: number;
+  unrealizedProfit: number;
+  profit: number;
+  comment?: string;
+  time?: string;
+}
+
 export interface DashboardState {
   bot_status: BotStatus;
   levels: Levels;
@@ -243,6 +258,7 @@ export interface DashboardState {
   future_scenarios?: FutureScenario[];
   broker?: BrokerAccountConfig;
   metaapi?: MetaApiConfig;
+  live_positions?: MetaApiLivePosition[];
   mdt_engine?: MdtEngineTelemetry;
   stream_latency_ms?: number;
 }

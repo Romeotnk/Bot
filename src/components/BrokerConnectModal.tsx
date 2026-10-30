@@ -118,8 +118,13 @@ export const BrokerConnectModal: React.FC<BrokerConnectModalProps> = ({ isOpen, 
 
   const currentBroker = state?.broker || state?.settings?.broker;
   const currentMetaApi = state?.metaapi;
+  const isMetaConnected = Boolean(currentMetaApi?.connected || (currentMetaApi?.token && currentMetaApi?.account_id));
+  const isBrokerConnected = Boolean(currentBroker?.connected);
+  const isAnyConnected = isMetaConnected || isBrokerConnected;
 
-  const [activeTab, setActiveTab] = useState<'connect' | 'python_hft' | 'mql5_ea' | 'metaapi' | 'architecture'>('connect');
+  const [activeTab, setActiveTab] = useState<'connect' | 'python_hft' | 'mql5_ea' | 'metaapi' | 'architecture'>(
+    isMetaConnected ? 'metaapi' : 'connect'
+  );
   const [selectedBroker, setSelectedBroker] = useState<BrokerType>(currentBroker?.broker_type || 'XM Global');
   const [accountType, setAccountType] = useState<'demo' | 'reel'>(currentBroker?.account_type || 'demo');
   const [accountNumber, setAccountNumber] = useState(currentBroker?.account_number || '');
@@ -538,24 +543,38 @@ void OnTimer() {
             <div className="relative flex items-center justify-center">
               <span
                 className={`w-3.5 h-3.5 rounded-full ${
-                  currentBroker?.connected ? 'bg-emerald-400' : 'bg-amber-400'
+                  isAnyConnected ? 'bg-emerald-400' : 'bg-amber-400'
                 }`}
               />
               <span
                 className={`absolute w-3.5 h-3.5 rounded-full animate-ping opacity-75 ${
-                  currentBroker?.connected ? 'bg-emerald-400' : 'bg-amber-400'
+                  isAnyConnected ? 'bg-emerald-400' : 'bg-amber-400'
                 }`}
               />
             </div>
             <div>
               <div className="text-xs font-bold text-white flex items-center gap-2">
-                <span>{currentBroker?.connected ? `Connecté à ${currentBroker.broker_type}` : 'En attente de connexion'}</span>
+                <span>
+                  {isMetaConnected
+                    ? `Connecté à MetaApi MT5 (${currentMetaApi?.server_name || 'XMGlobal-MT5 2'})`
+                    : isBrokerConnected
+                      ? `Connecté à ${currentBroker?.broker_type}`
+                      : 'En attente de connexion'}
+                </span>
                 <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-black/40 text-amber-300">
-                  {currentBroker?.account_type?.toUpperCase() || 'DÉMO'}
+                  {isMetaConnected ? 'MT5 CLOUD' : (currentBroker?.account_type?.toUpperCase() || 'DÉMO')}
                 </span>
               </div>
               <div className="text-[11px] text-[#8d93a8]">
-                Serveur : <code className="text-cyan-300">{currentBroker?.server_name || 'XMGlobal-MT5 3'}</code> · Symbole : <code className="text-amber-300">{currentBroker?.symbol || 'GOLD'}</code> · N° : {currentBroker?.account_number || '—'}
+                {isMetaConnected ? (
+                  <>
+                    Serveur : <code className="text-cyan-300">{currentMetaApi?.server_name || 'XMGlobal-MT5 2'}</code> · Solde : <code className="text-emerald-300">${(currentMetaApi?.balance || 1000).toLocaleString('fr-FR')}</code> · Auto-Trade : <code className={currentMetaApi?.auto_trade_enabled ? 'text-emerald-400' : 'text-zinc-400'}>{currentMetaApi?.auto_trade_enabled ? 'ACTIF' : 'INACTIF'}</code>
+                  </>
+                ) : (
+                  <>
+                    Serveur : <code className="text-cyan-300">{currentBroker?.server_name || 'XMGlobal-MT5 3'}</code> · Symbole : <code className="text-amber-300">{currentBroker?.symbol || 'GOLD'}</code> · N° : {currentBroker?.account_number || '—'}
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -569,7 +588,7 @@ void OnTimer() {
               </div>
             </div>
 
-            {currentBroker?.connected && (
+            {isAnyConnected && (
               <button
                 onClick={handleDisconnect}
                 className="px-3 py-1 rounded-xl text-xs font-mono bg-rose-500/15 text-rose-300 border border-rose-500/30 hover:bg-rose-500/25 transition cursor-pointer"

@@ -533,6 +533,117 @@ async function executeMetaApiOrder({
 // Connect data store autonomous engine to MetaApi execution
 store.onOrderSignal = executeMetaApiOrder;
 
+// -------------------------------------------------------------
+// MetaApi Position Closing Helpers (Adapted from Robotcorrige_v5.mq5)
+// -------------------------------------------------------------
+async function fetchMetaApiPositions(): Promise<any[]> {
+  const state = store.getState();
+  const metaConfig = state.metaapi;
+  if (!metaConfig?.token || !metaConfig?.account_id) return [];
+
+  const candidateRegions = Array.from(new Set([
+    metaConfig.region || 'london',
+    'london',
+    'new-york',
+    'singapore'
+  ]));
+
+  for (const r of candidateRegions) {
+    const url = `https://mt-client-api-v1.${r}.agiliumtrade.ai/users/current/accounts/${metaConfig.account_id}/positions`;
+    try {
+      const res = await fetch(url, {
+        headers: { 'auth-token': metaConfig.token, Accept: 'application/json' },
+      });
+      if (res.ok) {
+        return (await res.json()) as any[];
+      }
+    } catch {
+      // try next region
+    }
+  }
+  return [];
+}
+
+async function closeMetaApiPosition(positionId: string, reason?: string) {
+  const state = store.getState();
+  const metaConfig = state.metaapi;
+  if (!metaConfig?.token || !metaConfig?.account_id) {
+    return { success: false, reason: 'Token ou ID de compte MetaApi non configuré.' };
+  }
+
+  const candidateRegions = Array.from(new Set([
+    metaConfig.region || 'london',
+    'london',
+    'new-york',
+    'singapore'
+  ]));
+
+  const payload = {
+    actionType: 'POSITION_CLOSE_ID',
+    positionId: String(positionId),
+  };
+
+  for (const r of candidateRegions) {
+    const url = `https://mt-client-api-v1.${r}.agiliumtrade.ai/users/current/accounts/${metaConfig.account_id}/trade`;
+    console.log(`[MetaApi Close] 🚀 Clôture du ticket #${positionId} vers ${url} (${reason || 'Clôture'})...`);
+
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'auth-token': metaConfig.token,
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const rawText = await res.text();
+      let parsed: any = {};
+      try { parsed = JSON.parse(rawText); } catch { parsed = { raw: rawText }; }
+
+      if (res.status === 404 && parsed?.error === 'NotFoundError') continue;
+
+      if (res.ok && (parsed.numericCode === 10009 || parsed.stringCode === 'TRADE_RETCODE_DONE' || parsed.orderId)) {
+        store.ingest('log', {
+          level: 'info',
+          message: `⚡ [MetaApi MT5 Clôturé] Ticket #${positionId} fermé avec succès en direct ! ${reason ? `(${reason})` : ''}`,
+        });
+        return { success: true, result: parsed, positionId };
+      } else {
+        console.warn(`[MetaApi Close Rejet #${positionId}]:`, parsed);
+        return { success: false, error: parsed.message || parsed.stringCode || rawText };
+      }
+    } catch (err: any) {
+      console.error(`[MetaApi Close Exception]:`, err);
+    }
+  }
+
+  return { success: false, error: 'Échec de transmission de la clôture MetaApi' };
+}
+
+async function closeAllMetaApiPositions(reason?: string) {
+  const state = store.getState();
+  const metaConfig = state.metaapi;
+  if (!metaConfig?.token || !metaConfig?.account_id) {
+    return { success: false, closed: 0 };
+  }
+
+  const positions = await fetchMetaApiPositions();
+  if (!positions || positions.length === 0) {
+    return { success: true, closed: 0, message: 'Aucune position ouverte sur MT5.' };
+  }
+
+  console.log(`[MetaApi Close All] 🛡️ Clôture simultanée de ${positions.length} position(s) MT5 (${reason || 'Demande'})...`);
+  const results = await Promise.allSettled(
+    positions.map((p) => closeMetaApiPosition(p.id, reason))
+  );
+
+  return { success: true, closed: results.length, results };
+}
+
+store.onClosePosition = closeMetaApiPosition;
+
 // 1. MetaApi Proxy (POST /api/metaapi/proxy)
 app.all('/api/metaapi/proxy', async (req: Request, res: Response) => {
   try {
@@ -744,6 +855,44 @@ app.post('/api/metaapi/trade', async (req: Request, res: Response) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+// 5. MetaApi Close Specific Position
+app.post('/api/metaapi/close-position', async (req: Request, res: Response) => {
+  try {
+    const { positionId, reason } = req.body;
+    if (!positionId) {
+      res.status(400).json({ error: 'positionId requis' });
+      return;
+    }
+    const result = await closeMetaApiPosition(String(positionId), reason || 'Fermeture manuelle');
+    res.json(result);
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// 6. MetaApi Close All Positions (Emergency Basket Close)
+app.post('/api/metaapi/close-all', async (req: Request, res: Response) => {
+  try {
+    const { reason } = req.body;
+    const result = await closeAllMetaApiPositions(reason || 'Fermeture complète du panier');
+    res.json(result);
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// 7. Get Live MT5 Positions
+app.get('/api/metaapi/positions', async (_req: Request, res: Response) => {
+  try {
+    const positions = await fetchMetaApiPositions();
+    store.syncMt5Positions(positions);
+    res.json({ success: true, positions, count: positions.length });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 
 // Multi-Position HFT Fire (Stacking micro-trades targeting $0.60 to $2.00)
 app.post('/api/hft/multi-fire', async (req: Request, res: Response) => {
@@ -1058,8 +1207,11 @@ async function setupServer() {
     });
   }
 
-  // Automatic high-frequency live ticker loop (every 1200ms in record time)
+  // Automatic high-frequency live ticker loop & MT5 Position Monitor (every 1200ms)
   let isTickerSyncing = false;
+  let isMt5Checking = false;
+  const positionPeaks = new Map<string, number>();
+
   setInterval(async () => {
     if (isTickerSyncing) return;
     isTickerSyncing = true;
@@ -1082,7 +1234,84 @@ async function setupServer() {
     } finally {
       isTickerSyncing = false;
     }
+
+    // Real-Time MT5 Adaptive Position Closer (Robotcorrige_v5.mq5 logic)
+    if (!isMt5Checking) {
+      isMt5Checking = true;
+      try {
+        const state = store.getState();
+        if (state.metaapi?.token && state.metaapi?.account_id) {
+          const livePositions = await fetchMetaApiPositions();
+          store.syncMt5Positions(livePositions);
+
+          if (livePositions.length > 0) {
+            const count = livePositions.length;
+            const totalBasketProfit = livePositions.reduce((acc: number, p: any) => acc + (Number(p.unrealizedProfit) || 0), 0);
+            const targetProfitUsd = state.mdt_engine?.target_profit_usd || 1.00;
+            const basketTarget = store.getBasketTarget(count);
+            const basketMaxLoss = store.getBasketMaxLoss(count);
+
+            // 1. ManageBasket Target Hit (Close all positions in basket)
+            if (totalBasketProfit >= basketTarget) {
+              console.log(`[ManageBasket] 🎯 Cible de panier atteinte : +$${totalBasketProfit.toFixed(2)} (Seuil: $${basketTarget.toFixed(2)}). Clôture immédiate !`);
+              await closeAllMetaApiPositions(`Objectif de panier +$${totalBasketProfit.toFixed(2)} atteint`);
+              positionPeaks.clear();
+            }
+            // 2. ManageBasket Max Loss Hard Stop (Capital Protection)
+            else if (totalBasketProfit <= -basketMaxLoss) {
+              console.log(`[ManageBasket] 🛡️ Perte max panier atteinte : -$${Math.abs(totalBasketProfit).toFixed(2)}. Clôture de sécurité !`);
+              await closeAllMetaApiPositions(`Protection du capital (-$${Math.abs(totalBasketProfit).toFixed(2)})`);
+              positionPeaks.clear();
+            }
+            // 3. Per-position Fast Scalp, Trailing Stop, Break-Even & Early Exit
+            else {
+              for (const p of livePositions) {
+                const uProfit = Number(p.unrealizedProfit) || 0;
+
+                // A. Fast Scalp Target Hit ($0.60 to $2.00)
+                if (uProfit >= targetProfitUsd) {
+                  console.log(`[Fast Scalp] ⚡ Position #${p.id} a atteint la cible +$${uProfit.toFixed(2)} ! Clôture immédiate.`);
+                  await closeMetaApiPosition(p.id, `Cible rapide +$${uProfit.toFixed(2)} atteinte`);
+                  positionPeaks.delete(p.id);
+                  continue;
+                }
+
+                // B. Trailing & Break-Even step (MQ5 logic)
+                const peak = positionPeaks.get(p.id) || uProfit;
+                if (uProfit > peak) {
+                  positionPeaks.set(p.id, uProfit);
+                }
+                if (peak >= 0.50 && uProfit < (peak - 0.25) && uProfit > 0.10) {
+                  console.log(`[Trailing Hit] 🛡️ Trailing stop sécurisé pour #${p.id} à +$${uProfit.toFixed(2)} (Pic: $${peak.toFixed(2)}).`);
+                  await closeMetaApiPosition(p.id, `Trailing stop déclenché (+${uProfit.toFixed(2)}$ sécurisé)`);
+                  positionPeaks.delete(p.id);
+                  continue;
+                }
+
+                // C. ManageEarlyExit on M1 reversal (MQ5 logic)
+                if (uProfit >= 0.25 && state.bot_status.candles.length >= 2) {
+                  const lastCandle = state.bot_status.candles[state.bot_status.candles.length - 1];
+                  const isBuy = p.type === 'POSITION_TYPE_BUY';
+                  const isReversal = isBuy ? (lastCandle.close < lastCandle.open) : (lastCandle.close > lastCandle.open);
+                  if (isReversal) {
+                    console.log(`[Early Exit] 🏃 Position #${p.id} clôturée sur confirmation de retournement M1 (Gain préservé : +$${uProfit.toFixed(2)}).`);
+                    await closeMetaApiPosition(p.id, `Sortie anticipée (Early Exit) +${uProfit.toFixed(2)}$`);
+                    positionPeaks.delete(p.id);
+                    continue;
+                  }
+                }
+              }
+            }
+          }
+        }
+      } catch (e) {
+        // silent loop error
+      } finally {
+        isMt5Checking = false;
+      }
+    }
   }, 1200);
+
 
   app.listen(PORT, () => {
     console.log(`[Viceinte Core] Serveur actif sur http://localhost:${PORT} avec actualisation record 1s`);

@@ -4,115 +4,10 @@
     "mode": "simulation",
     "symbol": "GOLD (XAUUSD)",
     "timeframe": "5m",
-    "last_price": 3996.82,
-    "equity": 292.29,
-    "balance": 328.95,
+    "last_price": 3988.23,
+    "equity": 355.12,
+    "balance": 355.12,
     "candles": [
-      {
-        "time": 1793328600,
-        "open": 4004.81,
-        "high": 4004.81,
-        "low": 4003.59,
-        "close": 4004.34
-      },
-      {
-        "time": 1793328900,
-        "open": 4004.35,
-        "high": 4006.01,
-        "low": 4003.88,
-        "close": 4004.66
-      },
-      {
-        "time": 1793329200,
-        "open": 4004.59,
-        "high": 4005.02,
-        "low": 4001.34,
-        "close": 4002.04
-      },
-      {
-        "time": 1793329500,
-        "open": 4002.04,
-        "high": 4004.35,
-        "low": 4001,
-        "close": 4001
-      },
-      {
-        "time": 1793329800,
-        "open": 4001,
-        "high": 4001.34,
-        "low": 4000,
-        "close": 4000.83
-      },
-      {
-        "time": 1793330100,
-        "open": 4000.46,
-        "high": 4001.94,
-        "low": 4000.03,
-        "close": 4001.37
-      },
-      {
-        "time": 1793330400,
-        "open": 4001.64,
-        "high": 4004.93,
-        "low": 4000.57,
-        "close": 4004.64
-      },
-      {
-        "time": 1793330700,
-        "open": 4005.25,
-        "high": 4008.27,
-        "low": 4005.25,
-        "close": 4007.44
-      },
-      {
-        "time": 1793331000,
-        "open": 4007.99,
-        "high": 4007.99,
-        "low": 4001.21,
-        "close": 4002.41
-      },
-      {
-        "time": 1793331300,
-        "open": 4002.4,
-        "high": 4002.78,
-        "low": 4001.38,
-        "close": 4001.42
-      },
-      {
-        "time": 1793331600,
-        "open": 4001.55,
-        "high": 4002.42,
-        "low": 4001.3,
-        "close": 4001.65
-      },
-      {
-        "time": 1793331900,
-        "open": 4001.65,
-        "high": 4001.8,
-        "low": 4000,
-        "close": 4001.15
-      },
-      {
-        "time": 1793332200,
-        "open": 4000.35,
-        "high": 4001.88,
-        "low": 4000.07,
-        "close": 4001.4
-      },
-      {
-        "time": 1793332500,
-        "open": 4001.26,
-        "high": 4003.63,
-        "low": 3999.51,
-        "close": 4002.97
-      },
-      {
-        "time": 1793332800,
-        "open": 4002.98,
-        "high": 4003.36,
-        "low": 3998.53,
-        "close": 3999.21
-      },
       {
         "time": 1793333100,
         "open": 3999.21,
@@ -565,409 +460,3468 @@
         "time": 1793352300,
         "open": 3996.12,
         "high": 3997.44,
-        "low": 3996.12,
-        "close": 3996.82
+        "low": 3994.91,
+        "close": 3995.99
+      },
+      {
+        "time": 1793352600,
+        "open": 3996,
+        "high": 3997.53,
+        "low": 3995.4,
+        "close": 3995.83
+      },
+      {
+        "time": 1793352900,
+        "open": 3995.84,
+        "high": 3996.79,
+        "low": 3995,
+        "close": 3995.37
+      },
+      {
+        "time": 1793353200,
+        "open": 3995.37,
+        "high": 3996.16,
+        "low": 3994.75,
+        "close": 3995.99
+      },
+      {
+        "time": 1793353500,
+        "open": 3995.28,
+        "high": 3995.99,
+        "low": 3994.25,
+        "close": 3994.25
+      },
+      {
+        "time": 1793353800,
+        "open": 3994.26,
+        "high": 3997.94,
+        "low": 3993.34,
+        "close": 3997.87
+      },
+      {
+        "time": 1793354100,
+        "open": 3997.86,
+        "high": 3997.86,
+        "low": 3996.17,
+        "close": 3997.26
+      },
+      {
+        "time": 1793354400,
+        "open": 3997.49,
+        "high": 3997.85,
+        "low": 3994.85,
+        "close": 3997.73
+      },
+      {
+        "time": 1793354700,
+        "open": 3997.64,
+        "high": 3997.93,
+        "low": 3993.93,
+        "close": 3994.3
+      },
+      {
+        "time": 1793355000,
+        "open": 3994.3,
+        "high": 3994.3,
+        "low": 3990.66,
+        "close": 3990.95
+      },
+      {
+        "time": 1793355300,
+        "open": 3990.65,
+        "high": 3993.29,
+        "low": 3989.67,
+        "close": 3993.29
+      },
+      {
+        "time": 1793355600,
+        "open": 3993.29,
+        "high": 3993.29,
+        "low": 3989.43,
+        "close": 3990.11
+      },
+      {
+        "time": 1793355900,
+        "open": 3990.11,
+        "high": 3991.43,
+        "low": 3988.38,
+        "close": 3988.38
+      },
+      {
+        "time": 1793356200,
+        "open": 3988.38,
+        "high": 3990.92,
+        "low": 3988.38,
+        "close": 3990.66
+      },
+      {
+        "time": 1793356500,
+        "open": 3989.87,
+        "high": 3989.87,
+        "low": 3988.24,
+        "close": 3989.34
+      },
+      {
+        "time": 1793356800,
+        "open": 3990.52,
+        "high": 3990.96,
+        "low": 3988.23,
+        "close": 3988.23
       }
     ],
     "plan": null,
-    "updated_at": "2026-10-30T09:26:16.988Z"
+    "updated_at": "2026-10-30T10:43:55.829Z"
   },
   "levels": {
     "day": "2026-10-30",
-    "asian_high": 4011.65,
-    "asian_low": 3997.55,
+    "asian_high": 4019.81,
+    "asian_low": 3997.2,
     "prev_day_high": 4019.81,
     "prev_day_low": 3975.51
   },
-  "signals": [],
+  "signals": [
+    {
+      "id": "mdt-sig-1793353179583",
+      "time": "2026-10-30T09:39:39.583Z",
+      "strategy": "MDT Engine [HFT Micro-Scalper] (Score: 3/7)",
+      "side": "SELL",
+      "entry": 3995,
+      "stop_loss": 3997.25,
+      "take_profit": 3994.5,
+      "rr": 1,
+      "status": "pris",
+      "filter": "aucun",
+      "reason_fr": "Signal autonome MDT détecté avec 3/7 confluences sur bougie clôturée."
+    }
+  ],
   "trades": [
     {
-      "id": "hft-tr-1793352376530-1",
-      "opened_at": "2026-10-30T09:26:16.530Z",
+      "id": "hft-tr-1793357022621-3",
+      "opened_at": "2026-10-30T10:43:42.621Z",
       "closed_at": null,
-      "side": "BUY",
-      "entry": 3996.82,
+      "side": "SELL",
+      "entry": 3979.64,
       "exit": null,
-      "stop_loss": 3994.32,
-      "take_profit": 3997.82,
+      "stop_loss": 3990.73,
+      "take_profit": 3987.23,
       "r_result": 0,
       "pnl_usd": 0,
       "strategy": "HFT Micro-Scalp Target $1.00",
       "mode": "reel",
       "volume": 0.01,
       "is_hft_micro": true,
-      "target_profit_usd": 1
+      "target_profit_usd": 1,
+      "metaapi_position_id": "2359856686"
+    },
+    {
+      "id": "hft-tr-1793357022621-2",
+      "opened_at": "2026-10-30T10:43:42.621Z",
+      "closed_at": null,
+      "side": "SELL",
+      "entry": 3979.64,
+      "exit": null,
+      "stop_loss": 3990.73,
+      "take_profit": 3987.23,
+      "r_result": 0,
+      "pnl_usd": 0,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "metaapi_position_id": "2359856687"
+    },
+    {
+      "id": "hft-tr-1793357022621-1",
+      "opened_at": "2026-10-30T10:43:42.621Z",
+      "closed_at": null,
+      "side": "SELL",
+      "entry": 3979.64,
+      "exit": null,
+      "stop_loss": 3990.73,
+      "take_profit": 3987.23,
+      "r_result": 0,
+      "pnl_usd": 0,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "metaapi_position_id": "2359856691"
+    },
+    {
+      "id": "mt5-pos-2359853936",
+      "opened_at": "2026-10-30T10:40:12.596Z",
+      "closed_at": "2026-10-30T10:43:37.814Z",
+      "side": "BUY",
+      "entry": 3983.02,
+      "exit": 3988.23,
+      "stop_loss": 0,
+      "take_profit": 0,
+      "r_result": 0.5,
+      "pnl_usd": 5.21,
+      "strategy": "MetaTrader 5 Direct",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "metaapi_position_id": "2359853936",
+      "target_profit_usd": 1,
+      "duration_seconds": 205
+    },
+    {
+      "id": "mt5-pos-2359853934",
+      "opened_at": "2026-10-30T10:40:12.471Z",
+      "closed_at": "2026-10-30T10:43:37.815Z",
+      "side": "BUY",
+      "entry": 3983.02,
+      "exit": 3988.23,
+      "stop_loss": 0,
+      "take_profit": 0,
+      "r_result": 0.5,
+      "pnl_usd": 5.21,
+      "strategy": "MetaTrader 5 Direct",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "metaapi_position_id": "2359853934",
+      "target_profit_usd": 1,
+      "duration_seconds": 205
+    },
+    {
+      "id": "mt5-pos-2359855419",
+      "opened_at": "2026-10-30T10:42:34.008Z",
+      "closed_at": "2026-10-30T10:43:41.454Z",
+      "side": "SELL",
+      "entry": 3979.53,
+      "exit": 3988.23,
+      "stop_loss": 0,
+      "take_profit": 0,
+      "r_result": 0,
+      "pnl_usd": -0.65,
+      "strategy": "MetaTrader 5 Direct",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "metaapi_position_id": "2359855419",
+      "target_profit_usd": 1,
+      "duration_seconds": 67
+    },
+    {
+      "id": "mt5-pos-2359855418",
+      "opened_at": "2026-10-30T10:42:34.007Z",
+      "closed_at": "2026-10-30T10:43:41.454Z",
+      "side": "SELL",
+      "entry": 3979.53,
+      "exit": 3988.23,
+      "stop_loss": 0,
+      "take_profit": 0,
+      "r_result": 0,
+      "pnl_usd": -0.65,
+      "strategy": "MetaTrader 5 Direct",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "metaapi_position_id": "2359855418",
+      "target_profit_usd": 1,
+      "duration_seconds": 67
+    },
+    {
+      "id": "mt5-pos-2359855417",
+      "opened_at": "2026-10-30T10:42:33.999Z",
+      "closed_at": "2026-10-30T10:43:41.454Z",
+      "side": "SELL",
+      "entry": 3979.53,
+      "exit": 3988.23,
+      "stop_loss": 0,
+      "take_profit": 0,
+      "r_result": 0,
+      "pnl_usd": -0.65,
+      "strategy": "MetaTrader 5 Direct",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "metaapi_position_id": "2359855417",
+      "target_profit_usd": 1,
+      "duration_seconds": 67
+    },
+    {
+      "id": "mt5-pos-2359853938",
+      "opened_at": "2026-10-30T10:40:12.705Z",
+      "closed_at": "2026-10-30T10:43:36.615Z",
+      "side": "BUY",
+      "entry": 3982.99,
+      "exit": 3988.23,
+      "stop_loss": 0,
+      "take_profit": 0,
+      "r_result": 0.5,
+      "pnl_usd": 5.24,
+      "strategy": "MetaTrader 5 Direct",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "metaapi_position_id": "2359853938",
+      "target_profit_usd": 1,
+      "duration_seconds": 203
+    },
+    {
+      "id": "mt5-pos-2359853936",
+      "opened_at": "2026-10-30T10:40:12.596Z",
+      "closed_at": "2026-10-30T10:43:36.618Z",
+      "side": "BUY",
+      "entry": 3983.02,
+      "exit": 3988.23,
+      "stop_loss": 0,
+      "take_profit": 0,
+      "r_result": 0.5,
+      "pnl_usd": 5.21,
+      "strategy": "MetaTrader 5 Direct",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "metaapi_position_id": "2359853936",
+      "target_profit_usd": 1,
+      "duration_seconds": 204
+    },
+    {
+      "id": "mt5-pos-2359853934",
+      "opened_at": "2026-10-30T10:40:12.471Z",
+      "closed_at": "2026-10-30T10:43:36.619Z",
+      "side": "BUY",
+      "entry": 3983.02,
+      "exit": 3988.23,
+      "stop_loss": 0,
+      "take_profit": 0,
+      "r_result": 0.5,
+      "pnl_usd": 5.21,
+      "strategy": "MetaTrader 5 Direct",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "metaapi_position_id": "2359853934",
+      "target_profit_usd": 1,
+      "duration_seconds": 204
+    },
+    {
+      "id": "mt5-pos-2359853097",
+      "opened_at": "2026-10-30T10:38:44.734Z",
+      "closed_at": "2026-10-30T10:43:41.454Z",
+      "side": "SELL",
+      "entry": 3980.23,
+      "exit": 3988.23,
+      "stop_loss": 0,
+      "take_profit": 0,
+      "r_result": 0,
+      "pnl_usd": 0.05,
+      "strategy": "MetaTrader 5 Direct",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "metaapi_position_id": "2359853097",
+      "target_profit_usd": 1,
+      "duration_seconds": 296
+    },
+    {
+      "id": "mt5-pos-2359853096",
+      "opened_at": "2026-10-30T10:38:44.703Z",
+      "closed_at": "2026-10-30T10:43:41.454Z",
+      "side": "SELL",
+      "entry": 3980.23,
+      "exit": 3988.23,
+      "stop_loss": 0,
+      "take_profit": 0,
+      "r_result": 0,
+      "pnl_usd": 0.05,
+      "strategy": "MetaTrader 5 Direct",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "metaapi_position_id": "2359853096",
+      "target_profit_usd": 1,
+      "duration_seconds": 296
+    },
+    {
+      "id": "mt5-pos-2359853094",
+      "opened_at": "2026-10-30T10:38:44.679Z",
+      "closed_at": "2026-10-30T10:43:41.454Z",
+      "side": "SELL",
+      "entry": 3980.23,
+      "exit": 3988.23,
+      "stop_loss": 0,
+      "take_profit": 0,
+      "r_result": 0,
+      "pnl_usd": 0.05,
+      "strategy": "MetaTrader 5 Direct",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "metaapi_position_id": "2359853094",
+      "target_profit_usd": 1,
+      "duration_seconds": 296
+    },
+    {
+      "id": "hft-tr-1793356953913-3",
+      "opened_at": "2026-10-30T10:42:33.913Z",
+      "closed_at": "2026-10-30T10:43:37.875Z",
+      "side": "SELL",
+      "entry": 3981.4,
+      "exit": 3988.23,
+      "stop_loss": 3990.88,
+      "take_profit": 3987.38,
+      "r_result": 0,
+      "pnl_usd": 1,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "metaapi_position_id": "2359850925",
+      "duration_seconds": 63
+    },
+    {
+      "id": "hft-tr-1793356953913-2",
+      "opened_at": "2026-10-30T10:42:33.913Z",
+      "closed_at": "2026-10-30T10:43:37.875Z",
+      "side": "SELL",
+      "entry": 3981.4,
+      "exit": 3988.23,
+      "stop_loss": 3990.88,
+      "take_profit": 3987.38,
+      "r_result": 0,
+      "pnl_usd": 1,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "metaapi_position_id": "2359850926",
+      "duration_seconds": 63
+    },
+    {
+      "id": "hft-tr-1793356953913-1",
+      "opened_at": "2026-10-30T10:42:33.913Z",
+      "closed_at": "2026-10-30T10:43:37.875Z",
+      "side": "SELL",
+      "entry": 3981.4,
+      "exit": 3988.23,
+      "stop_loss": 3990.88,
+      "take_profit": 3987.38,
+      "r_result": 0,
+      "pnl_usd": 1,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "metaapi_position_id": "2359850927",
+      "duration_seconds": 63
+    },
+    {
+      "id": "hft-tr-1793356812230-3",
+      "opened_at": "2026-10-30T10:40:12.230Z",
+      "closed_at": "2026-10-30T10:42:33.912Z",
+      "side": "BUY",
+      "entry": 3990.96,
+      "exit": 3988.38,
+      "stop_loss": 3988.46,
+      "take_profit": 3991.96,
+      "r_result": -1,
+      "pnl_usd": -2.58,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 141
+    },
+    {
+      "id": "hft-tr-1793356812230-2",
+      "opened_at": "2026-10-30T10:40:12.230Z",
+      "closed_at": "2026-10-30T10:42:33.912Z",
+      "side": "BUY",
+      "entry": 3990.96,
+      "exit": 3988.38,
+      "stop_loss": 3988.46,
+      "take_profit": 3991.96,
+      "r_result": -1,
+      "pnl_usd": -2.58,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 141
+    },
+    {
+      "id": "hft-tr-1793356812230-1",
+      "opened_at": "2026-10-30T10:40:12.230Z",
+      "closed_at": "2026-10-30T10:42:33.912Z",
+      "side": "BUY",
+      "entry": 3990.96,
+      "exit": 3988.38,
+      "stop_loss": 3988.46,
+      "take_profit": 3991.96,
+      "r_result": -1,
+      "pnl_usd": -2.58,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 141
+    },
+    {
+      "id": "hft-tr-1793356724570-3",
+      "opened_at": "2026-10-30T10:38:44.570Z",
+      "closed_at": "2026-10-30T10:40:12.229Z",
+      "side": "SELL",
+      "entry": 3988.24,
+      "exit": 3990.96,
+      "stop_loss": 3990.74,
+      "take_profit": 3987.24,
+      "r_result": -1,
+      "pnl_usd": -2.72,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 87
+    },
+    {
+      "id": "hft-tr-1793356724570-2",
+      "opened_at": "2026-10-30T10:38:44.570Z",
+      "closed_at": "2026-10-30T10:40:12.229Z",
+      "side": "SELL",
+      "entry": 3988.24,
+      "exit": 3990.96,
+      "stop_loss": 3990.74,
+      "take_profit": 3987.24,
+      "r_result": -1,
+      "pnl_usd": -2.72,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 87
+    },
+    {
+      "id": "hft-tr-1793356724570-1",
+      "opened_at": "2026-10-30T10:38:44.570Z",
+      "closed_at": "2026-10-30T10:40:12.230Z",
+      "side": "SELL",
+      "entry": 3988.24,
+      "exit": 3990.96,
+      "stop_loss": 3990.74,
+      "take_profit": 3987.24,
+      "r_result": -1,
+      "pnl_usd": -2.72,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 87
+    },
+    {
+      "id": "hft-tr-1793356533655-3",
+      "opened_at": "2026-10-30T10:35:33.655Z",
+      "closed_at": "2026-10-30T10:38:44.570Z",
+      "side": "SELL",
+      "entry": 3989.42,
+      "exit": 3988.24,
+      "stop_loss": 3991.92,
+      "take_profit": 3988.42,
+      "r_result": 0.5,
+      "pnl_usd": 1.18,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 190
+    },
+    {
+      "id": "hft-tr-1793356533655-2",
+      "opened_at": "2026-10-30T10:35:33.655Z",
+      "closed_at": "2026-10-30T10:38:44.570Z",
+      "side": "SELL",
+      "entry": 3989.42,
+      "exit": 3988.24,
+      "stop_loss": 3991.92,
+      "take_profit": 3988.42,
+      "r_result": 0.5,
+      "pnl_usd": 1.18,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 190
+    },
+    {
+      "id": "hft-tr-1793356533655-1",
+      "opened_at": "2026-10-30T10:35:33.655Z",
+      "closed_at": "2026-10-30T10:38:44.570Z",
+      "side": "SELL",
+      "entry": 3989.42,
+      "exit": 3988.24,
+      "stop_loss": 3991.92,
+      "take_profit": 3988.42,
+      "r_result": 0.5,
+      "pnl_usd": 1.18,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 190
+    },
+    {
+      "id": "hft-tr-1793356405170-3",
+      "opened_at": "2026-10-30T10:33:25.170Z",
+      "closed_at": "2026-10-30T10:35:33.655Z",
+      "side": "SELL",
+      "entry": 3990.53,
+      "exit": 3989.42,
+      "stop_loss": 3993.03,
+      "take_profit": 3989.53,
+      "r_result": 0.5,
+      "pnl_usd": 1.11,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 128
+    },
+    {
+      "id": "hft-tr-1793356405170-2",
+      "opened_at": "2026-10-30T10:33:25.170Z",
+      "closed_at": "2026-10-30T10:35:33.655Z",
+      "side": "SELL",
+      "entry": 3990.53,
+      "exit": 3989.42,
+      "stop_loss": 3993.03,
+      "take_profit": 3989.53,
+      "r_result": 0.5,
+      "pnl_usd": 1.11,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 128
+    },
+    {
+      "id": "hft-tr-1793356405169-1",
+      "opened_at": "2026-10-30T10:33:25.169Z",
+      "closed_at": "2026-10-30T10:35:33.655Z",
+      "side": "SELL",
+      "entry": 3990.53,
+      "exit": 3989.42,
+      "stop_loss": 3993.03,
+      "take_profit": 3989.53,
+      "r_result": 0.5,
+      "pnl_usd": 1.11,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 128
+    },
+    {
+      "id": "hft-tr-1793356104759-3",
+      "opened_at": "2026-10-30T10:28:24.759Z",
+      "closed_at": "2026-10-30T10:33:25.169Z",
+      "side": "SELL",
+      "entry": 3989.29,
+      "exit": 3990.53,
+      "stop_loss": 3991.79,
+      "take_profit": 3988.29,
+      "r_result": -0.5,
+      "pnl_usd": -1.24,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 300
+    },
+    {
+      "id": "hft-tr-1793356104759-2",
+      "opened_at": "2026-10-30T10:28:24.759Z",
+      "closed_at": "2026-10-30T10:33:25.169Z",
+      "side": "SELL",
+      "entry": 3989.29,
+      "exit": 3990.53,
+      "stop_loss": 3991.79,
+      "take_profit": 3988.29,
+      "r_result": -0.5,
+      "pnl_usd": -1.24,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 300
+    },
+    {
+      "id": "hft-tr-1793356104759-1",
+      "opened_at": "2026-10-30T10:28:24.759Z",
+      "closed_at": "2026-10-30T10:33:25.169Z",
+      "side": "SELL",
+      "entry": 3989.29,
+      "exit": 3990.53,
+      "stop_loss": 3991.79,
+      "take_profit": 3988.29,
+      "r_result": -0.5,
+      "pnl_usd": -1.24,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 300
+    },
+    {
+      "id": "hft-tr-1793356043519-3",
+      "opened_at": "2026-10-30T10:27:23.519Z",
+      "closed_at": "2026-10-30T10:28:24.759Z",
+      "side": "SELL",
+      "entry": 3990.62,
+      "exit": 3989.29,
+      "stop_loss": 3993.12,
+      "take_profit": 3989.62,
+      "r_result": 0.5,
+      "pnl_usd": 1.33,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 61
+    },
+    {
+      "id": "hft-tr-1793356043519-2",
+      "opened_at": "2026-10-30T10:27:23.519Z",
+      "closed_at": "2026-10-30T10:28:24.759Z",
+      "side": "SELL",
+      "entry": 3990.62,
+      "exit": 3989.29,
+      "stop_loss": 3993.12,
+      "take_profit": 3989.62,
+      "r_result": 0.5,
+      "pnl_usd": 1.33,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 61
+    },
+    {
+      "id": "hft-tr-1793356043519-1",
+      "opened_at": "2026-10-30T10:27:23.519Z",
+      "closed_at": "2026-10-30T10:28:24.759Z",
+      "side": "SELL",
+      "entry": 3990.62,
+      "exit": 3989.29,
+      "stop_loss": 3993.12,
+      "take_profit": 3989.62,
+      "r_result": 0.5,
+      "pnl_usd": 1.33,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 61
+    },
+    {
+      "id": "hft-tr-1793355743344-3",
+      "opened_at": "2026-10-30T10:22:23.344Z",
+      "closed_at": "2026-10-30T10:27:23.519Z",
+      "side": "SELL",
+      "entry": 3990.11,
+      "exit": 3990.62,
+      "stop_loss": 3992.61,
+      "take_profit": 3989.11,
+      "r_result": -0.5,
+      "pnl_usd": -0.51,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 300
+    },
+    {
+      "id": "hft-tr-1793355743344-2",
+      "opened_at": "2026-10-30T10:22:23.344Z",
+      "closed_at": "2026-10-30T10:27:23.519Z",
+      "side": "SELL",
+      "entry": 3990.11,
+      "exit": 3990.62,
+      "stop_loss": 3992.61,
+      "take_profit": 3989.11,
+      "r_result": -0.5,
+      "pnl_usd": -0.51,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 300
+    },
+    {
+      "id": "hft-tr-1793355743344-1",
+      "opened_at": "2026-10-30T10:22:23.344Z",
+      "closed_at": "2026-10-30T10:27:23.519Z",
+      "side": "SELL",
+      "entry": 3990.11,
+      "exit": 3990.62,
+      "stop_loss": 3992.61,
+      "take_profit": 3989.11,
+      "r_result": -0.5,
+      "pnl_usd": -0.51,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 300
+    },
+    {
+      "id": "hft-tr-1793355667702-3",
+      "opened_at": "2026-10-30T10:21:07.702Z",
+      "closed_at": "2026-10-30T10:22:23.344Z",
+      "side": "SELL",
+      "entry": 3991.36,
+      "exit": 3990.11,
+      "stop_loss": 3993.86,
+      "take_profit": 3990.36,
+      "r_result": 0.5,
+      "pnl_usd": 1.25,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 75
+    },
+    {
+      "id": "hft-tr-1793355667702-2",
+      "opened_at": "2026-10-30T10:21:07.702Z",
+      "closed_at": "2026-10-30T10:22:23.344Z",
+      "side": "SELL",
+      "entry": 3991.36,
+      "exit": 3990.11,
+      "stop_loss": 3993.86,
+      "take_profit": 3990.36,
+      "r_result": 0.5,
+      "pnl_usd": 1.25,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 75
+    },
+    {
+      "id": "hft-tr-1793355667702-1",
+      "opened_at": "2026-10-30T10:21:07.702Z",
+      "closed_at": "2026-10-30T10:22:23.344Z",
+      "side": "SELL",
+      "entry": 3991.36,
+      "exit": 3990.11,
+      "stop_loss": 3993.86,
+      "take_profit": 3990.36,
+      "r_result": 0.5,
+      "pnl_usd": 1.25,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 75
+    },
+    {
+      "id": "hft-tr-1793355570888-3",
+      "opened_at": "2026-10-30T10:19:30.888Z",
+      "closed_at": "2026-10-30T10:21:07.702Z",
+      "side": "SELL",
+      "entry": 3992.61,
+      "exit": 3991.36,
+      "stop_loss": 3995.11,
+      "take_profit": 3991.61,
+      "r_result": 0.5,
+      "pnl_usd": 1.25,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 96
+    },
+    {
+      "id": "hft-tr-1793355570888-2",
+      "opened_at": "2026-10-30T10:19:30.888Z",
+      "closed_at": "2026-10-30T10:21:07.702Z",
+      "side": "SELL",
+      "entry": 3992.61,
+      "exit": 3991.36,
+      "stop_loss": 3995.11,
+      "take_profit": 3991.61,
+      "r_result": 0.5,
+      "pnl_usd": 1.25,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 96
+    },
+    {
+      "id": "hft-tr-1793355570888-1",
+      "opened_at": "2026-10-30T10:19:30.888Z",
+      "closed_at": "2026-10-30T10:21:07.702Z",
+      "side": "SELL",
+      "entry": 3992.61,
+      "exit": 3991.36,
+      "stop_loss": 3995.11,
+      "take_profit": 3991.61,
+      "r_result": 0.5,
+      "pnl_usd": 1.25,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 96
+    },
+    {
+      "id": "hft-tr-1793355303322-3",
+      "opened_at": "2026-10-30T10:15:03.322Z",
+      "closed_at": "2026-10-30T10:19:30.888Z",
+      "side": "SELL",
+      "entry": 3990.11,
+      "exit": 3992.61,
+      "stop_loss": 3992.61,
+      "take_profit": 3989.11,
+      "r_result": -1,
+      "pnl_usd": -2.5,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 267
+    },
+    {
+      "id": "hft-tr-1793355303322-2",
+      "opened_at": "2026-10-30T10:15:03.322Z",
+      "closed_at": "2026-10-30T10:19:30.888Z",
+      "side": "SELL",
+      "entry": 3990.11,
+      "exit": 3992.61,
+      "stop_loss": 3992.61,
+      "take_profit": 3989.11,
+      "r_result": -1,
+      "pnl_usd": -2.5,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 267
+    },
+    {
+      "id": "hft-tr-1793355303322-1",
+      "opened_at": "2026-10-30T10:15:03.322Z",
+      "closed_at": "2026-10-30T10:19:30.888Z",
+      "side": "SELL",
+      "entry": 3990.11,
+      "exit": 3992.61,
+      "stop_loss": 3992.61,
+      "take_profit": 3989.11,
+      "r_result": -1,
+      "pnl_usd": -2.5,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 267
+    },
+    {
+      "id": "hft-tr-1793355115361-3",
+      "opened_at": "2026-10-30T10:11:55.361Z",
+      "closed_at": "2026-10-30T10:15:03.322Z",
+      "side": "SELL",
+      "entry": 3991.13,
+      "exit": 3990.11,
+      "stop_loss": 3993.63,
+      "take_profit": 3990.13,
+      "r_result": 0.5,
+      "pnl_usd": 1.02,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 187
+    },
+    {
+      "id": "hft-tr-1793355115361-2",
+      "opened_at": "2026-10-30T10:11:55.361Z",
+      "closed_at": "2026-10-30T10:15:03.322Z",
+      "side": "SELL",
+      "entry": 3991.13,
+      "exit": 3990.11,
+      "stop_loss": 3993.63,
+      "take_profit": 3990.13,
+      "r_result": 0.5,
+      "pnl_usd": 1.02,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 187
+    },
+    {
+      "id": "hft-tr-1793355115361-1",
+      "opened_at": "2026-10-30T10:11:55.361Z",
+      "closed_at": "2026-10-30T10:15:03.322Z",
+      "side": "SELL",
+      "entry": 3991.13,
+      "exit": 3990.11,
+      "stop_loss": 3993.63,
+      "take_profit": 3990.13,
+      "r_result": 0.5,
+      "pnl_usd": 1.02,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 187
+    },
+    {
+      "id": "hft-tr-1793355051724-3",
+      "opened_at": "2026-10-30T10:10:51.724Z",
+      "closed_at": "2026-10-30T10:11:55.361Z",
+      "side": "SELL",
+      "entry": 3992.89,
+      "exit": 3991.13,
+      "stop_loss": 3995.39,
+      "take_profit": 3991.89,
+      "r_result": 0.5,
+      "pnl_usd": 1.76,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 63
+    },
+    {
+      "id": "hft-tr-1793355051724-2",
+      "opened_at": "2026-10-30T10:10:51.724Z",
+      "closed_at": "2026-10-30T10:11:55.361Z",
+      "side": "SELL",
+      "entry": 3992.89,
+      "exit": 3991.13,
+      "stop_loss": 3995.39,
+      "take_profit": 3991.89,
+      "r_result": 0.5,
+      "pnl_usd": 1.76,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 63
+    },
+    {
+      "id": "hft-tr-1793355051724-1",
+      "opened_at": "2026-10-30T10:10:51.724Z",
+      "closed_at": "2026-10-30T10:11:55.361Z",
+      "side": "SELL",
+      "entry": 3992.89,
+      "exit": 3991.13,
+      "stop_loss": 3995.39,
+      "take_profit": 3991.89,
+      "r_result": 0.5,
+      "pnl_usd": 1.76,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 63
+    },
+    {
+      "id": "hft-tr-1793354910045-3",
+      "opened_at": "2026-10-30T10:08:30.045Z",
+      "closed_at": "2026-10-30T10:10:51.723Z",
+      "side": "SELL",
+      "entry": 3993.93,
+      "exit": 3992.89,
+      "stop_loss": 3996.43,
+      "take_profit": 3992.93,
+      "r_result": 0.5,
+      "pnl_usd": 1.04,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 141
+    },
+    {
+      "id": "hft-tr-1793354910045-2",
+      "opened_at": "2026-10-30T10:08:30.045Z",
+      "closed_at": "2026-10-30T10:10:51.723Z",
+      "side": "SELL",
+      "entry": 3993.93,
+      "exit": 3992.89,
+      "stop_loss": 3996.43,
+      "take_profit": 3992.93,
+      "r_result": 0.5,
+      "pnl_usd": 1.04,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 141
+    },
+    {
+      "id": "hft-tr-1793354910045-1",
+      "opened_at": "2026-10-30T10:08:30.045Z",
+      "closed_at": "2026-10-30T10:10:51.723Z",
+      "side": "SELL",
+      "entry": 3993.93,
+      "exit": 3992.89,
+      "stop_loss": 3996.43,
+      "take_profit": 3992.93,
+      "r_result": 0.5,
+      "pnl_usd": 1.04,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 141
+    },
+    {
+      "id": "hft-tr-1793354758747-3",
+      "opened_at": "2026-10-30T10:05:58.747Z",
+      "closed_at": "2026-10-30T10:08:30.045Z",
+      "side": "SELL",
+      "entry": 3995.21,
+      "exit": 3993.93,
+      "stop_loss": 3997.71,
+      "take_profit": 3994.21,
+      "r_result": 0.5,
+      "pnl_usd": 1.28,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 151
+    },
+    {
+      "id": "hft-tr-1793354758747-2",
+      "opened_at": "2026-10-30T10:05:58.747Z",
+      "closed_at": "2026-10-30T10:08:30.045Z",
+      "side": "SELL",
+      "entry": 3995.21,
+      "exit": 3993.93,
+      "stop_loss": 3997.71,
+      "take_profit": 3994.21,
+      "r_result": 0.5,
+      "pnl_usd": 1.28,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 151
+    },
+    {
+      "id": "hft-tr-1793354758747-1",
+      "opened_at": "2026-10-30T10:05:58.747Z",
+      "closed_at": "2026-10-30T10:08:30.045Z",
+      "side": "SELL",
+      "entry": 3995.21,
+      "exit": 3993.93,
+      "stop_loss": 3997.71,
+      "take_profit": 3994.21,
+      "r_result": 0.5,
+      "pnl_usd": 1.28,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 151
+    },
+    {
+      "id": "hft-tr-1793354699911-3",
+      "opened_at": "2026-10-30T10:04:59.911Z",
+      "closed_at": "2026-10-30T10:05:58.747Z",
+      "side": "BUY",
+      "entry": 3997.73,
+      "exit": 3995.21,
+      "stop_loss": 3995.23,
+      "take_profit": 3998.73,
+      "r_result": -1,
+      "pnl_usd": -2.52,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 58
+    },
+    {
+      "id": "hft-tr-1793354699911-2",
+      "opened_at": "2026-10-30T10:04:59.911Z",
+      "closed_at": "2026-10-30T10:05:58.747Z",
+      "side": "BUY",
+      "entry": 3997.73,
+      "exit": 3995.21,
+      "stop_loss": 3995.23,
+      "take_profit": 3998.73,
+      "r_result": -1,
+      "pnl_usd": -2.52,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 58
+    },
+    {
+      "id": "hft-tr-1793354699911-1",
+      "opened_at": "2026-10-30T10:04:59.911Z",
+      "closed_at": "2026-10-30T10:05:58.747Z",
+      "side": "BUY",
+      "entry": 3997.73,
+      "exit": 3995.21,
+      "stop_loss": 3995.23,
+      "take_profit": 3998.73,
+      "r_result": -1,
+      "pnl_usd": -2.52,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 58
+    },
+    {
+      "id": "hft-tr-1793354609847-3",
+      "opened_at": "2026-10-30T10:03:29.847Z",
+      "closed_at": "2026-10-30T10:04:59.911Z",
+      "side": "SELL",
+      "entry": 3994.85,
+      "exit": 3997.73,
+      "stop_loss": 3997.35,
+      "take_profit": 3993.85,
+      "r_result": -1,
+      "pnl_usd": -2.88,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 90
+    },
+    {
+      "id": "hft-tr-1793354609847-2",
+      "opened_at": "2026-10-30T10:03:29.847Z",
+      "closed_at": "2026-10-30T10:04:59.911Z",
+      "side": "SELL",
+      "entry": 3994.85,
+      "exit": 3997.73,
+      "stop_loss": 3997.35,
+      "take_profit": 3993.85,
+      "r_result": -1,
+      "pnl_usd": -2.88,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 90
+    },
+    {
+      "id": "hft-tr-1793354609847-1",
+      "opened_at": "2026-10-30T10:03:29.847Z",
+      "closed_at": "2026-10-30T10:04:59.911Z",
+      "side": "SELL",
+      "entry": 3994.85,
+      "exit": 3997.73,
+      "stop_loss": 3997.35,
+      "take_profit": 3993.85,
+      "r_result": -1,
+      "pnl_usd": -2.88,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 90
+    },
+    {
+      "id": "hft-tr-1793354534209-3",
+      "opened_at": "2026-10-30T10:02:14.209Z",
+      "closed_at": "2026-10-30T10:03:29.847Z",
+      "side": "SELL",
+      "entry": 3996.06,
+      "exit": 3994.85,
+      "stop_loss": 3998.56,
+      "take_profit": 3995.06,
+      "r_result": 0.5,
+      "pnl_usd": 1.21,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 75
+    },
+    {
+      "id": "hft-tr-1793354534209-2",
+      "opened_at": "2026-10-30T10:02:14.209Z",
+      "closed_at": "2026-10-30T10:03:29.847Z",
+      "side": "SELL",
+      "entry": 3996.06,
+      "exit": 3994.85,
+      "stop_loss": 3998.56,
+      "take_profit": 3995.06,
+      "r_result": 0.5,
+      "pnl_usd": 1.21,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 75
+    },
+    {
+      "id": "hft-tr-1793354534209-1",
+      "opened_at": "2026-10-30T10:02:14.209Z",
+      "closed_at": "2026-10-30T10:03:29.847Z",
+      "side": "SELL",
+      "entry": 3996.06,
+      "exit": 3994.85,
+      "stop_loss": 3998.56,
+      "take_profit": 3995.06,
+      "r_result": 0.5,
+      "pnl_usd": 1.21,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 75
+    },
+    {
+      "id": "hft-tr-1793354234038-3",
+      "opened_at": "2026-10-30T09:57:14.038Z",
+      "closed_at": "2026-10-30T10:02:14.209Z",
+      "side": "BUY",
+      "entry": 3996.63,
+      "exit": 3996.06,
+      "stop_loss": 3994.13,
+      "take_profit": 3997.63,
+      "r_result": -0.5,
+      "pnl_usd": -0.57,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 300
+    },
+    {
+      "id": "hft-tr-1793354234038-2",
+      "opened_at": "2026-10-30T09:57:14.038Z",
+      "closed_at": "2026-10-30T10:02:14.209Z",
+      "side": "BUY",
+      "entry": 3996.63,
+      "exit": 3996.06,
+      "stop_loss": 3994.13,
+      "take_profit": 3997.63,
+      "r_result": -0.5,
+      "pnl_usd": -0.57,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 300
+    },
+    {
+      "id": "hft-tr-1793354234038-1",
+      "opened_at": "2026-10-30T09:57:14.038Z",
+      "closed_at": "2026-10-30T10:02:14.209Z",
+      "side": "BUY",
+      "entry": 3996.63,
+      "exit": 3996.06,
+      "stop_loss": 3994.13,
+      "take_profit": 3997.63,
+      "r_result": -0.5,
+      "pnl_usd": -0.57,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 300
+    },
+    {
+      "id": "hft-tr-1793353933859-3",
+      "opened_at": "2026-10-30T09:52:13.859Z",
+      "closed_at": "2026-10-30T09:57:14.038Z",
+      "side": "BUY",
+      "entry": 3997.19,
+      "exit": 3996.63,
+      "stop_loss": 3994.69,
+      "take_profit": 3998.19,
+      "r_result": -0.5,
+      "pnl_usd": -0.56,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 300
+    },
+    {
+      "id": "hft-tr-1793353933859-2",
+      "opened_at": "2026-10-30T09:52:13.859Z",
+      "closed_at": "2026-10-30T09:57:14.038Z",
+      "side": "BUY",
+      "entry": 3997.19,
+      "exit": 3996.63,
+      "stop_loss": 3994.69,
+      "take_profit": 3998.19,
+      "r_result": -0.5,
+      "pnl_usd": -0.56,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 300
+    },
+    {
+      "id": "hft-tr-1793353933859-1",
+      "opened_at": "2026-10-30T09:52:13.859Z",
+      "closed_at": "2026-10-30T09:57:14.038Z",
+      "side": "BUY",
+      "entry": 3997.19,
+      "exit": 3996.63,
+      "stop_loss": 3994.69,
+      "take_profit": 3998.19,
+      "r_result": -0.5,
+      "pnl_usd": -0.56,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 300
+    },
+    {
+      "id": "hft-tr-1793353822197-3",
+      "opened_at": "2026-10-30T09:50:22.198Z",
+      "closed_at": "2026-10-30T09:52:13.859Z",
+      "side": "SELL",
+      "entry": 3994.08,
+      "exit": 3997.19,
+      "stop_loss": 3996.58,
+      "take_profit": 3993.08,
+      "r_result": -1,
+      "pnl_usd": -3.11,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 111
+    },
+    {
+      "id": "hft-tr-1793353822197-2",
+      "opened_at": "2026-10-30T09:50:22.197Z",
+      "closed_at": "2026-10-30T09:52:13.859Z",
+      "side": "SELL",
+      "entry": 3994.08,
+      "exit": 3997.19,
+      "stop_loss": 3996.58,
+      "take_profit": 3993.08,
+      "r_result": -1,
+      "pnl_usd": -3.11,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 111
+    },
+    {
+      "id": "hft-tr-1793353822197-1",
+      "opened_at": "2026-10-30T09:50:22.197Z",
+      "closed_at": "2026-10-30T09:52:13.859Z",
+      "side": "SELL",
+      "entry": 3994.08,
+      "exit": 3997.19,
+      "stop_loss": 3996.58,
+      "take_profit": 3993.08,
+      "r_result": -1,
+      "pnl_usd": -3.11,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 111
+    },
+    {
+      "id": "hft-tr-1793353747185-3",
+      "opened_at": "2026-10-30T09:49:07.185Z",
+      "closed_at": "2026-10-30T09:50:22.197Z",
+      "side": "SELL",
+      "entry": 3995.19,
+      "exit": 3994.08,
+      "stop_loss": 3997.69,
+      "take_profit": 3994.19,
+      "r_result": 0.5,
+      "pnl_usd": 1.11,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 75
+    },
+    {
+      "id": "hft-tr-1793353747185-2",
+      "opened_at": "2026-10-30T09:49:07.185Z",
+      "closed_at": "2026-10-30T09:50:22.197Z",
+      "side": "SELL",
+      "entry": 3995.19,
+      "exit": 3994.08,
+      "stop_loss": 3997.69,
+      "take_profit": 3994.19,
+      "r_result": 0.5,
+      "pnl_usd": 1.11,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 75
+    },
+    {
+      "id": "hft-tr-1793353747185-1",
+      "opened_at": "2026-10-30T09:49:07.185Z",
+      "closed_at": "2026-10-30T09:50:22.197Z",
+      "side": "SELL",
+      "entry": 3995.19,
+      "exit": 3994.08,
+      "stop_loss": 3997.69,
+      "take_profit": 3994.19,
+      "r_result": 0.5,
+      "pnl_usd": 1.11,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 75
+    },
+    {
+      "id": "hft-tr-1793353446338-3",
+      "opened_at": "2026-10-30T09:44:06.338Z",
+      "closed_at": "2026-10-30T09:49:07.185Z",
+      "side": "SELL",
+      "entry": 3995.41,
+      "exit": 3995.19,
+      "stop_loss": 3997.91,
+      "take_profit": 3994.41,
+      "r_result": -0.5,
+      "pnl_usd": 0.22,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 300
+    },
+    {
+      "id": "hft-tr-1793353446338-2",
+      "opened_at": "2026-10-30T09:44:06.338Z",
+      "closed_at": "2026-10-30T09:49:07.185Z",
+      "side": "SELL",
+      "entry": 3995.41,
+      "exit": 3995.19,
+      "stop_loss": 3997.91,
+      "take_profit": 3994.41,
+      "r_result": -0.5,
+      "pnl_usd": 0.22,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 300
+    },
+    {
+      "id": "hft-tr-1793353446338-1",
+      "opened_at": "2026-10-30T09:44:06.338Z",
+      "closed_at": "2026-10-30T09:49:07.185Z",
+      "side": "SELL",
+      "entry": 3995.41,
+      "exit": 3995.19,
+      "stop_loss": 3997.91,
+      "take_profit": 3994.41,
+      "r_result": -0.5,
+      "pnl_usd": 0.22,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 300
+    },
+    {
+      "id": "hft-tr-1793353187100-3",
+      "opened_at": "2026-10-30T09:39:47.100Z",
+      "closed_at": "2026-10-30T09:44:47.457Z",
+      "side": "BUY",
+      "entry": 3995.01,
+      "exit": 3996.16,
+      "stop_loss": 3992.51,
+      "take_profit": 3996.01,
+      "r_result": 0.5,
+      "pnl_usd": 1.15,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 300
+    },
+    {
+      "id": "hft-tr-1793353187100-2",
+      "opened_at": "2026-10-30T09:39:47.100Z",
+      "closed_at": "2026-10-30T09:44:47.457Z",
+      "side": "BUY",
+      "entry": 3995.01,
+      "exit": 3996.16,
+      "stop_loss": 3992.51,
+      "take_profit": 3996.01,
+      "r_result": 0.5,
+      "pnl_usd": 1.15,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 300
+    },
+    {
+      "id": "hft-tr-1793353187100-1",
+      "opened_at": "2026-10-30T09:39:47.100Z",
+      "closed_at": "2026-10-30T09:44:47.457Z",
+      "side": "BUY",
+      "entry": 3995.01,
+      "exit": 3996.16,
+      "stop_loss": 3992.51,
+      "take_profit": 3996.01,
+      "r_result": 0.5,
+      "pnl_usd": 1.15,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 300
+    },
+    {
+      "id": "hft-tr-1793353179585-3",
+      "opened_at": "2026-10-30T09:39:39.585Z",
+      "closed_at": "2026-10-30T09:40:04.585Z",
+      "side": "SELL",
+      "entry": 3995,
+      "exit": 3994.5,
+      "stop_loss": 3997.5,
+      "take_profit": 3994.5,
+      "r_result": 0,
+      "pnl_usd": 1,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.02,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 25
+    },
+    {
+      "id": "hft-tr-1793353179585-2",
+      "opened_at": "2026-10-30T09:39:39.585Z",
+      "closed_at": "2026-10-30T09:40:04.585Z",
+      "side": "SELL",
+      "entry": 3995,
+      "exit": 3994.5,
+      "stop_loss": 3997.5,
+      "take_profit": 3994.5,
+      "r_result": 0,
+      "pnl_usd": 1,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.02,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 25
+    },
+    {
+      "id": "hft-tr-1793353179585-1",
+      "opened_at": "2026-10-30T09:39:39.585Z",
+      "closed_at": "2026-10-30T09:40:04.585Z",
+      "side": "SELL",
+      "entry": 3995,
+      "exit": 3994.5,
+      "stop_loss": 3997.5,
+      "take_profit": 3994.5,
+      "r_result": 0,
+      "pnl_usd": 1,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.02,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 25
+    },
+    {
+      "id": "hft-tr-1793353169214-3",
+      "opened_at": "2026-10-30T09:39:29.214Z",
+      "closed_at": "2026-10-30T09:39:54.214Z",
+      "side": "BUY",
+      "entry": 3995.38,
+      "exit": 3996.38,
+      "stop_loss": 3992.88,
+      "take_profit": 3996.38,
+      "r_result": 0,
+      "pnl_usd": 1,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 25
+    },
+    {
+      "id": "hft-tr-1793353169214-2",
+      "opened_at": "2026-10-30T09:39:29.214Z",
+      "closed_at": "2026-10-30T09:39:54.214Z",
+      "side": "BUY",
+      "entry": 3995.38,
+      "exit": 3996.38,
+      "stop_loss": 3992.88,
+      "take_profit": 3996.38,
+      "r_result": 0,
+      "pnl_usd": 1,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 25
+    },
+    {
+      "id": "hft-tr-1793353169214-1",
+      "opened_at": "2026-10-30T09:39:29.214Z",
+      "closed_at": "2026-10-30T09:39:54.214Z",
+      "side": "BUY",
+      "entry": 3995.38,
+      "exit": 3996.38,
+      "stop_loss": 3992.88,
+      "take_profit": 3996.38,
+      "r_result": 0,
+      "pnl_usd": 1,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 25
+    },
+    {
+      "id": "hft-tr-1793352854051-3",
+      "opened_at": "2026-10-30T09:34:14.051Z",
+      "closed_at": "2026-10-30T09:41:13.229Z",
+      "side": "SELL",
+      "entry": 3995.84,
+      "exit": 3994.75,
+      "stop_loss": 3998.34,
+      "take_profit": 3994.84,
+      "r_result": 0.5,
+      "pnl_usd": 1.09,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 419
+    },
+    {
+      "id": "hft-tr-1793352854051-2",
+      "opened_at": "2026-10-30T09:34:14.051Z",
+      "closed_at": "2026-10-30T09:41:13.229Z",
+      "side": "SELL",
+      "entry": 3995.84,
+      "exit": 3994.75,
+      "stop_loss": 3998.34,
+      "take_profit": 3994.84,
+      "r_result": 0.5,
+      "pnl_usd": 1.09,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 419
+    },
+    {
+      "id": "hft-tr-1793352854051-1",
+      "opened_at": "2026-10-30T09:34:14.051Z",
+      "closed_at": "2026-10-30T09:41:13.229Z",
+      "side": "SELL",
+      "entry": 3995.84,
+      "exit": 3994.75,
+      "stop_loss": 3998.34,
+      "take_profit": 3994.84,
+      "r_result": 0.5,
+      "pnl_usd": 1.09,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 419
+    },
+    {
+      "id": "hft-tr-1793352750385-3",
+      "opened_at": "2026-10-30T09:32:30.385Z",
+      "closed_at": "2026-10-30T09:32:55.385Z",
+      "side": "BUY",
+      "entry": 3996.54,
+      "exit": 3997.54,
+      "stop_loss": 3994.04,
+      "take_profit": 3997.54,
+      "r_result": 0,
+      "pnl_usd": 1,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 25
+    },
+    {
+      "id": "hft-tr-1793352750385-2",
+      "opened_at": "2026-10-30T09:32:30.385Z",
+      "closed_at": "2026-10-30T09:32:55.385Z",
+      "side": "BUY",
+      "entry": 3996.54,
+      "exit": 3997.54,
+      "stop_loss": 3994.04,
+      "take_profit": 3997.54,
+      "r_result": 0,
+      "pnl_usd": 1,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 25
+    },
+    {
+      "id": "hft-tr-1793352750385-1",
+      "opened_at": "2026-10-30T09:32:30.385Z",
+      "closed_at": "2026-10-30T09:32:55.385Z",
+      "side": "BUY",
+      "entry": 3996.54,
+      "exit": 3997.54,
+      "stop_loss": 3994.04,
+      "take_profit": 3997.54,
+      "r_result": 0,
+      "pnl_usd": 1,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 25
+    },
+    {
+      "id": "hft-tr-1793352730650-3",
+      "opened_at": "2026-10-30T09:32:10.650Z",
+      "closed_at": "2026-10-30T09:33:23.783Z",
+      "side": "SELL",
+      "entry": 3996.53,
+      "exit": 3995.4,
+      "stop_loss": 3999.03,
+      "take_profit": 3995.53,
+      "r_result": 0.5,
+      "pnl_usd": 1.13,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 73
+    },
+    {
+      "id": "hft-tr-1793352730650-2",
+      "opened_at": "2026-10-30T09:32:10.650Z",
+      "closed_at": "2026-10-30T09:33:23.783Z",
+      "side": "SELL",
+      "entry": 3996.53,
+      "exit": 3995.4,
+      "stop_loss": 3999.03,
+      "take_profit": 3995.53,
+      "r_result": 0.5,
+      "pnl_usd": 1.13,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 73
+    },
+    {
+      "id": "hft-tr-1793352730650-1",
+      "opened_at": "2026-10-30T09:32:10.650Z",
+      "closed_at": "2026-10-30T09:33:23.783Z",
+      "side": "SELL",
+      "entry": 3996.53,
+      "exit": 3995.4,
+      "stop_loss": 3999.03,
+      "take_profit": 3995.53,
+      "r_result": 0.5,
+      "pnl_usd": 1.13,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 73
+    },
+    {
+      "id": "hft-tr-1793352707859-3",
+      "opened_at": "2026-10-30T09:31:47.859Z",
+      "closed_at": "2026-10-30T09:39:38.382Z",
+      "side": "SELL",
+      "entry": 3996.06,
+      "exit": 3995,
+      "stop_loss": 3998.56,
+      "take_profit": 3995.06,
+      "r_result": 0.5,
+      "pnl_usd": 1.06,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 470
+    },
+    {
+      "id": "hft-tr-1793352707859-2",
+      "opened_at": "2026-10-30T09:31:47.859Z",
+      "closed_at": "2026-10-30T09:39:38.382Z",
+      "side": "SELL",
+      "entry": 3996.06,
+      "exit": 3995,
+      "stop_loss": 3998.56,
+      "take_profit": 3995.06,
+      "r_result": 0.5,
+      "pnl_usd": 1.06,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 470
+    },
+    {
+      "id": "hft-tr-1793352707859-1",
+      "opened_at": "2026-10-30T09:31:47.859Z",
+      "closed_at": "2026-10-30T09:39:38.382Z",
+      "side": "SELL",
+      "entry": 3996.06,
+      "exit": 3995,
+      "stop_loss": 3998.56,
+      "take_profit": 3995.06,
+      "r_result": 0.5,
+      "pnl_usd": 1.06,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 470
+    },
+    {
+      "id": "hft-tr-1793352678836-3",
+      "opened_at": "2026-10-30T09:31:18.836Z",
+      "closed_at": "2026-10-30T09:39:38.382Z",
+      "side": "SELL",
+      "entry": 3996.03,
+      "exit": 3995,
+      "stop_loss": 3998.53,
+      "take_profit": 3995.03,
+      "r_result": 0.5,
+      "pnl_usd": 1.03,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 499
+    },
+    {
+      "id": "hft-tr-1793352678836-2",
+      "opened_at": "2026-10-30T09:31:18.836Z",
+      "closed_at": "2026-10-30T09:39:38.382Z",
+      "side": "SELL",
+      "entry": 3996.03,
+      "exit": 3995,
+      "stop_loss": 3998.53,
+      "take_profit": 3995.03,
+      "r_result": 0.5,
+      "pnl_usd": 1.03,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 499
+    },
+    {
+      "id": "hft-tr-1793352678836-1",
+      "opened_at": "2026-10-30T09:31:18.836Z",
+      "closed_at": "2026-10-30T09:39:38.382Z",
+      "side": "SELL",
+      "entry": 3996.03,
+      "exit": 3995,
+      "stop_loss": 3998.53,
+      "take_profit": 3995.03,
+      "r_result": 0.5,
+      "pnl_usd": 1.03,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 499
+    },
+    {
+      "id": "hft-tr-1793352657603-3",
+      "opened_at": "2026-10-30T09:30:57.603Z",
+      "closed_at": "2026-10-30T09:31:22.603Z",
+      "side": "BUY",
+      "entry": 3996.82,
+      "exit": 3997.82,
+      "stop_loss": 3994.32,
+      "take_profit": 3997.82,
+      "r_result": 0,
+      "pnl_usd": 1,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 25
+    },
+    {
+      "id": "hft-tr-1793352657603-2",
+      "opened_at": "2026-10-30T09:30:57.603Z",
+      "closed_at": "2026-10-30T09:31:22.603Z",
+      "side": "BUY",
+      "entry": 3996.82,
+      "exit": 3997.82,
+      "stop_loss": 3994.32,
+      "take_profit": 3997.82,
+      "r_result": 0,
+      "pnl_usd": 1,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 25
+    },
+    {
+      "id": "hft-tr-1793352657603-1",
+      "opened_at": "2026-10-30T09:30:57.603Z",
+      "closed_at": "2026-10-30T09:31:22.603Z",
+      "side": "BUY",
+      "entry": 3996.82,
+      "exit": 3997.82,
+      "stop_loss": 3994.32,
+      "take_profit": 3997.82,
+      "r_result": 0,
+      "pnl_usd": 1,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 25
+    },
+    {
+      "id": "hft-tr-1793352376530-1",
+      "opened_at": "2026-10-30T09:26:16.530Z",
+      "closed_at": "2026-10-30T09:26:41.530Z",
+      "side": "BUY",
+      "entry": 3996.82,
+      "exit": 3997.82,
+      "stop_loss": 3994.32,
+      "take_profit": 3997.82,
+      "r_result": 0,
+      "pnl_usd": 1,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 25
     },
     {
       "id": "hft-tr-1793290745927-3",
       "opened_at": "2026-10-29T16:19:05.927Z",
-      "closed_at": null,
+      "closed_at": "2026-10-29T16:19:30.927Z",
       "side": "BUY",
       "entry": 4022.12,
-      "exit": null,
+      "exit": 4023.12,
       "stop_loss": 4019.62,
       "take_profit": 4023.12,
       "r_result": 0,
-      "pnl_usd": 0,
+      "pnl_usd": 1,
       "strategy": "HFT Micro-Scalp Target $1.00",
       "mode": "reel",
       "volume": 0.01,
       "is_hft_micro": true,
-      "target_profit_usd": 1
+      "target_profit_usd": 1,
+      "duration_seconds": 25
     },
     {
       "id": "hft-tr-1793290745927-2",
       "opened_at": "2026-10-29T16:19:05.927Z",
-      "closed_at": null,
+      "closed_at": "2026-10-29T16:19:30.927Z",
       "side": "BUY",
       "entry": 4022.12,
-      "exit": null,
+      "exit": 4023.12,
       "stop_loss": 4019.62,
       "take_profit": 4023.12,
       "r_result": 0,
-      "pnl_usd": 0,
+      "pnl_usd": 1,
       "strategy": "HFT Micro-Scalp Target $1.00",
       "mode": "reel",
       "volume": 0.01,
       "is_hft_micro": true,
-      "target_profit_usd": 1
+      "target_profit_usd": 1,
+      "duration_seconds": 25
     },
     {
       "id": "hft-tr-1793290745927-1",
       "opened_at": "2026-10-29T16:19:05.927Z",
-      "closed_at": null,
+      "closed_at": "2026-10-29T16:19:30.927Z",
       "side": "BUY",
       "entry": 4022.12,
-      "exit": null,
+      "exit": 4023.12,
       "stop_loss": 4019.62,
       "take_profit": 4023.12,
       "r_result": 0,
-      "pnl_usd": 0,
+      "pnl_usd": 1,
       "strategy": "HFT Micro-Scalp Target $1.00",
       "mode": "reel",
       "volume": 0.01,
       "is_hft_micro": true,
-      "target_profit_usd": 1
+      "target_profit_usd": 1,
+      "duration_seconds": 25
     }
   ],
   "decision_log": [
     {
-      "id": "log-1793352377005-8bxi",
-      "time": "2026-10-30T09:26:17.005Z",
+      "id": "log-1793357023196-z9h7",
+      "time": "2026-10-30T10:43:43.196Z",
       "level": "info",
-      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_BUY 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359793523) !"
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359856691) !"
     },
     {
-      "id": "log-hft-fire-1793352376530",
-      "time": "2026-10-30T09:26:16.530Z",
+      "id": "log-1793357023033-70pe",
+      "time": "2026-10-30T10:43:43.033Z",
       "level": "info",
-      "message": "[HFT Multi-Position Fire] 1 positions BUY ouvertes à 3996.82 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359856687) !"
     },
     {
-      "id": "broker-log-1793352365289",
-      "time": "2026-10-30T09:26:05.289Z",
+      "id": "log-1793357023006-47mi",
+      "time": "2026-10-30T10:43:43.006Z",
       "level": "info",
-      "message": "[Pont Courtier Démo] Connecté avec succès à XM Global (169533158 sur XMGlobal-MT5 2). Moteur: HFT_ULTRA (Latence: 18ms, Solde: $328.95)."
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359856686) !"
     },
     {
-      "id": "metaapi-log-1793290890654",
-      "time": "2026-10-29T16:21:30.654Z",
+      "id": "log-auto-fire-1793357022632",
+      "time": "2026-10-30T10:43:42.632Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "🤖 [Robot HFT Automatique] 3 position(s) SELL ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
     },
     {
-      "id": "metaapi-log-1793290889655",
-      "time": "2026-10-29T16:21:29.655Z",
+      "id": "log-hft-fire-1793357022621",
+      "time": "2026-10-30T10:43:42.621Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "[HFT Multi-Position Fire] 3 positions SELL ouvertes à 3988.23 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
     },
     {
-      "id": "metaapi-log-1793290888634",
-      "time": "2026-10-29T16:21:28.634Z",
+      "id": "log-mt5-close-1793357021454",
+      "time": "2026-10-30T10:43:41.454Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "🎯 [MetaApi MT5 Confirmé] Position #2359853094 clôturée sur le serveur broker. PnL: +$0.05."
     },
     {
-      "id": "metaapi-log-1793290887508",
-      "time": "2026-10-29T16:21:27.508Z",
+      "id": "log-mt5-close-1793357021454",
+      "time": "2026-10-30T10:43:41.454Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "🎯 [MetaApi MT5 Confirmé] Position #2359853096 clôturée sur le serveur broker. PnL: +$0.05."
     },
     {
-      "id": "metaapi-log-1793290886506",
-      "time": "2026-10-29T16:21:26.506Z",
+      "id": "log-mt5-close-1793357021454",
+      "time": "2026-10-30T10:43:41.454Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "🎯 [MetaApi MT5 Confirmé] Position #2359853097 clôturée sur le serveur broker. PnL: +$0.05."
     },
     {
-      "id": "metaapi-log-1793290885602",
-      "time": "2026-10-29T16:21:25.602Z",
+      "id": "log-mt5-close-1793357021454",
+      "time": "2026-10-30T10:43:41.454Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "🎯 [MetaApi MT5 Confirmé] Position #2359855417 clôturée sur le serveur broker. PnL: +$-0.65."
     },
     {
-      "id": "metaapi-log-1793290884516",
-      "time": "2026-10-29T16:21:24.516Z",
+      "id": "log-mt5-close-1793357021454",
+      "time": "2026-10-30T10:43:41.454Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "🎯 [MetaApi MT5 Confirmé] Position #2359855418 clôturée sur le serveur broker. PnL: +$-0.65."
     },
     {
-      "id": "metaapi-log-1793290883349",
-      "time": "2026-10-29T16:21:23.349Z",
+      "id": "log-mt5-close-1793357021454",
+      "time": "2026-10-30T10:43:41.454Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "🎯 [MetaApi MT5 Confirmé] Position #2359855419 clôturée sur le serveur broker. PnL: +$-0.65."
     },
     {
-      "id": "metaapi-log-1793290882079",
-      "time": "2026-10-29T16:21:22.079Z",
+      "id": "log-1793357021176-qi0b",
+      "time": "2026-10-30T10:43:41.177Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "⚡ [MetaApi MT5 Clôturé] Ticket #2359855418 fermé avec succès en direct ! (Test fermeture immédiate du panier)"
     },
     {
-      "id": "metaapi-log-1793290880953",
-      "time": "2026-10-29T16:21:20.953Z",
+      "id": "log-1793357021146-kdib",
+      "time": "2026-10-30T10:43:41.146Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "⚡ [MetaApi MT5 Clôturé] Ticket #2359853094 fermé avec succès en direct ! (Test fermeture immédiate du panier)"
     },
     {
-      "id": "metaapi-log-1793290879815",
-      "time": "2026-10-29T16:21:19.815Z",
+      "id": "log-1793357020949-q87t",
+      "time": "2026-10-30T10:43:40.949Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "⚡ [MetaApi MT5 Clôturé] Ticket #2359855419 fermé avec succès en direct ! (Test fermeture immédiate du panier)"
     },
     {
-      "id": "metaapi-log-1793290878491",
-      "time": "2026-10-29T16:21:18.491Z",
+      "id": "log-1793357020917-fn9t",
+      "time": "2026-10-30T10:43:40.917Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "⚡ [MetaApi MT5 Clôturé] Ticket #2359855417 fermé avec succès en direct ! (Test fermeture immédiate du panier)"
     },
     {
-      "id": "metaapi-log-1793290877371",
-      "time": "2026-10-29T16:21:17.371Z",
+      "id": "log-1793357020863-iwmp",
+      "time": "2026-10-30T10:43:40.863Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "⚡ [MetaApi MT5 Clôturé] Ticket #2359853096 fermé avec succès en direct ! (Test fermeture immédiate du panier)"
     },
     {
-      "id": "metaapi-log-1793290876134",
-      "time": "2026-10-29T16:21:16.134Z",
+      "id": "log-1793357020860-3b1h",
+      "time": "2026-10-30T10:43:40.860Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "⚡ [MetaApi MT5 Clôturé] Ticket #2359853097 fermé avec succès en direct ! (Test fermeture immédiate du panier)"
     },
     {
-      "id": "metaapi-log-1793290874921",
-      "time": "2026-10-29T16:21:14.921Z",
+      "id": "log-mt5-close-1793357017875",
+      "time": "2026-10-30T10:43:37.875Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "🎯 [MetaApi MT5 Confirmé] Position #2359850927 clôturée sur le serveur broker. PnL: +$1.00."
     },
     {
-      "id": "metaapi-log-1793290873783",
-      "time": "2026-10-29T16:21:13.783Z",
+      "id": "log-mt5-close-1793357017875",
+      "time": "2026-10-30T10:43:37.875Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "🎯 [MetaApi MT5 Confirmé] Position #2359850926 clôturée sur le serveur broker. PnL: +$1.00."
     },
     {
-      "id": "metaapi-log-1793290872692",
-      "time": "2026-10-29T16:21:12.692Z",
+      "id": "log-mt5-close-1793357017875",
+      "time": "2026-10-30T10:43:37.875Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "🎯 [MetaApi MT5 Confirmé] Position #2359850925 clôturée sur le serveur broker. PnL: +$1.00."
     },
     {
-      "id": "metaapi-log-1793290871607",
-      "time": "2026-10-29T16:21:11.607Z",
+      "id": "log-hft-close-1793357017815",
+      "time": "2026-10-30T10:43:37.815Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "⚡ [HFT Micro-Scalp Hit] Position mt5-pos-2359853934 fermée avec succès en gain de +$5.21 (Cible 0.60$ - 2.00$ atteinte en 205s) !"
     },
     {
-      "id": "metaapi-log-1793290870605",
-      "time": "2026-10-29T16:21:10.605Z",
+      "id": "log-hft-close-1793357017815",
+      "time": "2026-10-30T10:43:37.815Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "⚡ [HFT Micro-Scalp Hit] Position mt5-pos-2359853936 fermée avec succès en gain de +$5.21 (Cible 0.60$ - 2.00$ atteinte en 205s) !"
     },
     {
-      "id": "metaapi-log-1793290869647",
-      "time": "2026-10-29T16:21:09.647Z",
+      "id": "log-1793357016979-2txt",
+      "time": "2026-10-30T10:43:36.979Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "⚡ [MetaApi MT5 Clôturé] Ticket #2359850927 fermé avec succès en direct ! (Cible rapide +$1.08 atteinte)"
     },
     {
-      "id": "metaapi-log-1793290868792",
-      "time": "2026-10-29T16:21:08.792Z",
+      "id": "log-1793357016923-difm",
+      "time": "2026-10-30T10:43:36.923Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "⚡ [MetaApi MT5 Clôturé] Ticket #2359850926 fermé avec succès en direct ! (Cible rapide +$1.08 atteinte)"
     },
     {
-      "id": "metaapi-log-1793290861951",
-      "time": "2026-10-29T16:21:01.951Z",
+      "id": "log-1793357016822-qa4a",
+      "time": "2026-10-30T10:43:36.822Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "⚡ [MetaApi MT5 Clôturé] Ticket #2359853936 fermé avec succès en direct ! (Cible de gain +$1 atteinte)"
     },
     {
-      "id": "metaapi-log-1793290860956",
-      "time": "2026-10-29T16:21:00.956Z",
+      "id": "log-1793357016813-9az1",
+      "time": "2026-10-30T10:43:36.813Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "⚡ [MetaApi MT5 Clôturé] Ticket #2359850925 fermé avec succès en direct ! (Cible rapide +$1.08 atteinte)"
     },
     {
-      "id": "metaapi-log-1793290859909",
-      "time": "2026-10-29T16:20:59.909Z",
+      "id": "log-1793357016757-xzgb",
+      "time": "2026-10-30T10:43:36.757Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "⚡ [MetaApi MT5 Clôturé] Ticket #2359853934 fermé avec succès en direct ! (Cible de gain +$1 atteinte)"
     },
     {
-      "id": "metaapi-log-1793290858890",
-      "time": "2026-10-29T16:20:58.890Z",
+      "id": "log-1793357016704-ihw2",
+      "time": "2026-10-30T10:43:36.704Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "⚡ [MetaApi MT5 Clôturé] Ticket #2359853938 fermé avec succès en direct ! (Cible de gain +$1 atteinte)"
     },
     {
-      "id": "metaapi-log-1793290857580",
-      "time": "2026-10-29T16:20:57.580Z",
+      "id": "log-hft-close-1793357016619",
+      "time": "2026-10-30T10:43:36.619Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "⚡ [HFT Micro-Scalp Hit] Position mt5-pos-2359853934 fermée avec succès en gain de +$5.21 (Cible 0.60$ - 2.00$ atteinte en 204s) !"
     },
     {
-      "id": "metaapi-log-1793290851662",
-      "time": "2026-10-29T16:20:51.662Z",
+      "id": "log-hft-close-1793357016619",
+      "time": "2026-10-30T10:43:36.619Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "⚡ [HFT Micro-Scalp Hit] Position mt5-pos-2359853936 fermée avec succès en gain de +$5.21 (Cible 0.60$ - 2.00$ atteinte en 204s) !"
     },
     {
-      "id": "metaapi-log-1793290850813",
-      "time": "2026-10-29T16:20:50.813Z",
+      "id": "log-hft-close-1793357016618",
+      "time": "2026-10-30T10:43:36.618Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "⚡ [HFT Micro-Scalp Hit] Position mt5-pos-2359853938 fermée avec succès en gain de +$5.24 (Cible 0.60$ - 2.00$ atteinte en 203s) !"
     },
     {
-      "id": "metaapi-log-1793290845140",
-      "time": "2026-10-29T16:20:45.140Z",
+      "id": "log-1793356954055-w6ps",
+      "time": "2026-10-30T10:42:34.055Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359855419) !"
     },
     {
-      "id": "metaapi-log-1793290843985",
-      "time": "2026-10-29T16:20:43.985Z",
+      "id": "log-1793356954051-1pes",
+      "time": "2026-10-30T10:42:34.051Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359855418) !"
     },
     {
-      "id": "metaapi-log-1793290843062",
-      "time": "2026-10-29T16:20:43.062Z",
+      "id": "log-1793356954028-ioej",
+      "time": "2026-10-30T10:42:34.028Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359855417) !"
     },
     {
-      "id": "metaapi-log-1793290842037",
-      "time": "2026-10-29T16:20:42.037Z",
+      "id": "log-auto-fire-1793356953917",
+      "time": "2026-10-30T10:42:33.917Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "🤖 [Robot HFT Automatique] 3 position(s) SELL ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
     },
     {
-      "id": "metaapi-log-1793290841121",
-      "time": "2026-10-29T16:20:41.121Z",
+      "id": "log-hft-fire-1793356953913",
+      "time": "2026-10-30T10:42:33.913Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "[HFT Multi-Position Fire] 3 positions SELL ouvertes à 3988.38 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
     },
     {
-      "id": "metaapi-log-1793290840003",
-      "time": "2026-10-29T16:20:40.003Z",
-      "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "id": "log-hft-sl-1793356953912",
+      "time": "2026-10-30T10:42:33.912Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793356812230-1 clôturée à 3988.38$ (PnL: -2.58$). Protection du capital."
     },
     {
-      "id": "metaapi-log-1793290838929",
-      "time": "2026-10-29T16:20:38.929Z",
-      "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "id": "log-hft-sl-1793356953912",
+      "time": "2026-10-30T10:42:33.912Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793356812230-2 clôturée à 3988.38$ (PnL: -2.58$). Protection du capital."
     },
     {
-      "id": "metaapi-log-1793290837904",
-      "time": "2026-10-29T16:20:37.904Z",
-      "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "id": "log-hft-sl-1793356953912",
+      "time": "2026-10-30T10:42:33.912Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793356812230-3 clôturée à 3988.38$ (PnL: -2.58$). Protection du capital."
     },
     {
-      "id": "metaapi-log-1793290831904",
-      "time": "2026-10-29T16:20:31.904Z",
+      "id": "log-1793356813018-egwx",
+      "time": "2026-10-30T10:40:13.018Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_BUY 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359853938) !"
     },
     {
-      "id": "metaapi-log-1793290830876",
-      "time": "2026-10-29T16:20:30.876Z",
+      "id": "log-1793356812623-d84e",
+      "time": "2026-10-30T10:40:12.623Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_BUY 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359853936) !"
     },
     {
-      "id": "metaapi-log-1793290829656",
-      "time": "2026-10-29T16:20:29.656Z",
+      "id": "log-1793356812534-3ae5",
+      "time": "2026-10-30T10:40:12.534Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_BUY 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359853934) !"
     },
     {
-      "id": "metaapi-log-1793290828623",
-      "time": "2026-10-29T16:20:28.623Z",
+      "id": "log-auto-fire-1793356812237",
+      "time": "2026-10-30T10:40:12.237Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "🤖 [Robot HFT Automatique] 3 position(s) BUY ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
     },
     {
-      "id": "metaapi-log-1793290827322",
-      "time": "2026-10-29T16:20:27.322Z",
+      "id": "log-hft-fire-1793356812230",
+      "time": "2026-10-30T10:40:12.230Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "[HFT Multi-Position Fire] 3 positions BUY ouvertes à 3990.96 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
     },
     {
-      "id": "metaapi-log-1793290826372",
-      "time": "2026-10-29T16:20:26.372Z",
-      "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "id": "log-hft-sl-1793356812230",
+      "time": "2026-10-30T10:40:12.230Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793356724570-1 clôturée à 3990.96$ (PnL: -2.72$). Protection du capital."
     },
     {
-      "id": "metaapi-log-1793290825283",
-      "time": "2026-10-29T16:20:25.283Z",
-      "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "id": "log-hft-sl-1793356812229",
+      "time": "2026-10-30T10:40:12.229Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793356724570-2 clôturée à 3990.96$ (PnL: -2.72$). Protection du capital."
     },
     {
-      "id": "metaapi-log-1793290824451",
-      "time": "2026-10-29T16:20:24.451Z",
-      "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "id": "log-hft-sl-1793356812229",
+      "time": "2026-10-30T10:40:12.229Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793356724570-3 clôturée à 3990.96$ (PnL: -2.72$). Protection du capital."
     },
     {
-      "id": "metaapi-log-1793290822484",
-      "time": "2026-10-29T16:20:22.484Z",
+      "id": "log-1793356724851-ugy6",
+      "time": "2026-10-30T10:38:44.851Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359853097) !"
     },
     {
-      "id": "metaapi-log-1793290821353",
-      "time": "2026-10-29T16:20:21.353Z",
+      "id": "log-1793356724740-dfj7",
+      "time": "2026-10-30T10:38:44.740Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359853096) !"
     },
     {
-      "id": "metaapi-log-1793290820112",
-      "time": "2026-10-29T16:20:20.112Z",
+      "id": "log-1793356724709-xi1h",
+      "time": "2026-10-30T10:38:44.709Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359853094) !"
     },
     {
-      "id": "metaapi-log-1793290819104",
-      "time": "2026-10-29T16:20:19.104Z",
+      "id": "log-auto-fire-1793356724575",
+      "time": "2026-10-30T10:38:44.575Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "🤖 [Robot HFT Automatique] 3 position(s) SELL ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
     },
     {
-      "id": "metaapi-log-1793290818024",
-      "time": "2026-10-29T16:20:18.024Z",
+      "id": "log-hft-fire-1793356724570",
+      "time": "2026-10-30T10:38:44.570Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "[HFT Multi-Position Fire] 3 positions SELL ouvertes à 3988.24 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
     },
     {
-      "id": "metaapi-log-1793290817122",
-      "time": "2026-10-29T16:20:17.122Z",
+      "id": "log-hft-close-1793356724570",
+      "time": "2026-10-30T10:38:44.570Z",
       "level": "info",
-      "message": "[MetaApi Auto-Trade] Activé pour GOLD (0.01 lot). Tout signal valide sera routé directement en direct."
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793356533655-1 fermée avec succès en gain de +$1.18 (Cible 0.60$ - 2.00$ atteinte en 190s) !"
+    },
+    {
+      "id": "log-hft-close-1793356724570",
+      "time": "2026-10-30T10:38:44.570Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793356533655-2 fermée avec succès en gain de +$1.18 (Cible 0.60$ - 2.00$ atteinte en 190s) !"
+    },
+    {
+      "id": "log-hft-close-1793356724570",
+      "time": "2026-10-30T10:38:44.570Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793356533655-3 fermée avec succès en gain de +$1.18 (Cible 0.60$ - 2.00$ atteinte en 190s) !"
+    },
+    {
+      "id": "log-1793356533843-5wvz",
+      "time": "2026-10-30T10:35:33.843Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359850927) !"
+    },
+    {
+      "id": "log-1793356533815-9h17",
+      "time": "2026-10-30T10:35:33.815Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359850926) !"
+    },
+    {
+      "id": "log-1793356533793-kp6o",
+      "time": "2026-10-30T10:35:33.793Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359850925) !"
+    },
+    {
+      "id": "log-auto-fire-1793356533664",
+      "time": "2026-10-30T10:35:33.664Z",
+      "level": "info",
+      "message": "🤖 [Robot HFT Automatique] 3 position(s) SELL ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
+    },
+    {
+      "id": "log-hft-fire-1793356533656",
+      "time": "2026-10-30T10:35:33.656Z",
+      "level": "info",
+      "message": "[HFT Multi-Position Fire] 3 positions SELL ouvertes à 3989.42 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
+    },
+    {
+      "id": "log-hft-close-1793356533655",
+      "time": "2026-10-30T10:35:33.655Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793356405169-1 fermée avec succès en gain de +$1.11 (Cible 0.60$ - 2.00$ atteinte en 128s) !"
+    },
+    {
+      "id": "log-hft-close-1793356533655",
+      "time": "2026-10-30T10:35:33.655Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793356405170-2 fermée avec succès en gain de +$1.11 (Cible 0.60$ - 2.00$ atteinte en 128s) !"
+    },
+    {
+      "id": "log-hft-close-1793356533655",
+      "time": "2026-10-30T10:35:33.655Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793356405170-3 fermée avec succès en gain de +$1.11 (Cible 0.60$ - 2.00$ atteinte en 128s) !"
+    },
+    {
+      "id": "log-1793356405956-dkdz",
+      "time": "2026-10-30T10:33:25.956Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359848767) !"
+    },
+    {
+      "id": "log-1793356405864-jo0l",
+      "time": "2026-10-30T10:33:25.864Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359848765) !"
+    },
+    {
+      "id": "log-1793356405582-3htv",
+      "time": "2026-10-30T10:33:25.582Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359848761) !"
+    },
+    {
+      "id": "log-auto-fire-1793356405180",
+      "time": "2026-10-30T10:33:25.180Z",
+      "level": "info",
+      "message": "🤖 [Robot HFT Automatique] 3 position(s) SELL ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
+    },
+    {
+      "id": "log-hft-fire-1793356405170",
+      "time": "2026-10-30T10:33:25.170Z",
+      "level": "info",
+      "message": "[HFT Multi-Position Fire] 3 positions SELL ouvertes à 3990.53 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
+    },
+    {
+      "id": "log-hft-sl-1793356405169",
+      "time": "2026-10-30T10:33:25.169Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793356104759-1 clôturée à 3990.53$ (PnL: -1.24$). Protection du capital."
+    },
+    {
+      "id": "log-hft-sl-1793356405169",
+      "time": "2026-10-30T10:33:25.169Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793356104759-2 clôturée à 3990.53$ (PnL: -1.24$). Protection du capital."
+    },
+    {
+      "id": "log-hft-sl-1793356405169",
+      "time": "2026-10-30T10:33:25.169Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793356104759-3 clôturée à 3990.53$ (PnL: -1.24$). Protection du capital."
+    },
+    {
+      "id": "log-1793356104899-x363",
+      "time": "2026-10-30T10:28:24.899Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359844267) !"
+    },
+    {
+      "id": "log-1793356104892-6tux",
+      "time": "2026-10-30T10:28:24.892Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359844266) !"
+    },
+    {
+      "id": "log-1793356104875-zix4",
+      "time": "2026-10-30T10:28:24.875Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359844265) !"
+    },
+    {
+      "id": "log-auto-fire-1793356104765",
+      "time": "2026-10-30T10:28:24.765Z",
+      "level": "info",
+      "message": "🤖 [Robot HFT Automatique] 3 position(s) SELL ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
+    },
+    {
+      "id": "log-hft-fire-1793356104759",
+      "time": "2026-10-30T10:28:24.759Z",
+      "level": "info",
+      "message": "[HFT Multi-Position Fire] 3 positions SELL ouvertes à 3989.29 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
+    },
+    {
+      "id": "log-hft-close-1793356104759",
+      "time": "2026-10-30T10:28:24.759Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793356043519-1 fermée avec succès en gain de +$1.33 (Cible 0.60$ - 2.00$ atteinte en 61s) !"
+    },
+    {
+      "id": "log-hft-close-1793356104759",
+      "time": "2026-10-30T10:28:24.759Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793356043519-2 fermée avec succès en gain de +$1.33 (Cible 0.60$ - 2.00$ atteinte en 61s) !"
+    },
+    {
+      "id": "log-hft-close-1793356104759",
+      "time": "2026-10-30T10:28:24.759Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793356043519-3 fermée avec succès en gain de +$1.33 (Cible 0.60$ - 2.00$ atteinte en 61s) !"
+    },
+    {
+      "id": "log-1793356043684-m72g",
+      "time": "2026-10-30T10:27:23.684Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359843299) !"
+    },
+    {
+      "id": "log-1793356043672-qix2",
+      "time": "2026-10-30T10:27:23.672Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359843297) !"
+    },
+    {
+      "id": "log-1793356043664-byv3",
+      "time": "2026-10-30T10:27:23.664Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359843298) !"
+    },
+    {
+      "id": "log-auto-fire-1793356043526",
+      "time": "2026-10-30T10:27:23.526Z",
+      "level": "info",
+      "message": "🤖 [Robot HFT Automatique] 3 position(s) SELL ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
+    },
+    {
+      "id": "log-hft-fire-1793356043519",
+      "time": "2026-10-30T10:27:23.519Z",
+      "level": "info",
+      "message": "[HFT Multi-Position Fire] 3 positions SELL ouvertes à 3990.62 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
+    },
+    {
+      "id": "log-hft-sl-1793356043519",
+      "time": "2026-10-30T10:27:23.519Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793355743344-1 clôturée à 3990.62$ (PnL: -0.51$). Protection du capital."
+    },
+    {
+      "id": "log-hft-sl-1793356043519",
+      "time": "2026-10-30T10:27:23.519Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793355743344-2 clôturée à 3990.62$ (PnL: -0.51$). Protection du capital."
+    },
+    {
+      "id": "log-hft-sl-1793356043519",
+      "time": "2026-10-30T10:27:23.519Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793355743344-3 clôturée à 3990.62$ (PnL: -0.51$). Protection du capital."
+    },
+    {
+      "id": "log-1793355743481-jumf",
+      "time": "2026-10-30T10:22:23.481Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359838417) !"
+    },
+    {
+      "id": "log-1793355743471-eok6",
+      "time": "2026-10-30T10:22:23.471Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359838415) !"
+    },
+    {
+      "id": "log-1793355743463-gept",
+      "time": "2026-10-30T10:22:23.463Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359838416) !"
+    },
+    {
+      "id": "log-auto-fire-1793355743349",
+      "time": "2026-10-30T10:22:23.349Z",
+      "level": "info",
+      "message": "🤖 [Robot HFT Automatique] 3 position(s) SELL ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
+    },
+    {
+      "id": "log-hft-fire-1793355743344",
+      "time": "2026-10-30T10:22:23.344Z",
+      "level": "info",
+      "message": "[HFT Multi-Position Fire] 3 positions SELL ouvertes à 3990.11 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
+    },
+    {
+      "id": "log-hft-close-1793355743344",
+      "time": "2026-10-30T10:22:23.344Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793355667702-1 fermée avec succès en gain de +$1.25 (Cible 0.60$ - 2.00$ atteinte en 75s) !"
+    },
+    {
+      "id": "log-hft-close-1793355743344",
+      "time": "2026-10-30T10:22:23.344Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793355667702-2 fermée avec succès en gain de +$1.25 (Cible 0.60$ - 2.00$ atteinte en 75s) !"
+    },
+    {
+      "id": "log-hft-close-1793355743344",
+      "time": "2026-10-30T10:22:23.344Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793355667702-3 fermée avec succès en gain de +$1.25 (Cible 0.60$ - 2.00$ atteinte en 75s) !"
+    },
+    {
+      "id": "log-1793355667852-0qrc",
+      "time": "2026-10-30T10:21:07.852Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359837782) !"
+    },
+    {
+      "id": "log-1793355667827-gx63",
+      "time": "2026-10-30T10:21:07.827Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359837781) !"
+    },
+    {
+      "id": "log-1793355667821-lhzh",
+      "time": "2026-10-30T10:21:07.821Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359837780) !"
+    },
+    {
+      "id": "log-auto-fire-1793355667706",
+      "time": "2026-10-30T10:21:07.706Z",
+      "level": "info",
+      "message": "🤖 [Robot HFT Automatique] 3 position(s) SELL ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
+    },
+    {
+      "id": "log-hft-fire-1793355667702",
+      "time": "2026-10-30T10:21:07.702Z",
+      "level": "info",
+      "message": "[HFT Multi-Position Fire] 3 positions SELL ouvertes à 3991.36 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
+    },
+    {
+      "id": "log-hft-close-1793355667702",
+      "time": "2026-10-30T10:21:07.702Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793355570888-1 fermée avec succès en gain de +$1.25 (Cible 0.60$ - 2.00$ atteinte en 96s) !"
+    },
+    {
+      "id": "log-hft-close-1793355667702",
+      "time": "2026-10-30T10:21:07.702Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793355570888-2 fermée avec succès en gain de +$1.25 (Cible 0.60$ - 2.00$ atteinte en 96s) !"
+    },
+    {
+      "id": "log-hft-close-1793355667702",
+      "time": "2026-10-30T10:21:07.702Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793355570888-3 fermée avec succès en gain de +$1.25 (Cible 0.60$ - 2.00$ atteinte en 96s) !"
+    },
+    {
+      "id": "log-1793355571316-l3oa",
+      "time": "2026-10-30T10:19:31.316Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359836372) !"
+    },
+    {
+      "id": "log-1793355571286-qi9y",
+      "time": "2026-10-30T10:19:31.286Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359836369) !"
+    },
+    {
+      "id": "log-1793355571207-s4t4",
+      "time": "2026-10-30T10:19:31.207Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359836366) !"
+    },
+    {
+      "id": "log-auto-fire-1793355570894",
+      "time": "2026-10-30T10:19:30.894Z",
+      "level": "info",
+      "message": "🤖 [Robot HFT Automatique] 3 position(s) SELL ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
+    },
+    {
+      "id": "log-hft-fire-1793355570888",
+      "time": "2026-10-30T10:19:30.888Z",
+      "level": "info",
+      "message": "[HFT Multi-Position Fire] 3 positions SELL ouvertes à 3992.61 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
+    },
+    {
+      "id": "log-hft-sl-1793355570888",
+      "time": "2026-10-30T10:19:30.888Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793355303322-1 clôturée à 3992.61$ (PnL: -2.50$). Protection du capital."
+    },
+    {
+      "id": "log-hft-sl-1793355570888",
+      "time": "2026-10-30T10:19:30.888Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793355303322-2 clôturée à 3992.61$ (PnL: -2.50$). Protection du capital."
+    },
+    {
+      "id": "log-hft-sl-1793355570888",
+      "time": "2026-10-30T10:19:30.888Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793355303322-3 clôturée à 3992.61$ (PnL: -2.50$). Protection du capital."
+    },
+    {
+      "id": "log-1793355304751-x0w8",
+      "time": "2026-10-30T10:15:04.751Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359831427) !"
+    },
+    {
+      "id": "log-1793355304724-ijtk",
+      "time": "2026-10-30T10:15:04.724Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359831430) !"
+    },
+    {
+      "id": "log-1793355304166-42ka",
+      "time": "2026-10-30T10:15:04.166Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359831415) !"
+    },
+    {
+      "id": "log-auto-fire-1793355303328",
+      "time": "2026-10-30T10:15:03.328Z",
+      "level": "info",
+      "message": "🤖 [Robot HFT Automatique] 3 position(s) SELL ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
+    },
+    {
+      "id": "log-hft-fire-1793355303322",
+      "time": "2026-10-30T10:15:03.322Z",
+      "level": "info",
+      "message": "[HFT Multi-Position Fire] 3 positions SELL ouvertes à 3990.11 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
+    },
+    {
+      "id": "log-hft-close-1793355303322",
+      "time": "2026-10-30T10:15:03.322Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793355115361-1 fermée avec succès en gain de +$1.02 (Cible 0.60$ - 2.00$ atteinte en 187s) !"
+    },
+    {
+      "id": "log-hft-close-1793355303322",
+      "time": "2026-10-30T10:15:03.322Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793355115361-2 fermée avec succès en gain de +$1.02 (Cible 0.60$ - 2.00$ atteinte en 187s) !"
+    },
+    {
+      "id": "log-hft-close-1793355303322",
+      "time": "2026-10-30T10:15:03.322Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793355115361-3 fermée avec succès en gain de +$1.02 (Cible 0.60$ - 2.00$ atteinte en 187s) !"
+    },
+    {
+      "id": "log-1793355116609-7qci",
+      "time": "2026-10-30T10:11:56.609Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359828035) !"
+    },
+    {
+      "id": "log-1793355115785-yafb",
+      "time": "2026-10-30T10:11:55.785Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359828012) !"
+    },
+    {
+      "id": "log-1793355115700-qgv9",
+      "time": "2026-10-30T10:11:55.700Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359827959) !"
+    },
+    {
+      "id": "log-auto-fire-1793355115367",
+      "time": "2026-10-30T10:11:55.367Z",
+      "level": "info",
+      "message": "🤖 [Robot HFT Automatique] 3 position(s) SELL ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
+    },
+    {
+      "id": "log-hft-fire-1793355115361",
+      "time": "2026-10-30T10:11:55.361Z",
+      "level": "info",
+      "message": "[HFT Multi-Position Fire] 3 positions SELL ouvertes à 3991.13 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
+    },
+    {
+      "id": "log-hft-close-1793355115361",
+      "time": "2026-10-30T10:11:55.361Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793355051724-1 fermée avec succès en gain de +$1.76 (Cible 0.60$ - 2.00$ atteinte en 63s) !"
+    },
+    {
+      "id": "log-hft-close-1793355115361",
+      "time": "2026-10-30T10:11:55.361Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793355051724-2 fermée avec succès en gain de +$1.76 (Cible 0.60$ - 2.00$ atteinte en 63s) !"
+    },
+    {
+      "id": "log-hft-close-1793355115361",
+      "time": "2026-10-30T10:11:55.361Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793355051724-3 fermée avec succès en gain de +$1.76 (Cible 0.60$ - 2.00$ atteinte en 63s) !"
+    },
+    {
+      "id": "log-1793355052906-2m3d",
+      "time": "2026-10-30T10:10:52.906Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359825829) !"
+    },
+    {
+      "id": "log-1793355052395-wbnn",
+      "time": "2026-10-30T10:10:52.395Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359825814) !"
+    },
+    {
+      "id": "log-1793355051885-98vo",
+      "time": "2026-10-30T10:10:51.885Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359825802) !"
+    },
+    {
+      "id": "log-auto-fire-1793355051728",
+      "time": "2026-10-30T10:10:51.728Z",
+      "level": "info",
+      "message": "🤖 [Robot HFT Automatique] 3 position(s) SELL ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
+    },
+    {
+      "id": "log-hft-fire-1793355051724",
+      "time": "2026-10-30T10:10:51.724Z",
+      "level": "info",
+      "message": "[HFT Multi-Position Fire] 3 positions SELL ouvertes à 3992.89 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
+    },
+    {
+      "id": "log-hft-close-1793355051723",
+      "time": "2026-10-30T10:10:51.723Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793354910045-1 fermée avec succès en gain de +$1.04 (Cible 0.60$ - 2.00$ atteinte en 141s) !"
+    },
+    {
+      "id": "log-hft-close-1793355051723",
+      "time": "2026-10-30T10:10:51.723Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793354910045-2 fermée avec succès en gain de +$1.04 (Cible 0.60$ - 2.00$ atteinte en 141s) !"
+    },
+    {
+      "id": "log-hft-close-1793355051723",
+      "time": "2026-10-30T10:10:51.723Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793354910045-3 fermée avec succès en gain de +$1.04 (Cible 0.60$ - 2.00$ atteinte en 141s) !"
+    },
+    {
+      "id": "log-1793354910232-kcyf",
+      "time": "2026-10-30T10:08:30.232Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359822999) !"
+    },
+    {
+      "id": "log-1793354910209-5bhh",
+      "time": "2026-10-30T10:08:30.209Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359822998) !"
+    },
+    {
+      "id": "log-1793354910204-c6e3",
+      "time": "2026-10-30T10:08:30.204Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359822997) !"
+    },
+    {
+      "id": "log-auto-fire-1793354910051",
+      "time": "2026-10-30T10:08:30.051Z",
+      "level": "info",
+      "message": "🤖 [Robot HFT Automatique] 3 position(s) SELL ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
+    },
+    {
+      "id": "log-hft-fire-1793354910045",
+      "time": "2026-10-30T10:08:30.045Z",
+      "level": "info",
+      "message": "[HFT Multi-Position Fire] 3 positions SELL ouvertes à 3993.93 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
+    },
+    {
+      "id": "log-hft-close-1793354910045",
+      "time": "2026-10-30T10:08:30.045Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793354758747-1 fermée avec succès en gain de +$1.28 (Cible 0.60$ - 2.00$ atteinte en 151s) !"
+    },
+    {
+      "id": "log-hft-close-1793354910045",
+      "time": "2026-10-30T10:08:30.045Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793354758747-2 fermée avec succès en gain de +$1.28 (Cible 0.60$ - 2.00$ atteinte en 151s) !"
+    },
+    {
+      "id": "log-hft-close-1793354910045",
+      "time": "2026-10-30T10:08:30.045Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793354758747-3 fermée avec succès en gain de +$1.28 (Cible 0.60$ - 2.00$ atteinte en 151s) !"
+    },
+    {
+      "id": "log-1793354762407-x5kl",
+      "time": "2026-10-30T10:06:02.407Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359821537) !"
+    },
+    {
+      "id": "log-1793354759206-7q5p",
+      "time": "2026-10-30T10:05:59.206Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359821536) !"
+    },
+    {
+      "id": "log-1793354758904-c6hp",
+      "time": "2026-10-30T10:05:58.904Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359821535) !"
+    },
+    {
+      "id": "log-auto-fire-1793354758752",
+      "time": "2026-10-30T10:05:58.752Z",
+      "level": "info",
+      "message": "🤖 [Robot HFT Automatique] 3 position(s) SELL ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
+    },
+    {
+      "id": "log-hft-fire-1793354758747",
+      "time": "2026-10-30T10:05:58.747Z",
+      "level": "info",
+      "message": "[HFT Multi-Position Fire] 3 positions SELL ouvertes à 3995.21 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
+    },
+    {
+      "id": "log-hft-sl-1793354758747",
+      "time": "2026-10-30T10:05:58.747Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793354699911-1 clôturée à 3995.21$ (PnL: -2.52$). Protection du capital."
+    },
+    {
+      "id": "log-hft-sl-1793354758747",
+      "time": "2026-10-30T10:05:58.747Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793354699911-2 clôturée à 3995.21$ (PnL: -2.52$). Protection du capital."
+    },
+    {
+      "id": "log-hft-sl-1793354758747",
+      "time": "2026-10-30T10:05:58.747Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793354699911-3 clôturée à 3995.21$ (PnL: -2.52$). Protection du capital."
+    },
+    {
+      "id": "log-1793354707079-fmin",
+      "time": "2026-10-30T10:05:07.079Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_BUY 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359820773) !"
+    },
+    {
+      "id": "log-1793354701167-9rmw",
+      "time": "2026-10-30T10:05:01.167Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_BUY 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359820664) !"
+    },
+    {
+      "id": "log-1793354700144-49ys",
+      "time": "2026-10-30T10:05:00.144Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_BUY 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359820658) !"
+    },
+    {
+      "id": "log-auto-fire-1793354699915",
+      "time": "2026-10-30T10:04:59.915Z",
+      "level": "info",
+      "message": "🤖 [Robot HFT Automatique] 3 position(s) BUY ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
+    },
+    {
+      "id": "log-hft-fire-1793354699911",
+      "time": "2026-10-30T10:04:59.911Z",
+      "level": "info",
+      "message": "[HFT Multi-Position Fire] 3 positions BUY ouvertes à 3997.73 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
+    },
+    {
+      "id": "log-hft-sl-1793354699911",
+      "time": "2026-10-30T10:04:59.911Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793354609847-1 clôturée à 3997.73$ (PnL: -2.88$). Protection du capital."
+    },
+    {
+      "id": "log-hft-sl-1793354699911",
+      "time": "2026-10-30T10:04:59.911Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793354609847-2 clôturée à 3997.73$ (PnL: -2.88$). Protection du capital."
+    },
+    {
+      "id": "log-hft-sl-1793354699911",
+      "time": "2026-10-30T10:04:59.911Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793354609847-3 clôturée à 3997.73$ (PnL: -2.88$). Protection du capital."
+    },
+    {
+      "id": "log-1793354610436-7kpz",
+      "time": "2026-10-30T10:03:30.436Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359819640) !"
+    },
+    {
+      "id": "log-1793354610272-lg7z",
+      "time": "2026-10-30T10:03:30.272Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359819637) !"
+    },
+    {
+      "id": "log-1793354610039-wl1e",
+      "time": "2026-10-30T10:03:30.039Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359819635) !"
+    },
+    {
+      "id": "log-auto-fire-1793354609853",
+      "time": "2026-10-30T10:03:29.853Z",
+      "level": "info",
+      "message": "🤖 [Robot HFT Automatique] 3 position(s) SELL ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
+    },
+    {
+      "id": "log-hft-fire-1793354609847",
+      "time": "2026-10-30T10:03:29.847Z",
+      "level": "info",
+      "message": "[HFT Multi-Position Fire] 3 positions SELL ouvertes à 3994.85 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
+    },
+    {
+      "id": "log-hft-close-1793354609847",
+      "time": "2026-10-30T10:03:29.847Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793354534209-1 fermée avec succès en gain de +$1.21 (Cible 0.60$ - 2.00$ atteinte en 75s) !"
+    },
+    {
+      "id": "log-hft-close-1793354609847",
+      "time": "2026-10-30T10:03:29.847Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793354534209-2 fermée avec succès en gain de +$1.21 (Cible 0.60$ - 2.00$ atteinte en 75s) !"
+    },
+    {
+      "id": "log-hft-close-1793354609847",
+      "time": "2026-10-30T10:03:29.847Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793354534209-3 fermée avec succès en gain de +$1.21 (Cible 0.60$ - 2.00$ atteinte en 75s) !"
+    },
+    {
+      "id": "log-1793354534525-wbjb",
+      "time": "2026-10-30T10:02:14.525Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359818481) !"
+    },
+    {
+      "id": "log-1793354534336-xtw0",
+      "time": "2026-10-30T10:02:14.336Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359818480) !"
+    },
+    {
+      "id": "log-1793354534330-m6mi",
+      "time": "2026-10-30T10:02:14.330Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359818479) !"
+    },
+    {
+      "id": "log-auto-fire-1793354534213",
+      "time": "2026-10-30T10:02:14.213Z",
+      "level": "info",
+      "message": "🤖 [Robot HFT Automatique] 3 position(s) SELL ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
+    },
+    {
+      "id": "log-hft-fire-1793354534209",
+      "time": "2026-10-30T10:02:14.209Z",
+      "level": "info",
+      "message": "[HFT Multi-Position Fire] 3 positions SELL ouvertes à 3996.06 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
+    },
+    {
+      "id": "log-hft-sl-1793354534209",
+      "time": "2026-10-30T10:02:14.209Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793354234038-1 clôturée à 3996.06$ (PnL: -0.57$). Protection du capital."
+    },
+    {
+      "id": "log-hft-sl-1793354534209",
+      "time": "2026-10-30T10:02:14.209Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793354234038-2 clôturée à 3996.06$ (PnL: -0.57$). Protection du capital."
+    },
+    {
+      "id": "log-hft-sl-1793354534209",
+      "time": "2026-10-30T10:02:14.209Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793354234038-3 clôturée à 3996.06$ (PnL: -0.57$). Protection du capital."
+    },
+    {
+      "id": "log-1793354234267-fh0b",
+      "time": "2026-10-30T09:57:14.267Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_BUY 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359815282) !"
+    },
+    {
+      "id": "log-1793354234227-t6zi",
+      "time": "2026-10-30T09:57:14.227Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_BUY 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359815281) !"
+    },
+    {
+      "id": "log-1793354234210-c0w2",
+      "time": "2026-10-30T09:57:14.210Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_BUY 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359815279) !"
+    },
+    {
+      "id": "log-auto-fire-1793354234046",
+      "time": "2026-10-30T09:57:14.046Z",
+      "level": "info",
+      "message": "🤖 [Robot HFT Automatique] 3 position(s) BUY ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
+    },
+    {
+      "id": "log-hft-fire-1793354234038",
+      "time": "2026-10-30T09:57:14.038Z",
+      "level": "info",
+      "message": "[HFT Multi-Position Fire] 3 positions BUY ouvertes à 3996.63 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
+    },
+    {
+      "id": "log-hft-sl-1793354234038",
+      "time": "2026-10-30T09:57:14.038Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793353933859-1 clôturée à 3996.63$ (PnL: -0.56$). Protection du capital."
+    },
+    {
+      "id": "log-hft-sl-1793354234038",
+      "time": "2026-10-30T09:57:14.038Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793353933859-2 clôturée à 3996.63$ (PnL: -0.56$). Protection du capital."
+    },
+    {
+      "id": "log-hft-sl-1793354234038",
+      "time": "2026-10-30T09:57:14.038Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793353933859-3 clôturée à 3996.63$ (PnL: -0.56$). Protection du capital."
+    },
+    {
+      "id": "log-1793353937598-unmz",
+      "time": "2026-10-30T09:52:17.598Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_BUY 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359811484) !"
+    },
+    {
+      "id": "log-1793353933988-ethk",
+      "time": "2026-10-30T09:52:13.988Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_BUY 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359811456) !"
+    },
+    {
+      "id": "log-1793353933985-3uhc",
+      "time": "2026-10-30T09:52:13.985Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_BUY 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359811454) !"
+    },
+    {
+      "id": "log-auto-fire-1793353933863",
+      "time": "2026-10-30T09:52:13.863Z",
+      "level": "info",
+      "message": "🤖 [Robot HFT Automatique] 3 position(s) BUY ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
+    },
+    {
+      "id": "log-hft-fire-1793353933859",
+      "time": "2026-10-30T09:52:13.859Z",
+      "level": "info",
+      "message": "[HFT Multi-Position Fire] 3 positions BUY ouvertes à 3997.19 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
+    },
+    {
+      "id": "log-hft-sl-1793353933859",
+      "time": "2026-10-30T09:52:13.859Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793353822197-1 clôturée à 3997.19$ (PnL: -3.11$). Protection du capital."
+    },
+    {
+      "id": "log-hft-sl-1793353933859",
+      "time": "2026-10-30T09:52:13.859Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793353822197-2 clôturée à 3997.19$ (PnL: -3.11$). Protection du capital."
+    },
+    {
+      "id": "log-hft-sl-1793353933859",
+      "time": "2026-10-30T09:52:13.859Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793353822197-3 clôturée à 3997.19$ (PnL: -3.11$). Protection du capital."
+    },
+    {
+      "id": "log-1793353823456-d050",
+      "time": "2026-10-30T09:50:23.456Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359808808) !"
+    },
+    {
+      "id": "log-1793353823281-qmji",
+      "time": "2026-10-30T09:50:23.281Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359808809) !"
+    },
+    {
+      "id": "log-1793353823223-gjwe",
+      "time": "2026-10-30T09:50:23.224Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359808806) !"
+    },
+    {
+      "id": "log-auto-fire-1793353822205",
+      "time": "2026-10-30T09:50:22.205Z",
+      "level": "info",
+      "message": "🤖 [Robot HFT Automatique] 3 position(s) SELL ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
+    },
+    {
+      "id": "log-hft-fire-1793353822198",
+      "time": "2026-10-30T09:50:22.198Z",
+      "level": "info",
+      "message": "[HFT Multi-Position Fire] 3 positions SELL ouvertes à 3994.08 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
+    },
+    {
+      "id": "log-hft-close-1793353822197",
+      "time": "2026-10-30T09:50:22.197Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793353747185-1 fermée avec succès en gain de +$1.11 (Cible 0.60$ - 2.00$ atteinte en 75s) !"
+    },
+    {
+      "id": "log-hft-close-1793353822197",
+      "time": "2026-10-30T09:50:22.197Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793353747185-2 fermée avec succès en gain de +$1.11 (Cible 0.60$ - 2.00$ atteinte en 75s) !"
+    },
+    {
+      "id": "log-hft-close-1793353822197",
+      "time": "2026-10-30T09:50:22.197Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793353747185-3 fermée avec succès en gain de +$1.11 (Cible 0.60$ - 2.00$ atteinte en 75s) !"
+    },
+    {
+      "id": "log-1793353747377-vgcr",
+      "time": "2026-10-30T09:49:07.377Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359807759) !"
+    },
+    {
+      "id": "log-1793353747317-qdds",
+      "time": "2026-10-30T09:49:07.317Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359807758) !"
+    },
+    {
+      "id": "log-1793353747314-772h",
+      "time": "2026-10-30T09:49:07.314Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359807757) !"
+    },
+    {
+      "id": "log-auto-fire-1793353747192",
+      "time": "2026-10-30T09:49:07.192Z",
+      "level": "info",
+      "message": "🤖 [Robot HFT Automatique] 3 position(s) SELL ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
+    },
+    {
+      "id": "log-hft-fire-1793353747185",
+      "time": "2026-10-30T09:49:07.185Z",
+      "level": "info",
+      "message": "[HFT Multi-Position Fire] 3 positions SELL ouvertes à 3995.19 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
+    },
+    {
+      "id": "log-hft-sl-1793353747185",
+      "time": "2026-10-30T09:49:07.185Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793353446338-1 clôturée à 3995.19$ (PnL: +0.22$). Protection du capital."
+    },
+    {
+      "id": "log-hft-sl-1793353747185",
+      "time": "2026-10-30T09:49:07.185Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793353446338-2 clôturée à 3995.19$ (PnL: +0.22$). Protection du capital."
+    },
+    {
+      "id": "log-hft-sl-1793353747185",
+      "time": "2026-10-30T09:49:07.185Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793353446338-3 clôturée à 3995.19$ (PnL: +0.22$). Protection du capital."
+    },
+    {
+      "id": "log-hft-close-1793353487457",
+      "time": "2026-10-30T09:44:47.457Z",
+      "level": "info",
+      "message": "[HFT Micro-Scalp Hit] Position hft-tr-1793353187100-1 fermée avec succès en gain de +$1.15 (Cible 0.60$ - 2.00$ atteinte en 300s) !"
+    },
+    {
+      "id": "log-hft-close-1793353487457",
+      "time": "2026-10-30T09:44:47.457Z",
+      "level": "info",
+      "message": "[HFT Micro-Scalp Hit] Position hft-tr-1793353187100-2 fermée avec succès en gain de +$1.15 (Cible 0.60$ - 2.00$ atteinte en 300s) !"
+    },
+    {
+      "id": "log-hft-close-1793353487457",
+      "time": "2026-10-30T09:44:47.457Z",
+      "level": "info",
+      "message": "[HFT Micro-Scalp Hit] Position hft-tr-1793353187100-3 fermée avec succès en gain de +$1.15 (Cible 0.60$ - 2.00$ atteinte en 300s) !"
     }
   ],
   "settings": {
@@ -1023,42 +3977,42 @@
       "trend": "Baissier",
       "bullOb": "3973.01 - 3975.51",
       "bearOb": "4019.81 - 4023.01",
-      "distancePct": 0.58,
+      "distancePct": 0.79,
       "stars": 3,
       "confText": "Biais vendeur HTF"
     },
     {
       "tf": "H1",
       "trend": "Baissier",
-      "bullOb": "3975.51 - 3977.31",
+      "bullOb": "3988.23 - 3990.03",
       "bearOb": "4002.18 - 4003.98",
-      "distancePct": 0.18,
+      "distancePct": 0.39,
       "stars": 3,
       "confText": "Zone institutionnelle active"
     },
     {
       "tf": "M15",
-      "trend": "Haissier",
-      "bullOb": "3976.71 - 3978.01",
+      "trend": "Baissier",
+      "bullOb": "3989.43 - 3990.73",
       "bearOb": "4001.48 - 4002.78",
-      "distancePct": 0.13,
+      "distancePct": 0.34,
       "stars": 2,
       "confText": "Scénario en formation"
     },
     {
       "tf": "M5",
       "trend": "Baissier",
-      "bullOb": "3994.02 - 3995.32",
-      "bearOb": "3998.32 - 3999.62",
+      "bullOb": "3985.43 - 3986.73",
+      "bearOb": "3989.73 - 3991.03",
       "distancePct": 0.07,
       "stars": 2,
       "confText": "Imbalance M5 surveillée"
     },
     {
       "tf": "M3",
-      "trend": "Haissier",
-      "bullOb": "3995.62 - 3996.22",
-      "bearOb": "3997.42 - 3998.02",
+      "trend": "Baissier",
+      "bullOb": "3987.03 - 3987.63",
+      "bearOb": "3988.83 - 3989.43",
       "distancePct": 0.03,
       "stars": 1,
       "confText": "Micro-structure en veille"
@@ -1073,8 +4027,8 @@
     "execution_mode": "hft_ultra",
     "connected": true,
     "last_ping_ms": 18,
-    "balance": 328.95,
-    "equity": 292.29,
+    "balance": 355.12,
+    "equity": 355.12,
     "leverage": 500,
     "hft_max_slippage_pips": 1.5,
     "auto_breakeven_tp1": true,
@@ -1101,13 +4055,13 @@
       "title": "Scénario A : VENTE Flip MDT (Tendance Maîtresse)",
       "type": "flip_sell",
       "direction": "SELL",
-      "triggerCondition": "SI une bougie M15 CLÔTURE sous la ligne verte (3994.02 $) → VENTE IMMÉDIATE",
+      "triggerCondition": "SI une bougie M15 CLÔTURE sous la ligne verte (3985.43 $) → VENTE IMMÉDIATE",
       "zoneName": "Ligne MDT 5m + H1",
-      "entry": 3994.02,
-      "stop_loss": 3998.52,
-      "take_profit_1": 3991.77,
-      "take_profit_2": 3988.42,
-      "take_profit_3": 3982.82,
+      "entry": 3985.43,
+      "stop_loss": 3989.93,
+      "take_profit_1": 3983.18,
+      "take_profit_2": 3979.83,
+      "take_profit_3": 3974.23,
       "risk_points": 4.5,
       "risk_pips": 45,
       "rr_ratio": 2.5,
@@ -1137,7 +4091,7 @@
       "entry": 4019.01,
       "stop_loss": 4021.61,
       "take_profit_1": 4016.91,
-      "take_profit_2": 3995.32,
+      "take_profit_2": 3986.73,
       "take_profit_3": 3976.51,
       "risk_points": 2.6,
       "risk_pips": 26,
@@ -1168,7 +4122,7 @@
       "entry": 3976.71,
       "stop_loss": 3974.31,
       "take_profit_1": 3978.61,
-      "take_profit_2": 3998.82,
+      "take_profit_2": 3990.23,
       "take_profit_3": 4018.31,
       "risk_points": 2.4,
       "risk_pips": 24,
@@ -1194,13 +4148,13 @@
       "title": "Scénario D : ACHAT Flip MDT (Reprise Haussière)",
       "type": "flip_buy",
       "direction": "BUY",
-      "triggerCondition": "SI une bougie CLÔTURE au-dessus de la résistance dynamique 3999.92 $",
+      "triggerCondition": "SI une bougie CLÔTURE au-dessus de la résistance dynamique 3991.33 $",
       "zoneName": "Breakout MDT Pivot",
-      "entry": 3999.92,
-      "stop_loss": 3995.62,
-      "take_profit_1": 4002.07,
-      "take_profit_2": 4006.37,
-      "take_profit_3": 4011.92,
+      "entry": 3991.33,
+      "stop_loss": 3987.03,
+      "take_profit_1": 3993.48,
+      "take_profit_2": 3997.78,
+      "take_profit_3": 4003.33,
       "risk_points": 4.3,
       "risk_pips": 43,
       "rr_ratio": 2,
@@ -1221,27 +4175,71 @@
       "recommended_lot": 0.01
     }
   ],
-  "stream_latency_ms": 18,
+  "stream_latency_ms": 12,
   "mdt_engine": {
     "running": true,
     "profile": "HFT Micro-Scalper",
     "timeframe": "1m",
     "auto_pilot": true,
     "req_score": 2,
-    "current_score": 2,
+    "current_score": 4,
     "active_confluences": [
       "Tendance HTF Alignée",
+      "Cassure de Structure (BOS)",
+      "Flip Ligne de Tendance MDT",
       "Stop Loss Conforme Ratio Risque ATR"
     ],
-    "trend_direction": 1,
-    "trend_line": 3993.5,
-    "micro_high": 3997.44,
-    "micro_low": null,
-    "armed_retest": null,
-    "candles_scanned": 36,
-    "last_scan_time": "2026-10-30T09:26:16.988Z",
-    "last_signal": null,
+    "trend_direction": -1,
+    "trend_line": 3996.51,
+    "micro_high": 3997.93,
+    "micro_low": 3993.34,
+    "armed_retest": {
+      "side": "BUY",
+      "level": 3997.94,
+      "bar": 72
+    },
+    "candles_scanned": 80,
+    "last_scan_time": "2026-10-30T10:43:55.829Z",
+    "last_signal": "TP3_HIT @ 3999",
     "target_profit_usd": 1,
     "multi_fire_count": 3
-  }
+  },
+  "live_positions": [
+    {
+      "id": "2359856686",
+      "symbol": "GOLD",
+      "type": "POSITION_TYPE_SELL",
+      "openPrice": 3979.64,
+      "currentPrice": 3979.94,
+      "volume": 0.01,
+      "unrealizedProfit": -0.3,
+      "profit": -0.3,
+      "comment": "Viceinte HFT Auto 2/3",
+      "time": "2026-10-30T10:43:42.971Z"
+    },
+    {
+      "id": "2359856687",
+      "symbol": "GOLD",
+      "type": "POSITION_TYPE_SELL",
+      "openPrice": 3979.64,
+      "currentPrice": 3979.94,
+      "volume": 0.01,
+      "unrealizedProfit": -0.3,
+      "profit": -0.3,
+      "comment": "Viceinte HFT Auto 3/3",
+      "time": "2026-10-30T10:43:42.999Z"
+    },
+    {
+      "id": "2359856691",
+      "symbol": "GOLD",
+      "type": "POSITION_TYPE_SELL",
+      "openPrice": 3979.64,
+      "currentPrice": 3979.94,
+      "volume": 0.01,
+      "unrealizedProfit": -0.3,
+      "profit": -0.3,
+      "comment": "Viceinte HFT Auto 1/3",
+      "time": "2026-10-30T10:43:43.172Z"
+    }
+  ]
 }

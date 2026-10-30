@@ -21,6 +21,8 @@ interface StateContextType {
   saveMetaApiConfig: (config: Partial<MetaApiConfig>) => Promise<MetaApiConfig>;
   syncMetaApiAccount: () => Promise<any>;
   executeMetaApiTrade: (params: { action: 'BUY' | 'SELL'; symbol?: string; volume?: number; stopLoss?: number; takeProfit?: number; comment?: string }) => Promise<any>;
+  closeMetaApiPosition: (positionId: string, reason?: string) => Promise<any>;
+  closeAllMetaApiPositions: (reason?: string) => Promise<any>;
   updateMdtEngineConfig: (config: {
     profile?: 'Starter' | 'Intraday Clean' | 'Sniper A+' | 'HFT Micro-Scalper';
     timeframe?: '1m' | '5m' | '15m';
@@ -287,6 +289,34 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     return data;
   };
 
+  const closeMetaApiPosition = async (positionId: string, reason?: string): Promise<any> => {
+    const res = await fetch('/api/metaapi/close-position', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ positionId, reason }),
+    });
+    const data = await res.json();
+    await fetchState();
+    if (!res.ok || !data.success) {
+      throw new Error(data.error || 'Erreur lors de la clôture de la position sur MT5.');
+    }
+    return data;
+  };
+
+  const closeAllMetaApiPositions = async (reason?: string): Promise<any> => {
+    const res = await fetch('/api/metaapi/close-all', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ reason }),
+    });
+    const data = await res.json();
+    await fetchState();
+    if (!res.ok || !data.success) {
+      throw new Error(data.error || 'Erreur lors de la fermeture du panier.');
+    }
+    return data;
+  };
+
   const advanceDemoSequence = async () => {
     try {
       const res = await fetch('/api/demo/advance-sequence', { method: 'POST' });
@@ -451,6 +481,8 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         saveMetaApiConfig,
         syncMetaApiAccount,
         executeMetaApiTrade,
+        closeMetaApiPosition,
+        closeAllMetaApiPositions,
         updateMdtEngineConfig,
         forceMdtScan,
         forceMdtTestTrade,

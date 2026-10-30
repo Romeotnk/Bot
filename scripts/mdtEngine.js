@@ -181,9 +181,10 @@ class MdtEngine {
  const inNY = wk && mins >= 750 && mins < 1020;
  const isHft = c.profile === 'HFT Micro-Scalper' || c.profile === 'Starter';
  const sess = isHft || inLondon || inNY;
- // ── Setup + retest strict
- const setupL = flipUp && cB7 && scoreB >= this.reqScore && (!this.reqZone || cB[1]) && sess;
- const setupS = flipDn && cS7 && scoreS >= this.reqScore && (!this.reqZone || cS[1]) && sess;
+ const triggerL = isHft ? (trendUp && (microBreakUp || dispUp || sweepBull || tbHit || flipUp)) : flipUp;
+ const triggerS = isHft ? (!trendUp && (microBreakDn || dispDn || sweepBear || tsHit || flipDn)) : flipDn;
+ const setupL = triggerL && cB7 && scoreB >= this.reqScore && (!this.reqZone || cB[1]) && sess;
+ const setupS = triggerS && cS7 && scoreS >= this.reqScore && (!this.reqZone || cS[1]) && sess;
  if (setupL) this.armL = { level: this.microHigh, bar: i };
  if (setupS) this.armS = { level: this.microLow, bar: i };
  const a = this.armL, s = this.armS;

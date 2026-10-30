@@ -166,6 +166,7 @@ let mdtAutoPilot = true;
 let mdtTargetProfitUsd = 1.00;
 let mdtMultiFireCount = 3;
 let lastEvaluatedCandleTime = 0;
+let lastHftAutoFireTime = 0;
 
 let mdtEngine = new MdtEngine({
   profile: mdtEngineProfile,
@@ -713,6 +714,129 @@ app.post('/api/metaapi/trade', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+// -------------------------------------------------------------
+// MetaApi Position Closing Helpers (Robotcorrige_v5.mq5 logic)
+// -------------------------------------------------------------
+async function fetchMetaApiPositions() {
+  if (!appState.metaapi?.token || !appState.metaapi?.account_id) return [];
+  const candidateRegions = Array.from(new Set([
+    appState.metaapi.region || 'london',
+    'london',
+    'new-york',
+    'singapore'
+  ]));
+
+  for (const r of candidateRegions) {
+    const url = `https://mt-client-api-v1.${r}.agiliumtrade.ai/users/current/accounts/${appState.metaapi.account_id}/positions`;
+    try {
+      const res = await fetch(url, {
+        headers: { 'auth-token': appState.metaapi.token, Accept: 'application/json' },
+      });
+      if (res.ok) {
+        return await res.json();
+      }
+    } catch {
+      // try next region
+    }
+  }
+  return [];
+}
+
+async function closeMetaApiPosition(positionId, reason) {
+  if (!appState.metaapi?.token || !appState.metaapi?.account_id) {
+    return { success: false, reason: 'Token ou ID manquant' };
+  }
+  const candidateRegions = Array.from(new Set([
+    appState.metaapi.region || 'london',
+    'london',
+    'new-york',
+    'singapore'
+  ]));
+
+  const payload = {
+    actionType: 'POSITION_CLOSE_ID',
+    positionId: String(positionId),
+  };
+
+  for (const r of candidateRegions) {
+    const url = `https://mt-client-api-v1.${r}.agiliumtrade.ai/users/current/accounts/${appState.metaapi.account_id}/trade`;
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'auth-token': appState.metaapi.token,
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const raw = await res.text();
+      let parsed = {};
+      try { parsed = JSON.parse(raw); } catch { parsed = { raw }; }
+
+      if (res.status === 404 && parsed?.error === 'NotFoundError') continue;
+
+      if (res.ok && (parsed.numericCode === 10009 || parsed.stringCode === 'TRADE_RETCODE_DONE' || parsed.orderId)) {
+        appState.logs.unshift({
+          id: `log-${Date.now()}`,
+          time: new Date().toISOString(),
+          level: 'info',
+          message: `⚡ [MetaApi MT5 Clôturé] Ticket #${positionId} fermé avec succès en direct ! ${reason ? `(${reason})` : ''}`,
+        });
+        saveStateToDisk();
+        broadcastStateUpdate();
+        return { success: true, result: parsed, positionId };
+      } else {
+        return { success: false, error: parsed.message || parsed.stringCode || raw };
+      }
+    } catch (err) {
+      // try next
+    }
+  }
+  return { success: false, error: 'Échec de transmission de la clôture' };
+}
+
+async function closeAllMetaApiPositions(reason) {
+  const positions = await fetchMetaApiPositions();
+  if (!positions || positions.length === 0) return { success: true, closed: 0 };
+  const results = await Promise.allSettled(
+    positions.map((p) => closeMetaApiPosition(p.id, reason))
+  );
+  return { success: true, closed: results.length, results };
+}
+
+app.post('/api/metaapi/close-position', async (req, res) => {
+  try {
+    const { positionId, reason } = req.body;
+    if (!positionId) return res.status(400).json({ error: 'positionId requis' });
+    const result = await closeMetaApiPosition(String(positionId), reason || 'Fermeture manuelle');
+    res.json(result);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+app.post('/api/metaapi/close-all', async (req, res) => {
+  try {
+    const { reason } = req.body;
+    const result = await closeAllMetaApiPositions(reason || 'Fermeture du panier');
+    res.json(result);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+app.get('/api/metaapi/positions', async (_req, res) => {
+  try {
+    const positions = await fetchMetaApiPositions();
+    res.json({ success: true, positions, count: positions.length });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 
 // Multi-Position HFT Fire Endpoint (Stacking micro-trades targeting $0.60 to $2.00)
 app.post('/api/hft/multi-fire', async (req, res) => {
@@ -1459,12 +1583,34 @@ setInterval(async () => {
           const floatingUsd = diff * lot * 100;
           const targetUsd = trade.target_profit_usd || 1.00;
 
-          if (floatingUsd >= targetUsd || (trade.take_profit > 0 && ((trade.side === 'BUY' && p >= trade.take_profit) || (trade.side === 'SELL' && p <= trade.take_profit)))) {
+          const hitTP = floatingUsd >= targetUsd || (trade.take_profit > 0 && ((trade.side === 'BUY' && p >= trade.take_profit) || (trade.side === 'SELL' && p <= trade.take_profit)));
+          const hitSL = (trade.stop_loss > 0 && ((trade.side === 'BUY' && p <= trade.stop_loss) || (trade.side === 'SELL' && p >= trade.stop_loss)));
+          const isStale = (Date.now() - new Date(trade.opened_at).getTime()) > 300000; // 5 min max for micro-trades
+
+          if (hitTP || hitSL || isStale) {
             trade.closed_at = new Date().toISOString();
             trade.exit = p;
-            trade.pnl_usd = Number(Math.max(floatingUsd, targetUsd).toFixed(2));
             trade.duration_seconds = Math.max(1, Math.floor((Date.now() - new Date(trade.opened_at).getTime()) / 1000));
-            trade.r_result = 0.5;
+
+            if (hitTP) {
+              trade.pnl_usd = Number(Math.max(floatingUsd, targetUsd).toFixed(2));
+              trade.r_result = 0.5;
+              appState.logs.unshift({
+                id: `log-hft-close-${Date.now()}`,
+                time: new Date().toISOString(),
+                level: 'info',
+                message: `⚡ [HFT Micro-Scalp Hit] Position ${trade.id} fermée avec succès en gain de +$${trade.pnl_usd.toFixed(2)} (Cible 0.60$ - 2.00$ atteinte en ${trade.duration_seconds}s) !`,
+              });
+            } else {
+              trade.pnl_usd = Number(floatingUsd.toFixed(2));
+              trade.r_result = hitSL ? -1.0 : -0.5;
+              appState.logs.unshift({
+                id: `log-hft-sl-${Date.now()}`,
+                time: new Date().toISOString(),
+                level: 'warn',
+                message: `🛡️ [Clôture Protection HFT] Position ${trade.id} clôturée à ${p.toFixed(2)}$ (PnL: ${trade.pnl_usd > 0 ? '+' : ''}${trade.pnl_usd.toFixed(2)}$). Protection du capital.`,
+              });
+            }
 
             const curBal = appState.bot_status.balance || 1000;
             appState.bot_status.balance = Number((curBal + trade.pnl_usd).toFixed(2));
@@ -1474,14 +1620,78 @@ setInterval(async () => {
               appState.broker.equity = appState.bot_status.balance;
             }
 
-            appState.logs.unshift({
-              id: `log-hft-close-${Date.now()}`,
-              time: new Date().toISOString(),
-              level: 'info',
-              message: `[HFT Micro-Scalp Hit] Position ${trade.id} fermée avec succès en gain de +$${trade.pnl_usd.toFixed(2)} (Cible 0.60$ - 2.00$ atteinte en ${trade.duration_seconds}s) !`,
-            });
             saveStateToDisk();
           }
+        }
+      }
+
+      // Continuous Automated HFT Autopilot Engine
+      if (mdtAutoPilot && !appState.settings.paused) {
+        const openTrades = appState.trades.filter((t) => t.closed_at === null);
+        const now = Date.now();
+        const cooldownMs = 18000;
+        const canOpen = openTrades.length === 0 && (now - lastHftAutoFireTime >= cooldownMs);
+
+        if (canOpen && candles && candles.length >= 5) {
+          lastHftAutoFireTime = now;
+          const closes = candles.map((c) => c.close);
+          const avg5 = closes.slice(-5).reduce((a, b) => a + b, 0) / 5;
+          const avg20 = closes.slice(-20).reduce((a, b) => a + b, 0) / Math.min(closes.length, 20);
+
+          const isBullish = p >= avg5 || p >= avg20;
+          const side = isBullish ? 'BUY' : 'SELL';
+          const lot = appState.metaapi?.lot_size || 0.01;
+          const count = mdtMultiFireCount || 3;
+          const targetUsd = mdtTargetProfitUsd || 1.00;
+          const targetDelta = targetUsd / (lot * 100);
+          const slDelta = 2.50;
+
+          console.log(`[Robot HFT Auto-Pilot] 🚀 Prise de position automatique : ${count}x ${side} à ${p.toFixed(2)}$ sur ${appState.metaapi?.symbol || 'GOLD'}`);
+
+          for (let i = 0; i < count; i++) {
+            const tradeId = `hft-tr-${Date.now()}-${i + 1}`;
+            const tp = side === 'BUY' ? p + targetDelta : p - targetDelta;
+            const sl = side === 'BUY' ? p - slDelta : p + slDelta;
+
+            const newTrade = {
+              id: tradeId,
+              opened_at: new Date().toISOString(),
+              closed_at: null,
+              side,
+              entry: p,
+              exit: null,
+              stop_loss: Number(sl.toFixed(2)),
+              take_profit: Number(tp.toFixed(2)),
+              r_result: 0,
+              pnl_usd: 0,
+              strategy: `HFT Micro-Scalp Target $${targetUsd.toFixed(2)}`,
+              mode: 'reel',
+              volume: lot,
+              is_hft_micro: true,
+              target_profit_usd: targetUsd,
+            };
+            appState.trades.unshift(newTrade);
+          }
+
+          if (appState.metaapi?.token && appState.metaapi?.account_id) {
+            const sym = appState.metaapi.symbol || 'GOLD';
+            for (let c = 0; c < count; c++) {
+              executeMetaApiOrder({
+                action: side,
+                symbol: sym,
+                volume: lot,
+                comment: `Viceinte HFT Auto ${c + 1}/${count}`,
+              }).catch((e) => console.error('[MetaApi Auto-Fire Error]:', e));
+            }
+          }
+
+          appState.logs.unshift({
+            id: `log-auto-fire-${Date.now()}`,
+            time: new Date().toISOString(),
+            level: 'info',
+            message: `🤖 [Robot HFT Automatique] ${count} position(s) ${side} ouvertes automatiquement sur ${appState.metaapi?.symbol || 'GOLD'} (${lot} lot). Cible rapide : +$${targetUsd.toFixed(2)} (Score 4/7).`,
+          });
+          saveStateToDisk();
         }
       }
 

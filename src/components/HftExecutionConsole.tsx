@@ -25,20 +25,27 @@ interface HftExecutionConsoleProps {
 }
 
 export const HftExecutionConsole: React.FC<HftExecutionConsoleProps> = ({ currentPrice }) => {
-  const { state, executeMetaApiTrade, latencyMs } = useAppState();
+  const { state, executeMetaApiTrade, closeMetaApiPosition, closeAllMetaApiPositions, latencyMs } = useAppState();
   const broker = state?.broker;
   const metaapi = state?.metaapi;
+  const livePositions = state?.live_positions || [];
 
   const [hftMode, setHftMode] = useState<'latency_lead' | 'micro_retest' | 'momentum_hft'>('micro_retest');
   const [lotSize, setLotSize] = useState<number>(metaapi?.lot_size || 0.02);
   const [maxSlippage, setMaxSlippage] = useState<number>(1.5);
   const [isSendingOrder, setIsSendingOrder] = useState<'BUY' | 'SELL' | null>(null);
+  const [isClosingId, setIsClosingId] = useState<string | null>(null);
+  const [isClosingAll, setIsClosingAll] = useState<boolean>(false);
   const [orderResult, setOrderResult] = useState<{
     success: boolean;
     orderId?: string;
     msg: string;
     timeMs: number;
   } | null>(null);
+
+  // Basket metrics
+  const totalBasketProfit = livePositions.reduce((acc, p) => acc + (Number(p.unrealizedProfit) || 0), 0);
+  const isBasketInProfit = totalBasketProfit >= 0;
 
   // Spread simulation (realistic on XAUUSD/GOLD: ~1.2 to 1.8 pips)
   const spreadPips = 1.4;
@@ -101,6 +108,48 @@ export const HftExecutionConsole: React.FC<HftExecutionConsoleProps> = ({ curren
       });
     } finally {
       setIsSendingOrder(null);
+    }
+  };
+
+  const handleCloseSinglePosition = async (positionId: string) => {
+    setIsClosingId(positionId);
+    try {
+      await closeMetaApiPosition(positionId, 'Fermeture manuelle utilisateur');
+      setOrderResult({
+        success: true,
+        orderId: `CLS-${positionId}`,
+        msg: `Position MT5 #${positionId} clôturée avec succès en direct.`,
+        timeMs: 120,
+      });
+    } catch (e: any) {
+      setOrderResult({
+        success: false,
+        msg: e.message || 'Échec de la clôture',
+        timeMs: 120,
+      });
+    } finally {
+      setIsClosingId(null);
+    }
+  };
+
+  const handleCloseAllBasket = async () => {
+    setIsClosingAll(true);
+    try {
+      await closeAllMetaApiPositions('Fermeture manuelle panier');
+      setOrderResult({
+        success: true,
+        orderId: 'BASKET-CLOSED',
+        msg: 'Toutes les positions du panier ont été clôturées avec succès sur MetaTrader 5 !',
+        timeMs: 180,
+      });
+    } catch (e: any) {
+      setOrderResult({
+        success: false,
+        msg: e.message || 'Échec fermeture panier',
+        timeMs: 180,
+      });
+    } finally {
+      setIsClosingAll(false);
     }
   };
 
@@ -355,6 +404,141 @@ export const HftExecutionConsole: React.FC<HftExecutionConsoleProps> = ({ curren
           </div>
         </div>
       </div>
+
+      {/* 4. REAL-TIME MT5 OPEN POSITIONS & ADAPTIVE EXIT MANAGER (Robotcorrige_v5.mq5 logic) */}
+      <div className="mt-6 pt-5 border-t border-white/[0.08]">
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+          <div className="flex items-center gap-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse" />
+            <h4 className="font-heading font-black text-xs uppercase tracking-wider text-white flex items-center gap-2">
+              <span>Positions Actives sur MetaTrader 5</span>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
+                {livePositions.length} position{livePositions.length > 1 ? 's' : ''}
+              </span>
+            </h4>
+          </div>
+
+          <div className="flex items-center gap-3">
+            {livePositions.length > 0 && (
+              <div className="flex items-center gap-2 font-mono text-xs">
+                <span className="text-zinc-400">PnL Panier Flottant :</span>
+                <span className={`font-bold px-2.5 py-0.5 rounded-lg border ${
+                  isBasketInProfit 
+                    ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' 
+                    : 'bg-rose-500/20 text-rose-300 border-rose-500/40'
+                }`}>
+                  {isBasketInProfit ? '+' : ''}{totalBasketProfit.toFixed(2)} $
+                </span>
+              </div>
+            )}
+
+            {livePositions.length > 0 && (
+              <button
+                onClick={handleCloseAllBasket}
+                disabled={isClosingAll}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40 hover:bg-rose-500/30 transition cursor-pointer disabled:opacity-50 active:scale-95 shadow-md shadow-rose-500/10"
+                title="Clôturer immédiatement toutes les positions du panier sur MT5"
+              >
+                {isClosingAll ? (
+                  <div className="w-3.5 h-3.5 border-2 border-rose-300 border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  <ShieldCheck className="w-3.5 h-3.5 text-rose-400" />
+                )}
+                <span>Fermer Tout le Panier ({livePositions.length})</span>
+              </button>
+            )}
+          </div>
+        </div>
+
+        {livePositions.length > 0 ? (
+          <div className="overflow-x-auto rounded-xl border border-white/[0.08] bg-black/40">
+            <table className="w-full text-left font-mono text-xs">
+              <thead className="bg-[#121624] text-zinc-400 text-[11px] border-b border-white/[0.08]">
+                <tr>
+                  <th className="py-2.5 px-3">Ticket MT5</th>
+                  <th className="py-2.5 px-3">Sens</th>
+                  <th className="py-2.5 px-3">Volume</th>
+                  <th className="py-2.5 px-3">Prix Entrée</th>
+                  <th className="py-2.5 px-3">Prix Actuel</th>
+                  <th className="py-2.5 px-3">Gain Flottant</th>
+                  <th className="py-2.5 px-3 text-right">Action Directe</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/[0.04]">
+                {livePositions.map((pos) => {
+                  const isBuy = pos.type === 'POSITION_TYPE_BUY';
+                  const uProfit = Number(pos.unrealizedProfit) || 0;
+                  const isPosProfit = uProfit >= 0;
+
+                  return (
+                    <tr key={pos.id} className="hover:bg-white/[0.02] transition">
+                      <td className="py-2.5 px-3 text-zinc-300">
+                        <span className="font-bold">#{pos.id}</span>
+                        {pos.comment && <span className="block text-[10px] text-zinc-400">{pos.comment}</span>}
+                      </td>
+                      <td className="py-2.5 px-3">
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                          isBuy ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'
+                        }`}>
+                          {isBuy ? 'ACHAT' : 'VENTE'}
+                        </span>
+                      </td>
+                      <td className="py-2.5 px-3 text-zinc-300">{pos.volume} lot</td>
+                      <td className="py-2.5 px-3 text-zinc-300">${pos.openPrice.toFixed(2)}</td>
+                      <td className="py-2.5 px-3 text-zinc-300">${pos.currentPrice.toFixed(2)}</td>
+                      <td className="py-2.5 px-3">
+                        <span className={`font-bold tabular-nums ${isPosProfit ? 'text-emerald-400' : 'text-rose-400'}`}>
+                          {isPosProfit ? '+' : ''}{uProfit.toFixed(2)} $
+                        </span>
+                      </td>
+                      <td className="py-2.5 px-3 text-right">
+                        <button
+                          onClick={() => handleCloseSinglePosition(pos.id)}
+                          disabled={isClosingId === pos.id}
+                          className="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-zinc-800 hover:bg-rose-500/20 text-zinc-300 hover:text-rose-300 border border-zinc-700 hover:border-rose-500/40 transition cursor-pointer disabled:opacity-50"
+                        >
+                          {isClosingId === pos.id ? 'Fermeture...' : 'Clôturer MT5'}
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div className="p-4 rounded-xl border border-white/[0.06] bg-black/20 text-center font-mono text-xs text-zinc-400">
+            Aucune position MT5 en cours. Le moteur HFT ou le déclenchement multi-positions en ouvrira automatiquement.
+          </div>
+        )}
+
+        {/* Adaptive Micro-Exit Strategy Banner (Robotcorrige_v5.mq5) */}
+        <div className="mt-4 p-3.5 rounded-xl bg-gradient-to-r from-amber-500/10 via-cyan-500/10 to-transparent border border-amber-500/20 text-xs font-mono">
+          <div className="flex items-center gap-2 font-bold text-amber-300 mb-2">
+            <Cpu className="w-4 h-4 text-amber-400" />
+            <span>Moteur de Sortie Rapide Intégré (Logique Robotcorrige v5 MQ5) :</span>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 text-[11px] text-zinc-300">
+            <div className="p-2 rounded-lg bg-black/40 border border-white/[0.06]">
+              <span className="text-amber-400 font-bold block mb-0.5">🎯 Cible Panier ($1.80)</span>
+              <span>Dès que le cumul du panier atteint 1.80$, fermeture intégrale instantanée de toutes les positions.</span>
+            </div>
+            <div className="p-2 rounded-lg bg-black/40 border border-white/[0.06]">
+              <span className="text-emerald-400 font-bold block mb-0.5">🛡️ Break-Even (+0.50$)</span>
+              <span>Dès +$0.50 de gain sur une position, son Stop Loss passe à l'entrée +1 pip pour éliminer tout risque.</span>
+            </div>
+            <div className="p-2 rounded-lg bg-black/40 border border-white/[0.06]">
+              <span className="text-cyan-400 font-bold block mb-0.5">📈 Trailing Stop (+0.65$)</span>
+              <span>Dès +$0.65, un trailing ultra-serré de 5 pips suit le prix au tick près pour maximiser l'impulsion.</span>
+            </div>
+            <div className="p-2 rounded-lg bg-black/40 border border-white/[0.06]">
+              <span className="text-rose-400 font-bold block mb-0.5">🛑 Coupe-Circuit (-$2.50)</span>
+              <span>Perte max panier bornée à -$2.50. Fermeture de sécurité immédiate pour préserver le capital.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   );
 };
