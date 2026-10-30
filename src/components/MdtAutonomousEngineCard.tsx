@@ -30,6 +30,7 @@ export const MdtAutonomousEngineCard: React.FC = () => {
 
   const [isScanning, setIsScanning] = useState(false);
   const [isTestingTrade, setIsTestingTrade] = useState<'BUY' | 'SELL' | null>(null);
+  const [testFeedback, setTestFeedback] = useState<string | null>(null);
   const [showExplanation, setShowExplanation] = useState(true);
 
   const mdtEngine = state?.mdt_engine;
@@ -70,10 +71,15 @@ export const MdtAutonomousEngineCard: React.FC = () => {
 
   const handleTestTrade = async (side: 'BUY' | 'SELL') => {
     setIsTestingTrade(side);
+    setTestFeedback(null);
     try {
       await forceMdtTestTrade(side);
+      setTestFeedback(`✓ Signal test ${side} transmis au moteur MDT & MetaApi MT5 (${state?.metaapi?.symbol || 'GOLD'}) !`);
+      setTimeout(() => setTestFeedback(null), 5000);
+    } catch (e: any) {
+      setTestFeedback(`Erreur : ${e.message}`);
     } finally {
-      setTimeout(() => setIsTestingTrade(null), 800);
+      setIsTestingTrade(null);
     }
   };
 
@@ -390,6 +396,13 @@ export const MdtAutonomousEngineCard: React.FC = () => {
           </button>
         </div>
       </div>
+
+      {testFeedback && (
+        <div className="mt-3 p-2.5 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-mono text-center animate-fadeIn flex items-center justify-center gap-2">
+          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+          <span>{testFeedback}</span>
+        </div>
+      )}
     </div>
   );
 };

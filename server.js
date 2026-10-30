@@ -428,17 +428,13 @@ app.all('/api/metaapi/proxy', async (req, res) => {
   }
 });
 
-// Helper for MetaApi direct execution
+// Helper for MetaApi direct execution with multi-region fallback
 async function executeMetaApiOrder({ action, symbol, volume, stopLoss, takeProfit, comment }) {
   const metaConfig = appState.metaapi;
   if (!metaConfig?.token || !metaConfig?.account_id) {
     console.warn('[MetaApi Auto-Trade] Prise de position impossible : token ou account_id manquant.');
     return { success: false, reason: 'Token ou ID de compte MetaApi non configuré.' };
   }
-
-  const region = metaConfig.region || 'new-york';
-  const targetHost = `https://mt-client-api-v1.${region}.agiliumtrade.ai`;
-  const url = `${targetHost}/users/current/accounts/${metaConfig.account_id}/trade`;
 
   const isBuy = action.toUpperCase().includes('BUY') || action.toUpperCase().includes('ACHAT');
   const actionType = isBuy ? 'ORDER_TYPE_BUY' : 'ORDER_TYPE_SELL';
@@ -459,62 +455,89 @@ async function executeMetaApiOrder({ action, symbol, volume, stopLoss, takeProfi
     tradePayload.takeProfit = Number(Number(takeProfit).toFixed(2));
   }
 
-  console.log(`[MetaApi Auto-Trade] 🚀 Envoi de l'ordre au marché vers ${url} :`, tradePayload);
+  // Priority candidate regions (defaulting to london for XM Global / European brokers)
+  const candidateRegions = Array.from(new Set([
+    metaConfig.region || 'london',
+    'london',
+    'new-york',
+    'singapore'
+  ]));
 
-  try {
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'auth-token': metaConfig.token,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-      body: JSON.stringify(tradePayload),
-    });
+  let lastError = null;
 
-    const rawText = await res.text();
-    console.log(`[MetaApi Auto-Trade] Réponse HTTP ${res.status}:`, rawText);
+  for (const r of candidateRegions) {
+    const targetHost = `https://mt-client-api-v1.${r}.agiliumtrade.ai`;
+    const url = `${targetHost}/users/current/accounts/${metaConfig.account_id}/trade`;
+    console.log(`[MetaApi Auto-Trade] 🚀 Tentative d'envoi de l'ordre vers ${url} :`, tradePayload);
 
-    let parsed = {};
     try {
-      parsed = JSON.parse(rawText);
-    } catch {
-      parsed = { raw: rawText };
-    }
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'auth-token': metaConfig.token,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify(tradePayload),
+      });
 
-    if (res.ok && (parsed.numericCode === 10009 || parsed.stringCode === 'TRADE_RETCODE_DONE' || parsed.orderId)) {
-      appState.logs.unshift({
-        id: `log-${Date.now()}`,
-        time: new Date().toISOString(),
-        level: 'info',
-        message: `⚡ [MetaApi Auto-Trade] Position ${actionType} ${tradeVolume} lot sur ${tradeSymbol} ouverte avec succès (Ticket: ${parsed.orderId || parsed.positionId || 'Exécuté'}) !`,
-      });
-      saveStateToDisk();
-      broadcastStateUpdate();
-      return { success: true, order: parsed };
-    } else {
-      appState.logs.unshift({
-        id: `log-${Date.now()}`,
-        time: new Date().toISOString(),
-        level: 'warn',
-        message: `⚠️ [MetaApi Rejet] Échec de l'ordre (${res.status}): ${parsed.message || parsed.stringCode || rawText.substring(0, 120)}`,
-      });
-      saveStateToDisk();
-      broadcastStateUpdate();
-      return { success: false, status: res.status, error: parsed };
+      const rawText = await res.text();
+      console.log(`[MetaApi Auto-Trade (${r})] Réponse HTTP ${res.status}:`, rawText);
+
+      let parsed = {};
+      try {
+        parsed = JSON.parse(rawText);
+      } catch {
+        parsed = { raw: rawText };
+      }
+
+      // If 404 account not found in this region, continue to next candidate region
+      if (res.status === 404 && parsed?.error === 'NotFoundError' && parsed?.message?.includes('Could not find path')) {
+        lastError = parsed;
+        continue;
+      }
+
+      if (res.ok && (parsed.numericCode === 10009 || parsed.stringCode === 'TRADE_RETCODE_DONE' || parsed.orderId || parsed.positionId)) {
+        appState.logs.unshift({
+          id: `log-${Date.now()}`,
+          time: new Date().toISOString(),
+          level: 'info',
+          message: `⚡ [MetaApi MT5 Exécuté] Position ${actionType} ${tradeVolume} lot sur ${tradeSymbol} ouverte avec succès (Ticket: #${parsed.orderId || parsed.positionId || 'Exécuté'}) !`,
+        });
+        // Auto update active region
+        if (appState.metaapi.region !== r) {
+          appState.metaapi.region = r;
+        }
+        appState.metaapi.connected = true;
+        saveStateToDisk();
+        broadcastStateUpdate();
+        return { success: true, order: parsed, region: r };
+      } else {
+        appState.logs.unshift({
+          id: `log-${Date.now()}`,
+          time: new Date().toISOString(),
+          level: 'warn',
+          message: `⚠️ [MetaApi Rejet] Échec de l'ordre (${res.status}): ${parsed.message || parsed.stringCode || rawText.substring(0, 120)}`,
+        });
+        saveStateToDisk();
+        broadcastStateUpdate();
+        return { success: false, status: res.status, error: parsed.message || parsed.stringCode || rawText };
+      }
+    } catch (err) {
+      console.error(`[MetaApi Exception on ${r}]:`, err.message);
+      lastError = err;
     }
-  } catch (err) {
-    console.error('[MetaApi Exception]:', err);
-    appState.logs.unshift({
-      id: `log-${Date.now()}`,
-      time: new Date().toISOString(),
-      level: 'warn',
-      message: `❌ [MetaApi Erreur Réseau]: ${err.message}`,
-    });
-    saveStateToDisk();
-    broadcastStateUpdate();
-    return { success: false, error: err.message };
   }
+
+  appState.logs.unshift({
+    id: `log-${Date.now()}`,
+    time: new Date().toISOString(),
+    level: 'warn',
+    message: `❌ [MetaApi Erreur]: ${lastError?.message || JSON.stringify(lastError)}`,
+  });
+  saveStateToDisk();
+  broadcastStateUpdate();
+  return { success: false, error: lastError?.message || 'Échec de transmission MetaApi' };
 }
 
 // -------------------------------------------------------------
@@ -552,55 +575,81 @@ app.post('/api/metaapi/config', (req, res) => {
   }
 });
 
-// Synchroniser le compte avec MetaApi (vérification du solde et statut)
+// Synchroniser le compte avec MetaApi (vérification du solde et statut avec fallback multi-régions)
 app.post('/api/metaapi/sync-account', async (req, res) => {
   try {
     const token = req.body.token || appState.metaapi?.token;
     const accountId = req.body.account_id || appState.metaapi?.account_id;
-    const region = req.body.region || appState.metaapi?.region || 'new-york';
 
     if (!token || !accountId) {
       return res.status(400).json({ error: 'Token et ID de compte MetaApi requis pour la synchronisation.' });
     }
 
-    const host = `https://mt-client-api-v1.${region}.agiliumtrade.ai`;
-    
-    // Essayer de récupérer les informations de compte
-    const infoUrl = `${host}/users/current/accounts/${accountId}/information`;
-    console.log(`[MetaApi Sync] Appel vers ${infoUrl}...`);
+    // 1. Probe provisioning API to discover real region, server, and login
+    let detectedRegion = req.body.region || appState.metaapi?.region || 'london';
+    let serverName = '';
+    let accountName = '';
+    let login = '';
+    let platform = 'mt5';
 
-    let metaRes = await fetch(infoUrl, {
-      headers: { 'auth-token': token, Accept: 'application/json' },
-    });
-
-    if (!metaRes.ok) {
-      // Fallback vers les métadonnées de compte
-      const accUrl = `${host}/users/current/accounts/${accountId}`;
-      metaRes = await fetch(accUrl, {
+    try {
+      const provUrl = `https://mt-provisioning-api-v1.agiliumtrade.agiliumtrade.ai/users/current/accounts/${accountId}`;
+      console.log(`[MetaApi Sync] Checking account provisioning at ${provUrl}...`);
+      const provRes = await fetch(provUrl, {
         headers: { 'auth-token': token, Accept: 'application/json' },
       });
+      if (provRes.ok) {
+        const provData = await provRes.json();
+        if (provData.region) detectedRegion = provData.region;
+        if (provData.server) serverName = provData.server;
+        if (provData.name) accountName = provData.name;
+        if (provData.login) login = String(provData.login);
+        if (provData.version === 4) platform = 'mt4';
+        console.log(`[MetaApi Sync] Provisioning detected: region=${detectedRegion}, server=${serverName}, login=${login}`);
+      }
+    } catch (e) {
+      console.warn('[MetaApi Sync] Provisioning check skipped:', e.message);
     }
 
-    if (!metaRes.ok) {
-      const errText = await metaRes.text();
-      return res.status(metaRes.status).json({
-        error: `MetaApi a renvoyé le statut ${metaRes.status}`,
-        details: errText,
+    // 2. Fetch account-information with candidate regions fallback
+    const candidateRegions = Array.from(new Set([detectedRegion, 'london', 'new-york', 'singapore']));
+    let accountInfo = null;
+    let successfulRegion = detectedRegion;
+
+    for (const r of candidateRegions) {
+      try {
+        const infoUrl = `https://mt-client-api-v1.${r}.agiliumtrade.ai/users/current/accounts/${accountId}/account-information`;
+        console.log(`[MetaApi Sync] Querying account-information on ${infoUrl}...`);
+        const infoRes = await fetch(infoUrl, {
+          headers: { 'auth-token': token, Accept: 'application/json' },
+        });
+        if (infoRes.ok) {
+          accountInfo = await infoRes.json();
+          successfulRegion = r;
+          console.log(`[MetaApi Sync] Success on region ${r}: balance=${accountInfo.balance}, equity=${accountInfo.equity}`);
+          break;
+        }
+      } catch (err) {
+        console.warn(`[MetaApi Sync] Region ${r} attempt failed:`, err.message);
+      }
+    }
+
+    if (!accountInfo) {
+      return res.status(404).json({
+        error: 'Compte introuvable ou non déployé sur MetaApi. Vérifiez votre Account ID et assurez-vous que le compte est déployé sur app.metaapi.cloud.',
       });
     }
 
-    const accountData = await metaRes.json();
-    console.log('[MetaApi Sync] Données reçues :', accountData);
-
-    const balance = accountData.balance !== undefined ? Number(accountData.balance) : (accountData.initialBalance || 1000);
-    const equity = accountData.equity !== undefined ? Number(accountData.equity) : balance;
-    const serverName = accountData.server || accountData.broker || 'MetaApi-MT5';
-    const platform = accountData.platform || 'mt5';
+    const balance = accountInfo.balance !== undefined ? Number(accountInfo.balance) : (accountInfo.initialBalance || 1000);
+    const equity = accountInfo.equity !== undefined ? Number(accountInfo.equity) : balance;
+    serverName = accountInfo.server || serverName || 'XMGlobal-MT5 2';
+    if (accountInfo.platform) platform = accountInfo.platform;
 
     appState.metaapi = {
       ...appState.metaapi,
       token,
       account_id: accountId,
+      region: successfulRegion,
       connected: true,
       balance,
       equity,
@@ -616,6 +665,8 @@ app.post('/api/metaapi/sync-account', async (req, res) => {
       appState.broker.balance = balance;
       appState.broker.equity = equity;
       appState.broker.server_name = serverName;
+      appState.broker.account_number = login || accountName || accountId.substring(0, 8);
+      appState.broker.broker_type = serverName.toLowerCase().includes('xm') ? 'XM Global' : 'MetaTrader 5 (MT5)';
       appState.broker.connected = true;
     }
 
@@ -623,7 +674,7 @@ app.post('/api/metaapi/sync-account', async (req, res) => {
       id: `log-${Date.now()}`,
       time: new Date().toISOString(),
       level: 'info',
-      message: `Compte MetaApi synchronisé avec succès ! Serveur: ${serverName}, Solde: $${balance.toLocaleString('fr-FR')}.`,
+      message: `⚡ Compte MetaApi synchronisé avec succès sur ${serverName} (${successfulRegion}) ! Solde: $${balance.toLocaleString('fr-FR')}.`,
     });
 
     saveStateToDisk();
@@ -632,7 +683,7 @@ app.post('/api/metaapi/sync-account', async (req, res) => {
     res.json({
       success: true,
       metaapi: appState.metaapi,
-      account: accountData,
+      account: accountInfo,
     });
   } catch (err) {
     console.error('[MetaApi Sync Error]:', err);
@@ -715,19 +766,41 @@ app.post('/api/hft/multi-fire', async (req, res) => {
     saveStateToDisk();
     broadcastStateUpdate();
 
-    // If MetaApi is active, send live orders
-    if (appState.metaapi?.connected && appState.metaapi?.auto_trade_enabled) {
+    // Real execution on MetaApi MT5 if credentials are present
+    const metaOrders = [];
+    const metaErrors = [];
+
+    if (appState.metaapi?.token && appState.metaapi?.account_id) {
+      const sym = appState.metaapi.symbol || 'GOLD';
+      console.log(`[HFT Multi-Fire] 🚀 Déclenchement de ${safeCount} ordres réels vers MetaTrader 5 (${sym})...`);
+
       for (let i = 0; i < safeCount; i++) {
-        executeMetaApiOrder({
-          action: side,
-          symbol: appState.metaapi.symbol || 'GOLD',
-          volume: safeLot,
-          comment: `HFT Stack ${i + 1}/${safeCount}`,
-        }).catch((e) => console.error('[MetaApi Multi-Fire Error]:', e));
+        try {
+          const result = await executeMetaApiOrder({
+            action: side,
+            symbol: sym,
+            volume: safeLot,
+            comment: `HFT Micro-Stack ${i + 1}/${safeCount}`,
+          });
+          if (result.success && result.order) {
+            metaOrders.push(result.order);
+          } else {
+            metaErrors.push(result.error || result.reason || 'Rejeté par le courtier');
+          }
+        } catch (e) {
+          metaErrors.push(e.message);
+        }
       }
     }
 
-    res.json({ success: true, count: openedTrades.length, trades: openedTrades });
+    res.json({
+      success: true,
+      count: openedTrades.length,
+      trades: openedTrades,
+      metaapi_executed: metaOrders.length,
+      metaapi_orders: metaOrders,
+      metaapi_errors: metaErrors,
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

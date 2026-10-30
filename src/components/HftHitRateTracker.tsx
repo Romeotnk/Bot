@@ -120,9 +120,18 @@ export const HftHitRateTracker: React.FC<HftHitRateTrackerProps> = ({ currentPri
 
       if (res.ok) {
         const data = await res.json();
-        setFireFeedback(`✓ ${positionCount} positions ${side} ouvertes simultanément ! Cible de clôture : +$${targetProfitUsd.toFixed(2)} par trade.`);
+        if (data.metaapi_executed > 0) {
+          const tickets = (data.metaapi_orders || [])
+            .map((o: any) => o.orderId || o.positionId || o.numericCode)
+            .filter(Boolean);
+          setFireFeedback(`✓ ${data.metaapi_executed} ordre(s) réels exécutés sur XM Global MT5 ! (Ticket: #${tickets.join(', #')}) · Objectif : +$${targetProfitUsd.toFixed(2)}/trade.`);
+        } else if (data.metaapi_errors && data.metaapi_errors.length > 0) {
+          setFireFeedback(`⚠️ Ordres locaux enregistrés, mais retour courtier : ${data.metaapi_errors[0]}`);
+        } else {
+          setFireFeedback(`✓ ${positionCount} positions ${side} ouvertes simultanément ! Cible de clôture : +$${targetProfitUsd.toFixed(2)} par trade.`);
+        }
         await refreshState();
-        setTimeout(() => setFireFeedback(null), 4000);
+        setTimeout(() => setFireFeedback(null), 7000);
       } else {
         const err = await res.json();
         setFireFeedback(`Erreur : ${err.error || 'Échec du tir'}`);

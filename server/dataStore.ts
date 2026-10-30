@@ -698,7 +698,7 @@ class Store {
       symbol: 'GOLD',
       lot_size: 0.01,
       auto_trade_enabled: false,
-      region: 'new-york',
+      region: 'london',
       connected: false,
       balance: null,
       equity: null,
@@ -1010,9 +1010,10 @@ class Store {
 
     const openedTrades = this.fireHftMultiOrder(side, count, targetUsd, lot);
 
-    // Call MetaApi if credentials exist
-    if (this.onOrderSignal && this.state.metaapi?.auto_trade_enabled && this.state.metaapi?.token && this.state.metaapi?.account_id) {
+    // Call MetaApi if credentials exist (manual test bypasses auto_trade_enabled restriction)
+    if (this.onOrderSignal && this.state.metaapi?.token && this.state.metaapi?.account_id) {
       const sym = this.state.metaapi.symbol || 'GOLD';
+      console.log(`[MDT Force Test] Déclenchement de ${count} ordres réels vers MetaApi (${sym})...`);
       for (let c = 0; c < count; c++) {
         this.onOrderSignal({
           action: side,
