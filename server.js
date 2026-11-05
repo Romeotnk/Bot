@@ -165,6 +165,11 @@ let mdtTimeframe = '1m';
 let mdtAutoPilot = true;
 let mdtTargetProfitUsd = 1.00;
 let mdtMultiFireCount = 3;
+let tpDynamicEnabled = true;
+let tpDynamicMin = 1.00;
+let tpDynamicMax = 3.00;
+let trailingStepUsd = 0.40;
+let breakevenLockUsd = 0.20;
 let lastEvaluatedCandleTime = 0;
 let lastHftAutoFireTime = 0;
 
@@ -968,6 +973,48 @@ app.post('/api/mdt/config', (req, res) => {
     saveStateToDisk();
     broadcastStateUpdate();
     res.json({ success: true, mdt_engine: appState.mdt_engine });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// Dynamic Take Profit & Trailing Stop Configuration (1$ - 3$ Net)
+app.post('/api/mdt/dynamic-tp', (req, res) => {
+  try {
+    const { tp_dynamic_enabled, tp_dynamic_min, tp_dynamic_max, trailing_step_usd, breakeven_lock_usd } = req.body;
+    if (tp_dynamic_enabled !== undefined) tpDynamicEnabled = Boolean(tp_dynamic_enabled);
+    if (tp_dynamic_min !== undefined && Number(tp_dynamic_min) > 0) tpDynamicMin = Number(tp_dynamic_min);
+    if (tp_dynamic_max !== undefined && Number(tp_dynamic_max) > 0) tpDynamicMax = Number(tp_dynamic_max);
+    if (trailing_step_usd !== undefined && Number(trailing_step_usd) > 0) trailingStepUsd = Number(trailing_step_usd);
+    if (breakeven_lock_usd !== undefined && Number(breakeven_lock_usd) > 0) breakevenLockUsd = Number(breakeven_lock_usd);
+
+    if (appState.mdt_engine) {
+      appState.mdt_engine.tp_dynamic_enabled = tpDynamicEnabled;
+      appState.mdt_engine.tp_dynamic_min = tpDynamicMin;
+      appState.mdt_engine.tp_dynamic_max = tpDynamicMax;
+      appState.mdt_engine.trailing_step_usd = trailingStepUsd;
+      appState.mdt_engine.breakeven_lock_usd = breakevenLockUsd;
+    }
+
+    appState.logs.unshift({
+      id: `log-dynamic-tp-${Date.now()}`,
+      time: new Date().toISOString(),
+      level: 'info',
+      message: `[TP Dynamique] Config mise à jour : ${tpDynamicEnabled ? 'ACTIF' : 'INACTIF'} · Plage : ${tpDynamicMin}$ à ${tpDynamicMax}$ net · Trailing Step : ${trailingStepUsd}$ · Plancher Break-Even : +${breakevenLockUsd}$.`,
+    });
+
+    saveStateToDisk();
+    broadcastStateUpdate();
+    res.json({
+      success: true,
+      mdt_engine: {
+        tp_dynamic_enabled: tpDynamicEnabled,
+        tp_dynamic_min: tpDynamicMin,
+        tp_dynamic_max: tpDynamicMax,
+        trailing_step_usd: trailingStepUsd,
+        breakeven_lock_usd: breakevenLockUsd,
+      },
+    });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }

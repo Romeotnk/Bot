@@ -531,6 +531,11 @@ class Store {
   private mdtAutoPilot: boolean = true;
   private mdtTargetProfitUsd: number = 1.00;
   private mdtMultiFireCount: number = 3;
+  private tpDynamicEnabled: boolean = true;
+  private tpDynamicMin: number = 1.00;
+  private tpDynamicMax: number = 3.00;
+  private trailingStepUsd: number = 0.40;
+  private breakevenLockUsd: number = 0.20;
   private lastEvaluatedCandleTime: number = 0;
   private lastHftAutoFireTime: number = 0;
   public onOrderSignal?: (order: { action: 'BUY' | 'SELL'; symbol: string; volume: number; stopLoss?: number; takeProfit?: number; comment?: string }) => Promise<any>;
@@ -808,18 +813,54 @@ class Store {
     this.state.stream_latency_ms = Math.floor(Math.random() * 12) + 12;
     this.state.bot_status.updated_at = new Date().toISOString();
 
-    // Auto-closer for HFT micro-trades when target profit ($0.60 to $2.00) is hit
+    // Dynamic Take Profit & Trailing Stop Engine (1$ to 3$ Net)
     for (const trade of this.state.trades) {
       if (trade.closed_at === null) {
         const lot = trade.volume || 0.01;
         const diff = (price - trade.entry) * (trade.side === 'BUY' ? 1 : -1);
-        const floatingUsd = diff * lot * 100;
+        const floatingUsd = Number((diff * lot * 100).toFixed(2));
         
-        // Auto-close if target profit reached (between $0.60 and $2.00)
-        const targetUsd = (trade as any).target_profit_usd || 1.00;
-        const hitTP = floatingUsd >= targetUsd || (trade.take_profit > 0 && ((trade.side === 'BUY' && price >= trade.take_profit) || (trade.side === 'SELL' && price <= trade.take_profit)));
-        const hitSL = (trade.stop_loss > 0 && ((trade.side === 'BUY' && price <= trade.stop_loss) || (trade.side === 'SELL' && price >= trade.stop_loss)));
-        const isStale = (Date.now() - new Date(trade.opened_at).getTime()) > 300000; // 5 min max for micro-trades
+        // Track peak floating profit for dynamic trailing stop
+        const prevPeak = (trade as any).peak_floating ?? floatingUsd;
+        const newPeak = Math.max(prevPeak, floatingUsd);
+        (trade as any).peak_floating = newPeak;
+
+        const tpMin = this.tpDynamicMin || 1.00;
+        const tpMax = this.tpDynamicMax || 3.00;
+        const trailStep = this.trailingStepUsd || 0.40;
+        const beLock = this.breakevenLockUsd || 0.20;
+
+        let hitTP = false;
+        let closeReason = '';
+
+        // 1. Ceiling Max TP hit (3.00$ net)
+        if (floatingUsd >= tpMax) {
+          hitTP = true;
+          closeReason = `Plafond Max +$${floatingUsd.toFixed(2)} atteint (Cible $${tpMax})`;
+        }
+        // 2. Dynamic Trailing & Break-Even once past tpMin (1.00$ net)
+        else if (newPeak >= tpMin) {
+          (trade as any).be_locked = true;
+
+          // A. Trailing Stop: pulled back by more than trailStep ($0.40) from the peak
+          if (floatingUsd <= (newPeak - trailStep)) {
+            hitTP = true;
+            closeReason = `Trailing Stop déclenché à +$${floatingUsd.toFixed(2)} (Sommet: +$${newPeak.toFixed(2)})`;
+          }
+          // B. Break-Even floor: never let it fall back below beLock (+0.20$) once $1.00 has been reached!
+          else if (floatingUsd <= beLock) {
+            hitTP = true;
+            closeReason = `Sécurité Break-Even (+${floatingUsd.toFixed(2)}$ garanti)`;
+          }
+        }
+        // 3. Fallback target from static target_profit_usd
+        else if ((trade as any).target_profit_usd && floatingUsd >= (trade as any).target_profit_usd) {
+          hitTP = true;
+          closeReason = `Cible +$${floatingUsd.toFixed(2)} atteinte`;
+        }
+
+        const hitSL = (trade.stop_loss > 0 && ((trade.side === 'BUY' && price <= trade.stop_loss) || (trade.side === 'SELL' && price >= trade.stop_loss))) || floatingUsd <= -2.50;
+        const isStale = (Date.now() - new Date(trade.opened_at).getTime()) > 300000; // 5 min max
 
         if (hitTP || hitSL || isStale) {
           trade.closed_at = new Date().toISOString();
@@ -828,18 +869,18 @@ class Store {
 
           // Trigger live MT5 execution to close position immediately on broker server
           if (trade.metaapi_position_id && this.onClosePosition) {
-            this.onClosePosition(trade.metaapi_position_id, hitTP ? `Cible de gain +$${targetUsd} atteinte` : 'Protection Stop Loss')
+            this.onClosePosition(trade.metaapi_position_id, hitTP ? closeReason : 'Protection Stop Loss')
               .catch((err) => console.error('[MetaApi Close Error]:', err));
           }
 
           if (hitTP) {
-            trade.pnl_usd = Number(Math.max(floatingUsd, targetUsd).toFixed(2));
+            trade.pnl_usd = Number(floatingUsd.toFixed(2));
             trade.r_result = 0.5;
             this.state.decision_log.unshift({
               id: `log-hft-close-${Date.now()}`,
               time: new Date().toISOString(),
               level: 'info',
-              message: `⚡ [HFT Micro-Scalp Hit] Position ${trade.id} fermée avec succès en gain de +$${trade.pnl_usd.toFixed(2)} (Cible 0.60$ - 2.00$ atteinte en ${trade.duration_seconds}s) !`,
+              message: `⚡ [Sécurisation HFT] Position ${trade.id} fermée avec succès en gain de +$${trade.pnl_usd.toFixed(2)} (${closeReason || 'Cible atteinte'}) en ${trade.duration_seconds}s !`,
             });
           } else {
             trade.pnl_usd = Number(floatingUsd.toFixed(2));
@@ -1134,12 +1175,27 @@ class Store {
     }
   }
 
+  public getTpDynamicConfig() {
+    return {
+      enabled: this.tpDynamicEnabled,
+      min: this.tpDynamicMin,
+      max: this.tpDynamicMax,
+      step: this.trailingStepUsd,
+      beLock: this.breakevenLockUsd,
+    };
+  }
+
   public updateMdtEngineConfig(partial: {
     profile?: 'Starter' | 'Intraday Clean' | 'Sniper A+' | 'HFT Micro-Scalper';
     timeframe?: '1m' | '5m' | '15m';
     auto_pilot?: boolean;
     target_profit_usd?: number;
     multi_fire_count?: number;
+    tp_dynamic_enabled?: boolean;
+    tp_dynamic_min?: number;
+    tp_dynamic_max?: number;
+    trailing_step_usd?: number;
+    breakeven_lock_usd?: number;
   }) {
     if (partial.profile) this.mdtProfile = partial.profile;
     if (partial.timeframe) this.mdtTimeframe = partial.timeframe;
@@ -1150,6 +1206,11 @@ class Store {
     if (partial.multi_fire_count !== undefined && partial.multi_fire_count > 0) {
       this.mdtMultiFireCount = Math.min(Math.max(partial.multi_fire_count, 1), 5);
     }
+    if (partial.tp_dynamic_enabled !== undefined) this.tpDynamicEnabled = partial.tp_dynamic_enabled;
+    if (partial.tp_dynamic_min !== undefined && partial.tp_dynamic_min > 0) this.tpDynamicMin = partial.tp_dynamic_min;
+    if (partial.tp_dynamic_max !== undefined && partial.tp_dynamic_max > 0) this.tpDynamicMax = partial.tp_dynamic_max;
+    if (partial.trailing_step_usd !== undefined && partial.trailing_step_usd > 0) this.trailingStepUsd = partial.trailing_step_usd;
+    if (partial.breakeven_lock_usd !== undefined && partial.breakeven_lock_usd > 0) this.breakevenLockUsd = partial.breakeven_lock_usd;
 
     this.mdtEngine = new MdtEngine({
       profile: this.mdtProfile,
@@ -1176,13 +1237,18 @@ class Store {
       last_signal: engStatus.lastEvent ? `${engStatus.lastEvent.action} @ ${engStatus.lastEvent.entry || engStatus.lastEvent.price}` : null,
       target_profit_usd: this.mdtTargetProfitUsd,
       multi_fire_count: this.mdtMultiFireCount,
+      tp_dynamic_enabled: this.tpDynamicEnabled,
+      tp_dynamic_min: this.tpDynamicMin,
+      tp_dynamic_max: this.tpDynamicMax,
+      trailing_step_usd: this.trailingStepUsd,
+      breakeven_lock_usd: this.breakevenLockUsd,
     };
 
     this.state.decision_log.unshift({
       id: `log-mdt-config-${Date.now()}`,
       time: new Date().toISOString(),
       level: 'info',
-      message: `[Moteur MDT] Réglages : Profil ${this.mdtProfile} (${this.mdtTimeframe}) · Pilote auto : ${this.mdtAutoPilot ? 'ACTIF' : 'DÉSACTIVÉ'} · Cible HFT : $${this.mdtTargetProfitUsd} · Multi-tir : ${this.mdtMultiFireCount}x.`,
+      message: `[Moteur MDT] Réglages : Profil ${this.mdtProfile} (${this.mdtTimeframe}) · Pilote auto : ${this.mdtAutoPilot ? 'ACTIF' : 'DÉSACTIVÉ'} · TP Dynamique : [${this.tpDynamicMin}$ à ${this.tpDynamicMax}$ net, Trailing: ${this.trailingStepUsd}$] · Multi-tir : ${this.mdtMultiFireCount}x.`,
     });
 
     this.saveState(this.state);

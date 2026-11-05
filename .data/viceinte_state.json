@@ -1,583 +1,583 @@
 {
   "bot_status": {
-    "state": "en_trade",
+    "state": "surveillance",
     "mode": "simulation",
     "symbol": "GOLD (XAUUSD)",
     "timeframe": "5m",
-    "last_price": 3988.23,
-    "equity": 355.12,
-    "balance": 355.12,
+    "last_price": 4124,
+    "equity": 321.33,
+    "balance": 321.33,
     "candles": [
       {
-        "time": 1793333100,
-        "open": 3999.21,
-        "high": 3999.33,
-        "low": 3997.55,
-        "close": 3997.63
+        "time": 1793820600,
+        "open": 4057.18,
+        "high": 4057.19,
+        "low": 4052.71,
+        "close": 4053.45
       },
       {
-        "time": 1793333400,
-        "open": 3997.92,
-        "high": 4002.93,
-        "low": 3997.92,
-        "close": 4002.56
+        "time": 1793820900,
+        "open": 4053.86,
+        "high": 4056.49,
+        "low": 4053.81,
+        "close": 4056.02
       },
       {
-        "time": 1793333700,
-        "open": 4003.21,
-        "high": 4003.31,
-        "low": 4001.7,
-        "close": 4001.94
+        "time": 1793821200,
+        "open": 4055.42,
+        "high": 4055.66,
+        "low": 4054.27,
+        "close": 4054.27
       },
       {
-        "time": 1793334000,
-        "open": 4001.94,
-        "high": 4003.98,
-        "low": 4001.94,
-        "close": 4002.97
+        "time": 1793821500,
+        "open": 4053.39,
+        "high": 4054.67,
+        "low": 4052.87,
+        "close": 4053.6
       },
       {
-        "time": 1793334300,
-        "open": 4003.07,
-        "high": 4005.13,
-        "low": 4003.07,
-        "close": 4005.13
+        "time": 1793821800,
+        "open": 4053.6,
+        "high": 4054.15,
+        "low": 4053.02,
+        "close": 4054.15
       },
       {
-        "time": 1793334600,
-        "open": 4004.88,
-        "high": 4007.32,
-        "low": 4004.88,
-        "close": 4006.18
+        "time": 1793822100,
+        "open": 4054.15,
+        "high": 4054.39,
+        "low": 4053.05,
+        "close": 4054.38
       },
       {
-        "time": 1793334900,
-        "open": 4005.7,
-        "high": 4006.17,
-        "low": 4002.7,
-        "close": 4003.44
+        "time": 1793822400,
+        "open": 4054.53,
+        "high": 4061.41,
+        "low": 4054.53,
+        "close": 4060.83
       },
       {
-        "time": 1793335200,
-        "open": 4002.75,
-        "high": 4002.96,
-        "low": 4000.57,
-        "close": 4002.26
+        "time": 1793822700,
+        "open": 4060.42,
+        "high": 4060.42,
+        "low": 4058.58,
+        "close": 4060.23
       },
       {
-        "time": 1793335500,
-        "open": 4002.13,
-        "high": 4004.46,
-        "low": 4002,
-        "close": 4003.96
+        "time": 1793823000,
+        "open": 4061.18,
+        "high": 4061.18,
+        "low": 4058.47,
+        "close": 4059.66
       },
       {
-        "time": 1793335800,
-        "open": 4004.25,
-        "high": 4005.43,
-        "low": 4004.25,
-        "close": 4004.44
+        "time": 1793823300,
+        "open": 4059.67,
+        "high": 4062.36,
+        "low": 4059.67,
+        "close": 4062.01
       },
       {
-        "time": 1793336100,
-        "open": 4004.43,
-        "high": 4004.44,
-        "low": 4004.26,
-        "close": 4004.44
+        "time": 1793823600,
+        "open": 4061.51,
+        "high": 4061.51,
+        "low": 4058.91,
+        "close": 4058.91
       },
       {
-        "time": 1793336400,
-        "open": 4004.44,
-        "high": 4009.36,
-        "low": 4004.44,
-        "close": 4006.78
+        "time": 1793823900,
+        "open": 4058.62,
+        "high": 4059.54,
+        "low": 4057.78,
+        "close": 4057.79
       },
       {
-        "time": 1793336700,
-        "open": 4006.78,
-        "high": 4010.15,
-        "low": 4006.15,
-        "close": 4009.04
+        "time": 1793824200,
+        "open": 4059.54,
+        "high": 4061.38,
+        "low": 4059.54,
+        "close": 4061.38
       },
       {
-        "time": 1793337000,
-        "open": 4010.21,
-        "high": 4011.65,
-        "low": 4009.51,
-        "close": 4009.51
+        "time": 1793824500,
+        "open": 4061.99,
+        "high": 4063.63,
+        "low": 4059.34,
+        "close": 4059.34
       },
       {
-        "time": 1793337300,
-        "open": 4009.17,
-        "high": 4010.05,
-        "low": 4008.93,
-        "close": 4009.69
+        "time": 1793824800,
+        "open": 4059.63,
+        "high": 4059.63,
+        "low": 4057.86,
+        "close": 4057.86
       },
       {
-        "time": 1793337600,
-        "open": 4009.69,
-        "high": 4012.05,
-        "low": 4009.3,
-        "close": 4012.05
+        "time": 1793825100,
+        "open": 4057.56,
+        "high": 4057.56,
+        "low": 4056.39,
+        "close": 4056.77
       },
       {
-        "time": 1793337900,
-        "open": 4012.05,
-        "high": 4015.91,
-        "low": 4012.04,
-        "close": 4015.91
+        "time": 1793825400,
+        "open": 4055.76,
+        "high": 4056.46,
+        "low": 4054.66,
+        "close": 4056.46
       },
       {
-        "time": 1793338200,
-        "open": 4015.91,
-        "high": 4019.81,
-        "low": 4013.74,
-        "close": 4013.87
+        "time": 1793825700,
+        "open": 4056.87,
+        "high": 4059.99,
+        "low": 4056.87,
+        "close": 4059.99
       },
       {
-        "time": 1793338500,
-        "open": 4014.12,
-        "high": 4015.84,
-        "low": 4012.55,
-        "close": 4012.87
+        "time": 1793826000,
+        "open": 4060.57,
+        "high": 4060.57,
+        "low": 4059.74,
+        "close": 4060.11
       },
       {
-        "time": 1793338800,
-        "open": 4012.31,
-        "high": 4013.92,
-        "low": 4011.38,
-        "close": 4012.03
+        "time": 1793826300,
+        "open": 4060.12,
+        "high": 4061.79,
+        "low": 4060.12,
+        "close": 4061.68
       },
       {
-        "time": 1793339100,
-        "open": 4012.02,
-        "high": 4013.03,
-        "low": 4007.9,
-        "close": 4008.17
+        "time": 1793826600,
+        "open": 4061.69,
+        "high": 4063.67,
+        "low": 4061.69,
+        "close": 4063.67
       },
       {
-        "time": 1793339400,
-        "open": 4008.03,
-        "high": 4008.69,
-        "low": 4005.46,
-        "close": 4005.46
+        "time": 1793826900,
+        "open": 4063.66,
+        "high": 4064.16,
+        "low": 4063.52,
+        "close": 4063.52
       },
       {
-        "time": 1793339700,
-        "open": 4005.42,
-        "high": 4005.42,
-        "low": 3998.16,
-        "close": 4001.53
+        "time": 1793827200,
+        "open": 4063.52,
+        "high": 4063.56,
+        "low": 4062.65,
+        "close": 4062.65
       },
       {
-        "time": 1793340000,
-        "open": 4001.54,
-        "high": 4001.83,
-        "low": 3997.91,
-        "close": 3998.6
+        "time": 1793827500,
+        "open": 4062.65,
+        "high": 4062.65,
+        "low": 4059.23,
+        "close": 4059.24
       },
       {
-        "time": 1793340300,
-        "open": 3998.59,
-        "high": 4000.59,
-        "low": 3998.11,
-        "close": 3999.18
+        "time": 1793827800,
+        "open": 4058.85,
+        "high": 4058.85,
+        "low": 4057.71,
+        "close": 4058.2
       },
       {
-        "time": 1793340600,
-        "open": 3999.18,
-        "high": 3999.96,
-        "low": 3997.61,
-        "close": 3999.3
+        "time": 1793828100,
+        "open": 4058.85,
+        "high": 4059.28,
+        "low": 4058.85,
+        "close": 4059.22
       },
       {
-        "time": 1793340900,
-        "open": 3999.3,
-        "high": 4001.48,
-        "low": 3997.26,
-        "close": 3999.91
+        "time": 1793828400,
+        "open": 4057.6,
+        "high": 4057.7,
+        "low": 4057.58,
+        "close": 4057.58
       },
       {
-        "time": 1793341200,
-        "open": 3999.91,
-        "high": 3999.97,
-        "low": 3998.07,
-        "close": 3998.49
+        "time": 1793828700,
+        "open": 4057.57,
+        "high": 4058.07,
+        "low": 4056.92,
+        "close": 4057.96
       },
       {
-        "time": 1793341500,
-        "open": 3998.49,
-        "high": 4003.19,
-        "low": 3998.49,
-        "close": 4001.83
+        "time": 1793829000,
+        "open": 4057.84,
+        "high": 4058.33,
+        "low": 4057.21,
+        "close": 4057.21
       },
       {
-        "time": 1793341800,
-        "open": 4001.49,
-        "high": 4003.41,
-        "low": 3997.2,
-        "close": 3997.73
+        "time": 1793829300,
+        "open": 4056.89,
+        "high": 4059.74,
+        "low": 4056.78,
+        "close": 4059.74
       },
       {
-        "time": 1793342100,
-        "open": 3997.74,
-        "high": 3999.17,
-        "low": 3997.01,
-        "close": 3997.16
+        "time": 1793829600,
+        "open": 4059.86,
+        "high": 4059.86,
+        "low": 4055.38,
+        "close": 4055.49
       },
       {
-        "time": 1793342400,
-        "open": 3997.54,
-        "high": 4000.66,
-        "low": 3994.86,
-        "close": 3997.03
+        "time": 1793829900,
+        "open": 4055.86,
+        "high": 4059.36,
+        "low": 4055.86,
+        "close": 4059.01
       },
       {
-        "time": 1793342700,
-        "open": 3997.35,
-        "high": 3997.35,
-        "low": 3990,
-        "close": 3994.25
+        "time": 1793830200,
+        "open": 4059.04,
+        "high": 4061.16,
+        "low": 4059.04,
+        "close": 4060.23
       },
       {
-        "time": 1793343000,
-        "open": 3994.87,
-        "high": 3997.34,
-        "low": 3993.53,
-        "close": 3993.79
+        "time": 1793830500,
+        "open": 4060.32,
+        "high": 4062.98,
+        "low": 4060.09,
+        "close": 4061.24
       },
       {
-        "time": 1793343300,
-        "open": 3993.8,
-        "high": 3995.83,
-        "low": 3992.93,
-        "close": 3993.52
+        "time": 1793830800,
+        "open": 4061.4,
+        "high": 4061.4,
+        "low": 4059.86,
+        "close": 4060.19
       },
       {
-        "time": 1793343600,
-        "open": 3993.52,
-        "high": 3994.82,
-        "low": 3992.22,
-        "close": 3992.22
+        "time": 1793831100,
+        "open": 4060.26,
+        "high": 4060.57,
+        "low": 4060.25,
+        "close": 4060.57
       },
       {
-        "time": 1793343900,
-        "open": 3992.23,
-        "high": 3994.94,
-        "low": 3990.84,
-        "close": 3993.02
+        "time": 1793831400,
+        "open": 4060.57,
+        "high": 4060.58,
+        "low": 4060.57,
+        "close": 4060.58
       },
       {
-        "time": 1793344200,
-        "open": 3992.67,
-        "high": 3993.8,
-        "low": 3992.5,
-        "close": 3993.44
+        "time": 1793831700,
+        "open": 4060.58,
+        "high": 4061.65,
+        "low": 4060.57,
+        "close": 4061.64
       },
       {
-        "time": 1793344500,
-        "open": 3993.79,
-        "high": 3995.77,
-        "low": 3992.05,
-        "close": 3992.05
+        "time": 1793832000,
+        "open": 4061.65,
+        "high": 4061.88,
+        "low": 4061.26,
+        "close": 4061.6
       },
       {
-        "time": 1793344800,
-        "open": 3992.06,
-        "high": 3994.65,
-        "low": 3991.13,
-        "close": 3994.65
+        "time": 1793832300,
+        "open": 4061.6,
+        "high": 4061.6,
+        "low": 4061.28,
+        "close": 4061.44
       },
       {
-        "time": 1793345100,
-        "open": 3994.96,
-        "high": 3994.96,
-        "low": 3992.77,
-        "close": 3993.47
+        "time": 1793832600,
+        "open": 4061.44,
+        "high": 4061.44,
+        "low": 4061.43,
+        "close": 4061.44
       },
       {
-        "time": 1793345400,
-        "open": 3993.47,
-        "high": 3993.71,
-        "low": 3990,
-        "close": 3990.01
+        "time": 1793832900,
+        "open": 4061.44,
+        "high": 4061.44,
+        "low": 4060.85,
+        "close": 4061.42
       },
       {
-        "time": 1793345700,
-        "open": 3990.01,
-        "high": 3991.95,
-        "low": 3988.48,
-        "close": 3991.36
+        "time": 1793833200,
+        "open": 4061.43,
+        "high": 4061.89,
+        "low": 4060.01,
+        "close": 4060.52
       },
       {
-        "time": 1793346000,
-        "open": 3992.19,
-        "high": 3992.75,
-        "low": 3989.44,
-        "close": 3989.44
+        "time": 1793833500,
+        "open": 4060.21,
+        "high": 4061.99,
+        "low": 4057.31,
+        "close": 4057.31
       },
       {
-        "time": 1793346300,
-        "open": 3989.43,
-        "high": 3989.43,
-        "low": 3981.76,
-        "close": 3982.28
+        "time": 1793833800,
+        "open": 4057.3,
+        "high": 4057.31,
+        "low": 4055.26,
+        "close": 4056.89
       },
       {
-        "time": 1793346600,
-        "open": 3982.27,
-        "high": 3982.98,
-        "low": 3975.51,
-        "close": 3977.75
+        "time": 1793834100,
+        "open": 4057.32,
+        "high": 4059.12,
+        "low": 4057.3,
+        "close": 4058.54
       },
       {
-        "time": 1793346900,
-        "open": 3978.06,
-        "high": 3983.93,
-        "low": 3975.88,
-        "close": 3983.36
+        "time": 1793834400,
+        "open": 4058.56,
+        "high": 4060.15,
+        "low": 4058.56,
+        "close": 4058.95
       },
       {
-        "time": 1793347200,
-        "open": 3982.8,
-        "high": 3992.61,
-        "low": 3981.22,
-        "close": 3991.21
+        "time": 1793834700,
+        "open": 4059.06,
+        "high": 4060.75,
+        "low": 4057.98,
+        "close": 4060.75
       },
       {
-        "time": 1793347500,
-        "open": 3991.21,
-        "high": 3991.25,
-        "low": 3983.37,
-        "close": 3984.64
+        "time": 1793835000,
+        "open": 4059.37,
+        "high": 4059.37,
+        "low": 4058.54,
+        "close": 4058.54
       },
       {
-        "time": 1793347800,
-        "open": 3985.05,
-        "high": 3991.7,
-        "low": 3984.16,
-        "close": 3991.16
+        "time": 1793835300,
+        "open": 4059.55,
+        "high": 4059.83,
+        "low": 4059.55,
+        "close": 4059.78
       },
       {
-        "time": 1793348100,
-        "open": 3990.77,
-        "high": 3996.65,
-        "low": 3990.51,
-        "close": 3996.65
+        "time": 1793835600,
+        "open": 4059.81,
+        "high": 4060.92,
+        "low": 4059.8,
+        "close": 4060.69
       },
       {
-        "time": 1793348400,
-        "open": 3995.56,
-        "high": 3996.2,
-        "low": 3994.19,
-        "close": 3995.23
+        "time": 1793835900,
+        "open": 4060.18,
+        "high": 4062.71,
+        "low": 4060.17,
+        "close": 4062.22
       },
       {
-        "time": 1793348700,
-        "open": 3995.09,
-        "high": 3995.1,
-        "low": 3993.07,
-        "close": 3993.23
+        "time": 1793836200,
+        "open": 4062.23,
+        "high": 4067.43,
+        "low": 4062.23,
+        "close": 4064.4
       },
       {
-        "time": 1793349000,
-        "open": 3993.23,
-        "high": 3995.71,
-        "low": 3992.04,
-        "close": 3994.78
+        "time": 1793836500,
+        "open": 4064.2,
+        "high": 4064.2,
+        "low": 4060.59,
+        "close": 4061.47
       },
       {
-        "time": 1793349300,
-        "open": 3994.77,
-        "high": 3994.77,
-        "low": 3992.34,
-        "close": 3992.78
+        "time": 1793836800,
+        "open": 4061.6,
+        "high": 4062.55,
+        "low": 4058.23,
+        "close": 4058.95
       },
       {
-        "time": 1793349600,
-        "open": 3992.57,
-        "high": 3994.78,
-        "low": 3991.98,
-        "close": 3994
+        "time": 1793837100,
+        "open": 4058.83,
+        "high": 4059.91,
+        "low": 4057.76,
+        "close": 4059.91
       },
       {
-        "time": 1793349900,
-        "open": 3994.42,
-        "high": 4001.01,
-        "low": 3994.15,
-        "close": 4001
+        "time": 1793837400,
+        "open": 4060,
+        "high": 4061.11,
+        "low": 4059.09,
+        "close": 4060.23
       },
       {
-        "time": 1793350200,
-        "open": 4000.43,
-        "high": 4003.72,
-        "low": 3998.96,
-        "close": 4003.6
+        "time": 1793837700,
+        "open": 4060.24,
+        "high": 4068.45,
+        "low": 4060.23,
+        "close": 4068.31
       },
       {
-        "time": 1793350500,
-        "open": 4003.6,
-        "high": 4003.97,
-        "low": 4001.62,
-        "close": 4003.2
+        "time": 1793838000,
+        "open": 4068.53,
+        "high": 4074.97,
+        "low": 4068.53,
+        "close": 4074.16
       },
       {
-        "time": 1793350800,
-        "open": 4003.02,
-        "high": 4003.98,
-        "low": 4001.17,
-        "close": 4001.17
+        "time": 1793838300,
+        "open": 4074.14,
+        "high": 4075.69,
+        "low": 4072.46,
+        "close": 4075.69
       },
       {
-        "time": 1793351100,
-        "open": 4001.18,
-        "high": 4001.89,
-        "low": 3996.86,
-        "close": 3997.65
+        "time": 1793838600,
+        "open": 4075.72,
+        "high": 4088.9,
+        "low": 4075.72,
+        "close": 4084.64
       },
       {
-        "time": 1793351400,
-        "open": 3997.65,
-        "high": 3998.09,
-        "low": 3996.48,
-        "close": 3997.02
+        "time": 1793838900,
+        "open": 4083.59,
+        "high": 4083.59,
+        "low": 4077.31,
+        "close": 4078.68
       },
       {
-        "time": 1793351700,
-        "open": 3997.01,
-        "high": 4000.42,
-        "low": 3995.72,
-        "close": 3999
+        "time": 1793839200,
+        "open": 4078.92,
+        "high": 4089,
+        "low": 4078.7,
+        "close": 4088
       },
       {
-        "time": 1793352000,
-        "open": 3999,
-        "high": 3999.01,
-        "low": 3996.12,
-        "close": 3996.12
+        "time": 1793839500,
+        "open": 4088.01,
+        "high": 4091.42,
+        "low": 4088.01,
+        "close": 4091.42
       },
       {
-        "time": 1793352300,
-        "open": 3996.12,
-        "high": 3997.44,
-        "low": 3994.91,
-        "close": 3995.99
+        "time": 1793839800,
+        "open": 4091.44,
+        "high": 4092.26,
+        "low": 4090.43,
+        "close": 4091.47
       },
       {
-        "time": 1793352600,
-        "open": 3996,
-        "high": 3997.53,
-        "low": 3995.4,
-        "close": 3995.83
+        "time": 1793840100,
+        "open": 4090.97,
+        "high": 4091.24,
+        "low": 4085.1,
+        "close": 4085.1
       },
       {
-        "time": 1793352900,
-        "open": 3995.84,
-        "high": 3996.79,
-        "low": 3995,
-        "close": 3995.37
+        "time": 1793840400,
+        "open": 4084.92,
+        "high": 4090.64,
+        "low": 4081.38,
+        "close": 4089.38
       },
       {
-        "time": 1793353200,
-        "open": 3995.37,
-        "high": 3996.16,
-        "low": 3994.75,
-        "close": 3995.99
+        "time": 1793840700,
+        "open": 4089.99,
+        "high": 4092.46,
+        "low": 4084.31,
+        "close": 4089.36
       },
       {
-        "time": 1793353500,
-        "open": 3995.28,
-        "high": 3995.99,
-        "low": 3994.25,
-        "close": 3994.25
+        "time": 1793841000,
+        "open": 4090.43,
+        "high": 4107.08,
+        "low": 4090.43,
+        "close": 4106.71
       },
       {
-        "time": 1793353800,
-        "open": 3994.26,
-        "high": 3997.94,
-        "low": 3993.34,
-        "close": 3997.87
+        "time": 1793841300,
+        "open": 4106.98,
+        "high": 4109.11,
+        "low": 4097.51,
+        "close": 4102.24
       },
       {
-        "time": 1793354100,
-        "open": 3997.86,
-        "high": 3997.86,
-        "low": 3996.17,
-        "close": 3997.26
+        "time": 1793841600,
+        "open": 4102.24,
+        "high": 4112,
+        "low": 4102.24,
+        "close": 4104.79
       },
       {
-        "time": 1793354400,
-        "open": 3997.49,
-        "high": 3997.85,
-        "low": 3994.85,
-        "close": 3997.73
+        "time": 1793841900,
+        "open": 4104.79,
+        "high": 4107.66,
+        "low": 4095.06,
+        "close": 4098.09
       },
       {
-        "time": 1793354700,
-        "open": 3997.64,
-        "high": 3997.93,
-        "low": 3993.93,
-        "close": 3994.3
+        "time": 1793842200,
+        "open": 4098.39,
+        "high": 4109.99,
+        "low": 4094.21,
+        "close": 4109.99
       },
       {
-        "time": 1793355000,
-        "open": 3994.3,
-        "high": 3994.3,
-        "low": 3990.66,
-        "close": 3990.95
+        "time": 1793842500,
+        "open": 4109.99,
+        "high": 4118.37,
+        "low": 4106.98,
+        "close": 4116.65
       },
       {
-        "time": 1793355300,
-        "open": 3990.65,
-        "high": 3993.29,
-        "low": 3989.67,
-        "close": 3993.29
+        "time": 1793842800,
+        "open": 4116.64,
+        "high": 4119,
+        "low": 4114.84,
+        "close": 4118.26
       },
       {
-        "time": 1793355600,
-        "open": 3993.29,
-        "high": 3993.29,
-        "low": 3989.43,
-        "close": 3990.11
+        "time": 1793843100,
+        "open": 4118.62,
+        "high": 4121.57,
+        "low": 4116.65,
+        "close": 4119.94
       },
       {
-        "time": 1793355900,
-        "open": 3990.11,
-        "high": 3991.43,
-        "low": 3988.38,
-        "close": 3988.38
+        "time": 1793843400,
+        "open": 4121.57,
+        "high": 4126.78,
+        "low": 4118.06,
+        "close": 4119.41
       },
       {
-        "time": 1793356200,
-        "open": 3988.38,
-        "high": 3990.92,
-        "low": 3988.38,
-        "close": 3990.66
+        "time": 1793843700,
+        "open": 4119.76,
+        "high": 4124.46,
+        "low": 4118.02,
+        "close": 4118.02
       },
       {
-        "time": 1793356500,
-        "open": 3989.87,
-        "high": 3989.87,
-        "low": 3988.24,
-        "close": 3989.34
+        "time": 1793844000,
+        "open": 4118.94,
+        "high": 4124.65,
+        "low": 4115.92,
+        "close": 4122.93
       },
       {
-        "time": 1793356800,
-        "open": 3990.52,
-        "high": 3990.96,
-        "low": 3988.23,
-        "close": 3988.23
+        "time": 1793844300,
+        "open": 4123.23,
+        "high": 4124,
+        "low": 4123.23,
+        "close": 4124
       }
     ],
     "plan": null,
-    "updated_at": "2026-10-30T10:43:55.829Z"
+    "updated_at": "2026-11-05T02:05:27.578Z"
   },
   "levels": {
-    "day": "2026-10-30",
-    "asian_high": 4019.81,
-    "asian_low": 3997.2,
-    "prev_day_high": 4019.81,
-    "prev_day_low": 3975.51
+    "day": "2026-11-05",
+    "asian_high": 4064.16,
+    "asian_low": 4052.71,
+    "prev_day_high": 4126.78,
+    "prev_day_low": 4052.71
   },
   "signals": [
     {
@@ -596,14 +596,14 @@
   ],
   "trades": [
     {
-      "id": "hft-tr-1793357022621-3",
-      "opened_at": "2026-10-30T10:43:42.621Z",
+      "id": "hft-tr-1793844173618-3",
+      "opened_at": "2026-11-05T02:02:53.618Z",
       "closed_at": null,
-      "side": "SELL",
-      "entry": 3979.64,
+      "side": "BUY",
+      "entry": 4123.45,
       "exit": null,
-      "stop_loss": 3990.73,
-      "take_profit": 3987.23,
+      "stop_loss": 4120.95,
+      "take_profit": 4124.45,
       "r_result": 0,
       "pnl_usd": 0,
       "strategy": "HFT Micro-Scalp Target $1.00",
@@ -611,43 +611,886 @@
       "volume": 0.01,
       "is_hft_micro": true,
       "target_profit_usd": 1,
-      "metaapi_position_id": "2359856686"
+      "peak_floating": 0.55
+    },
+    {
+      "id": "hft-tr-1793844173618-2",
+      "opened_at": "2026-11-05T02:02:53.618Z",
+      "closed_at": null,
+      "side": "BUY",
+      "entry": 4123.45,
+      "exit": null,
+      "stop_loss": 4120.95,
+      "take_profit": 4124.45,
+      "r_result": 0,
+      "pnl_usd": 0,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "peak_floating": 0.55
+    },
+    {
+      "id": "hft-tr-1793844173618-1",
+      "opened_at": "2026-11-05T02:02:53.618Z",
+      "closed_at": null,
+      "side": "BUY",
+      "entry": 4123.45,
+      "exit": null,
+      "stop_loss": 4120.95,
+      "take_profit": 4124.45,
+      "r_result": 0,
+      "pnl_usd": 0,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "peak_floating": 0.55
+    },
+    {
+      "id": "hft-tr-1793844155609-3",
+      "opened_at": "2026-11-05T02:02:35.609Z",
+      "closed_at": "2026-11-05T02:02:42.810Z",
+      "side": "BUY",
+      "entry": 4122.92,
+      "exit": 4124.65,
+      "stop_loss": 4120.42,
+      "take_profit": 4123.92,
+      "r_result": 0.5,
+      "pnl_usd": 1.73,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 7
+    },
+    {
+      "id": "hft-tr-1793844155609-2",
+      "opened_at": "2026-11-05T02:02:35.609Z",
+      "closed_at": "2026-11-05T02:02:42.810Z",
+      "side": "BUY",
+      "entry": 4122.92,
+      "exit": 4124.65,
+      "stop_loss": 4120.42,
+      "take_profit": 4123.92,
+      "r_result": 0.5,
+      "pnl_usd": 1.73,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 7
+    },
+    {
+      "id": "hft-tr-1793844155609-1",
+      "opened_at": "2026-11-05T02:02:35.609Z",
+      "closed_at": "2026-11-05T02:02:42.810Z",
+      "side": "BUY",
+      "entry": 4122.92,
+      "exit": 4124.65,
+      "stop_loss": 4120.42,
+      "take_profit": 4123.92,
+      "r_result": 0.5,
+      "pnl_usd": 1.73,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 7
+    },
+    {
+      "id": "hft-tr-1793844127991-3",
+      "opened_at": "2026-11-05T02:02:07.991Z",
+      "closed_at": "2026-11-05T02:02:35.609Z",
+      "side": "BUY",
+      "entry": 4120.92,
+      "exit": 4122.92,
+      "stop_loss": 4118.42,
+      "take_profit": 4121.92,
+      "r_result": 0.5,
+      "pnl_usd": 2,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 27
+    },
+    {
+      "id": "hft-tr-1793844127991-2",
+      "opened_at": "2026-11-05T02:02:07.991Z",
+      "closed_at": "2026-11-05T02:02:35.609Z",
+      "side": "BUY",
+      "entry": 4120.92,
+      "exit": 4122.92,
+      "stop_loss": 4118.42,
+      "take_profit": 4121.92,
+      "r_result": 0.5,
+      "pnl_usd": 2,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 27
+    },
+    {
+      "id": "hft-tr-1793844127991-1",
+      "opened_at": "2026-11-05T02:02:07.991Z",
+      "closed_at": "2026-11-05T02:02:35.609Z",
+      "side": "BUY",
+      "entry": 4120.92,
+      "exit": 4122.92,
+      "stop_loss": 4118.42,
+      "take_profit": 4121.92,
+      "r_result": 0.5,
+      "pnl_usd": 2,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 27
+    },
+    {
+      "id": "hft-tr-1793844109989-3",
+      "opened_at": "2026-11-05T02:01:49.989Z",
+      "closed_at": "2026-11-05T02:01:51.190Z",
+      "side": "BUY",
+      "entry": 4118,
+      "exit": 4119,
+      "stop_loss": 4115.5,
+      "take_profit": 4119,
+      "r_result": 0.5,
+      "pnl_usd": 1,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 1
+    },
+    {
+      "id": "hft-tr-1793844109989-2",
+      "opened_at": "2026-11-05T02:01:49.989Z",
+      "closed_at": "2026-11-05T02:01:51.190Z",
+      "side": "BUY",
+      "entry": 4118,
+      "exit": 4119,
+      "stop_loss": 4115.5,
+      "take_profit": 4119,
+      "r_result": 0.5,
+      "pnl_usd": 1,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 1
+    },
+    {
+      "id": "hft-tr-1793844109989-1",
+      "opened_at": "2026-11-05T02:01:49.989Z",
+      "closed_at": "2026-11-05T02:01:51.190Z",
+      "side": "BUY",
+      "entry": 4118,
+      "exit": 4119,
+      "stop_loss": 4115.5,
+      "take_profit": 4119,
+      "r_result": 0.5,
+      "pnl_usd": 1,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 1
+    },
+    {
+      "id": "hft-tr-1793844078765-3",
+      "opened_at": "2026-11-05T02:01:18.765Z",
+      "closed_at": "2026-11-05T02:01:49.989Z",
+      "side": "BUY",
+      "entry": 4116.5,
+      "exit": 4118,
+      "stop_loss": 4114,
+      "take_profit": 4117.5,
+      "r_result": 0.5,
+      "pnl_usd": 1.5,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 31
+    },
+    {
+      "id": "hft-tr-1793844078765-2",
+      "opened_at": "2026-11-05T02:01:18.765Z",
+      "closed_at": "2026-11-05T02:01:49.989Z",
+      "side": "BUY",
+      "entry": 4116.5,
+      "exit": 4118,
+      "stop_loss": 4114,
+      "take_profit": 4117.5,
+      "r_result": 0.5,
+      "pnl_usd": 1.5,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 31
+    },
+    {
+      "id": "hft-tr-1793844078765-1",
+      "opened_at": "2026-11-05T02:01:18.765Z",
+      "closed_at": "2026-11-05T02:01:49.989Z",
+      "side": "BUY",
+      "entry": 4116.5,
+      "exit": 4118,
+      "stop_loss": 4114,
+      "take_profit": 4117.5,
+      "r_result": 0.5,
+      "pnl_usd": 1.5,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "duration_seconds": 31
+    },
+    {
+      "id": "mt5-pos-2365273269",
+      "opened_at": "2026-11-05T01:56:18.752Z",
+      "closed_at": "2026-11-05T02:01:18.764Z",
+      "side": "BUY",
+      "entry": 4126.27,
+      "exit": 4116.5,
+      "stop_loss": 0,
+      "take_profit": 0,
+      "r_result": -0.5,
+      "pnl_usd": -9.77,
+      "strategy": "MetaTrader 5 Direct",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "metaapi_position_id": "2365273269",
+      "target_profit_usd": 1,
+      "duration_seconds": 300
+    },
+    {
+      "id": "mt5-pos-2365273268",
+      "opened_at": "2026-11-05T01:56:18.750Z",
+      "closed_at": "2026-11-05T02:01:18.764Z",
+      "side": "BUY",
+      "entry": 4126.27,
+      "exit": 4116.5,
+      "stop_loss": 0,
+      "take_profit": 0,
+      "r_result": -0.5,
+      "pnl_usd": -9.77,
+      "strategy": "MetaTrader 5 Direct",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "metaapi_position_id": "2365273268",
+      "target_profit_usd": 1,
+      "duration_seconds": 300
+    },
+    {
+      "id": "mt5-pos-2365273267",
+      "opened_at": "2026-11-05T01:56:18.697Z",
+      "closed_at": "2026-11-05T02:01:18.764Z",
+      "side": "BUY",
+      "entry": 4126.27,
+      "exit": 4116.5,
+      "stop_loss": 0,
+      "take_profit": 0,
+      "r_result": -0.5,
+      "pnl_usd": -9.77,
+      "strategy": "MetaTrader 5 Direct",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "metaapi_position_id": "2365273267",
+      "target_profit_usd": 1,
+      "duration_seconds": 300
+    },
+    {
+      "id": "hft-tr-1793843778599-3",
+      "opened_at": "2026-11-05T01:56:18.599Z",
+      "closed_at": "2026-11-05T01:56:36.608Z",
+      "side": "BUY",
+      "entry": 4126.84,
+      "exit": 4120.9,
+      "stop_loss": 4117.19,
+      "take_profit": 4120.69,
+      "r_result": 0.5,
+      "pnl_usd": 1,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "metaapi_position_id": "2365273242",
+      "duration_seconds": 18
+    },
+    {
+      "id": "hft-tr-1793843778599-2",
+      "opened_at": "2026-11-05T01:56:18.599Z",
+      "closed_at": "2026-11-05T01:56:36.608Z",
+      "side": "BUY",
+      "entry": 4126.84,
+      "exit": 4120.9,
+      "stop_loss": 4117.19,
+      "take_profit": 4120.69,
+      "r_result": 0.5,
+      "pnl_usd": 1,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "metaapi_position_id": "2365273243",
+      "duration_seconds": 18
+    },
+    {
+      "id": "hft-tr-1793843778599-1",
+      "opened_at": "2026-11-05T01:56:18.599Z",
+      "closed_at": "2026-11-05T01:56:36.608Z",
+      "side": "BUY",
+      "entry": 4126.84,
+      "exit": 4120.9,
+      "stop_loss": 4117.19,
+      "take_profit": 4120.69,
+      "r_result": 0.5,
+      "pnl_usd": 1,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "metaapi_position_id": "2365273244",
+      "duration_seconds": 18
+    },
+    {
+      "id": "mt5-pos-2360010927",
+      "opened_at": "2026-10-30T12:33:24.903Z",
+      "closed_at": "2026-10-30T12:33:29.416Z",
+      "side": "BUY",
+      "entry": 3966.9,
+      "exit": 3974.72,
+      "stop_loss": 0,
+      "take_profit": 0,
+      "r_result": 0.5,
+      "pnl_usd": 7.82,
+      "strategy": "MetaTrader 5 Direct",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "metaapi_position_id": "2360010927",
+      "target_profit_usd": 1,
+      "duration_seconds": 4
+    },
+    {
+      "id": "mt5-pos-2360010922",
+      "opened_at": "2026-10-30T12:33:24.763Z",
+      "closed_at": "2026-10-30T12:33:29.416Z",
+      "side": "BUY",
+      "entry": 3966.9,
+      "exit": 3974.72,
+      "stop_loss": 0,
+      "take_profit": 0,
+      "r_result": 0.5,
+      "pnl_usd": 7.82,
+      "strategy": "MetaTrader 5 Direct",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "metaapi_position_id": "2360010922",
+      "target_profit_usd": 1,
+      "duration_seconds": 4
+    },
+    {
+      "id": "mt5-pos-2360010921",
+      "opened_at": "2026-10-30T12:33:24.733Z",
+      "closed_at": "2026-10-30T12:33:29.417Z",
+      "side": "BUY",
+      "entry": 3966.9,
+      "exit": 3974.72,
+      "stop_loss": 0,
+      "take_profit": 0,
+      "r_result": 0.5,
+      "pnl_usd": 7.82,
+      "strategy": "MetaTrader 5 Direct",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "metaapi_position_id": "2360010921",
+      "target_profit_usd": 1,
+      "duration_seconds": 4
+    },
+    {
+      "id": "mt5-pos-2360010927",
+      "opened_at": "2026-10-30T12:33:24.903Z",
+      "closed_at": "2026-10-30T12:33:28.214Z",
+      "side": "BUY",
+      "entry": 3966.9,
+      "exit": 3974.72,
+      "stop_loss": 0,
+      "take_profit": 0,
+      "r_result": 0.5,
+      "pnl_usd": 7.82,
+      "strategy": "MetaTrader 5 Direct",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "metaapi_position_id": "2360010927",
+      "target_profit_usd": 1,
+      "duration_seconds": 3
+    },
+    {
+      "id": "mt5-pos-2360010922",
+      "opened_at": "2026-10-30T12:33:24.763Z",
+      "closed_at": "2026-10-30T12:33:28.215Z",
+      "side": "BUY",
+      "entry": 3966.9,
+      "exit": 3974.72,
+      "stop_loss": 0,
+      "take_profit": 0,
+      "r_result": 0.5,
+      "pnl_usd": 7.82,
+      "strategy": "MetaTrader 5 Direct",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "metaapi_position_id": "2360010922",
+      "target_profit_usd": 1,
+      "duration_seconds": 3
+    },
+    {
+      "id": "mt5-pos-2360010921",
+      "opened_at": "2026-10-30T12:33:24.733Z",
+      "closed_at": "2026-10-30T12:33:28.215Z",
+      "side": "BUY",
+      "entry": 3966.9,
+      "exit": 3974.72,
+      "stop_loss": 0,
+      "take_profit": 0,
+      "r_result": 0.5,
+      "pnl_usd": 7.82,
+      "strategy": "MetaTrader 5 Direct",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "metaapi_position_id": "2360010921",
+      "target_profit_usd": 1,
+      "duration_seconds": 3
+    },
+    {
+      "id": "hft-tr-1793363604617-3",
+      "opened_at": "2026-10-30T12:33:24.617Z",
+      "closed_at": "2026-10-30T12:33:27.016Z",
+      "side": "BUY",
+      "entry": 3966.9,
+      "exit": 3974.72,
+      "stop_loss": 3972.22,
+      "take_profit": 3975.72,
+      "r_result": 0.5,
+      "pnl_usd": 7.82,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "metaapi_position_id": "2360010921",
+      "duration_seconds": 2
+    },
+    {
+      "id": "hft-tr-1793363604617-2",
+      "opened_at": "2026-10-30T12:33:24.617Z",
+      "closed_at": "2026-10-30T12:33:27.016Z",
+      "side": "BUY",
+      "entry": 3966.9,
+      "exit": 3974.72,
+      "stop_loss": 3972.22,
+      "take_profit": 3975.72,
+      "r_result": 0.5,
+      "pnl_usd": 7.82,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "metaapi_position_id": "2360010922",
+      "duration_seconds": 2
+    },
+    {
+      "id": "hft-tr-1793363604617-1",
+      "opened_at": "2026-10-30T12:33:24.617Z",
+      "closed_at": "2026-10-30T12:33:27.017Z",
+      "side": "BUY",
+      "entry": 3966.9,
+      "exit": 3974.72,
+      "stop_loss": 3972.22,
+      "take_profit": 3975.72,
+      "r_result": 0.5,
+      "pnl_usd": 7.82,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "metaapi_position_id": "2360010927",
+      "duration_seconds": 2
+    },
+    {
+      "id": "mt5-pos-2360010134",
+      "opened_at": "2026-10-30T12:33:06.767Z",
+      "closed_at": "2026-10-30T12:33:12.614Z",
+      "side": "BUY",
+      "entry": 3966.23,
+      "exit": 3973.78,
+      "stop_loss": 0,
+      "take_profit": 0,
+      "r_result": 0.5,
+      "pnl_usd": 7.55,
+      "strategy": "MetaTrader 5 Direct",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "metaapi_position_id": "2360010134",
+      "target_profit_usd": 1,
+      "duration_seconds": 5
+    },
+    {
+      "id": "mt5-pos-2360010159",
+      "opened_at": "2026-10-30T12:33:07.362Z",
+      "closed_at": "2026-10-30T12:33:11.423Z",
+      "side": "BUY",
+      "entry": 3966.25,
+      "exit": 3973.78,
+      "stop_loss": 0,
+      "take_profit": 0,
+      "r_result": 0.5,
+      "pnl_usd": 7.53,
+      "strategy": "MetaTrader 5 Direct",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "metaapi_position_id": "2360010159",
+      "target_profit_usd": 1,
+      "duration_seconds": 4
+    },
+    {
+      "id": "mt5-pos-2360010134",
+      "opened_at": "2026-10-30T12:33:06.767Z",
+      "closed_at": "2026-10-30T12:33:11.423Z",
+      "side": "BUY",
+      "entry": 3966.23,
+      "exit": 3973.78,
+      "stop_loss": 0,
+      "take_profit": 0,
+      "r_result": 0.5,
+      "pnl_usd": 7.55,
+      "strategy": "MetaTrader 5 Direct",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "metaapi_position_id": "2360010134",
+      "target_profit_usd": 1,
+      "duration_seconds": 4
+    },
+    {
+      "id": "mt5-pos-2360010159",
+      "opened_at": "2026-10-30T12:33:07.362Z",
+      "closed_at": "2026-10-30T12:33:10.223Z",
+      "side": "BUY",
+      "entry": 3966.25,
+      "exit": 3973.78,
+      "stop_loss": 0,
+      "take_profit": 0,
+      "r_result": 0.5,
+      "pnl_usd": 7.53,
+      "strategy": "MetaTrader 5 Direct",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "metaapi_position_id": "2360010159",
+      "target_profit_usd": 1,
+      "duration_seconds": 2
+    },
+    {
+      "id": "hft-tr-1793363586608-3",
+      "opened_at": "2026-10-30T12:33:06.608Z",
+      "closed_at": "2026-10-30T12:33:09.017Z",
+      "side": "BUY",
+      "entry": 3966.23,
+      "exit": 3973.78,
+      "stop_loss": 3970.97,
+      "take_profit": 3974.47,
+      "r_result": 0.5,
+      "pnl_usd": 7.55,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "metaapi_position_id": "2360010132",
+      "duration_seconds": 2
+    },
+    {
+      "id": "hft-tr-1793363586608-2",
+      "opened_at": "2026-10-30T12:33:06.608Z",
+      "closed_at": "2026-10-30T12:33:10.224Z",
+      "side": "BUY",
+      "entry": 3966.23,
+      "exit": 3973.78,
+      "stop_loss": 3970.97,
+      "take_profit": 3974.47,
+      "r_result": 0.5,
+      "pnl_usd": 7.55,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "metaapi_position_id": "2360010132",
+      "duration_seconds": 3
+    },
+    {
+      "id": "hft-tr-1793363586608-1",
+      "opened_at": "2026-10-30T12:33:06.608Z",
+      "closed_at": "2026-10-30T12:33:10.225Z",
+      "side": "BUY",
+      "entry": 3966.23,
+      "exit": 3973.78,
+      "stop_loss": 3970.97,
+      "take_profit": 3974.47,
+      "r_result": 0.5,
+      "pnl_usd": 7.55,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "metaapi_position_id": "2360010134",
+      "duration_seconds": 3
+    },
+    {
+      "id": "mt5-pos-2360009246",
+      "opened_at": "2026-10-30T12:32:48.753Z",
+      "closed_at": "2026-10-30T12:32:54.600Z",
+      "side": "BUY",
+      "entry": 3963.58,
+      "exit": 3971.73,
+      "stop_loss": 0,
+      "take_profit": 0,
+      "r_result": 0.5,
+      "pnl_usd": 8.15,
+      "strategy": "MetaTrader 5 Direct",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "metaapi_position_id": "2360009246",
+      "target_profit_usd": 1,
+      "duration_seconds": 5
+    },
+    {
+      "id": "mt5-pos-2360009245",
+      "opened_at": "2026-10-30T12:32:48.721Z",
+      "closed_at": "2026-10-30T12:32:54.600Z",
+      "side": "BUY",
+      "entry": 3963.58,
+      "exit": 3971.73,
+      "stop_loss": 0,
+      "take_profit": 0,
+      "r_result": 0.5,
+      "pnl_usd": 8.15,
+      "strategy": "MetaTrader 5 Direct",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "metaapi_position_id": "2360009245",
+      "target_profit_usd": 1,
+      "duration_seconds": 5
+    },
+    {
+      "id": "mt5-pos-2360009248",
+      "opened_at": "2026-10-30T12:32:48.790Z",
+      "closed_at": "2026-10-30T12:32:53.401Z",
+      "side": "BUY",
+      "entry": 3963.58,
+      "exit": 3971.73,
+      "stop_loss": 0,
+      "take_profit": 0,
+      "r_result": 0.5,
+      "pnl_usd": 8.15,
+      "strategy": "MetaTrader 5 Direct",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "metaapi_position_id": "2360009248",
+      "target_profit_usd": 1,
+      "duration_seconds": 4
+    },
+    {
+      "id": "mt5-pos-2360009246",
+      "opened_at": "2026-10-30T12:32:48.753Z",
+      "closed_at": "2026-10-30T12:32:53.401Z",
+      "side": "BUY",
+      "entry": 3963.58,
+      "exit": 3971.73,
+      "stop_loss": 0,
+      "take_profit": 0,
+      "r_result": 0.5,
+      "pnl_usd": 8.15,
+      "strategy": "MetaTrader 5 Direct",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "metaapi_position_id": "2360009246",
+      "target_profit_usd": 1,
+      "duration_seconds": 4
+    },
+    {
+      "id": "mt5-pos-2360009245",
+      "opened_at": "2026-10-30T12:32:48.721Z",
+      "closed_at": "2026-10-30T12:32:53.402Z",
+      "side": "BUY",
+      "entry": 3963.58,
+      "exit": 3971.73,
+      "stop_loss": 0,
+      "take_profit": 0,
+      "r_result": 0.5,
+      "pnl_usd": 8.15,
+      "strategy": "MetaTrader 5 Direct",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "metaapi_position_id": "2360009245",
+      "target_profit_usd": 1,
+      "duration_seconds": 4
+    },
+    {
+      "id": "hft-tr-1793363568604-3",
+      "opened_at": "2026-10-30T12:32:48.604Z",
+      "closed_at": "2026-10-30T12:32:51.003Z",
+      "side": "BUY",
+      "entry": 3963.58,
+      "exit": 3972.09,
+      "stop_loss": 3969.59,
+      "take_profit": 3973.09,
+      "r_result": 0.5,
+      "pnl_usd": 8.51,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "metaapi_position_id": "2360009245",
+      "duration_seconds": 2
+    },
+    {
+      "id": "hft-tr-1793363568604-2",
+      "opened_at": "2026-10-30T12:32:48.604Z",
+      "closed_at": "2026-10-30T12:32:51.004Z",
+      "side": "BUY",
+      "entry": 3963.58,
+      "exit": 3972.09,
+      "stop_loss": 3969.59,
+      "take_profit": 3973.09,
+      "r_result": 0.5,
+      "pnl_usd": 8.51,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "metaapi_position_id": "2360009246",
+      "duration_seconds": 2
+    },
+    {
+      "id": "hft-tr-1793363568604-1",
+      "opened_at": "2026-10-30T12:32:48.604Z",
+      "closed_at": "2026-10-30T12:32:51.005Z",
+      "side": "BUY",
+      "entry": 3963.58,
+      "exit": 3972.09,
+      "stop_loss": 3969.59,
+      "take_profit": 3973.09,
+      "r_result": 0.5,
+      "pnl_usd": 8.51,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "metaapi_position_id": "2360009248",
+      "duration_seconds": 2
+    },
+    {
+      "id": "hft-tr-1793357022621-3",
+      "opened_at": "2026-10-30T10:43:42.621Z",
+      "closed_at": "2026-10-30T10:44:07.621Z",
+      "side": "SELL",
+      "entry": 3979.64,
+      "exit": 3987.23,
+      "stop_loss": 3990.73,
+      "take_profit": 3987.23,
+      "r_result": 0,
+      "pnl_usd": 1,
+      "strategy": "HFT Micro-Scalp Target $1.00",
+      "mode": "reel",
+      "volume": 0.01,
+      "is_hft_micro": true,
+      "target_profit_usd": 1,
+      "metaapi_position_id": "2359856686",
+      "duration_seconds": 25
     },
     {
       "id": "hft-tr-1793357022621-2",
       "opened_at": "2026-10-30T10:43:42.621Z",
-      "closed_at": null,
+      "closed_at": "2026-10-30T10:44:07.621Z",
       "side": "SELL",
       "entry": 3979.64,
-      "exit": null,
+      "exit": 3987.23,
       "stop_loss": 3990.73,
       "take_profit": 3987.23,
       "r_result": 0,
-      "pnl_usd": 0,
+      "pnl_usd": 1,
       "strategy": "HFT Micro-Scalp Target $1.00",
       "mode": "reel",
       "volume": 0.01,
       "is_hft_micro": true,
       "target_profit_usd": 1,
-      "metaapi_position_id": "2359856687"
+      "metaapi_position_id": "2359856687",
+      "duration_seconds": 25
     },
     {
       "id": "hft-tr-1793357022621-1",
       "opened_at": "2026-10-30T10:43:42.621Z",
-      "closed_at": null,
+      "closed_at": "2026-10-30T10:44:07.621Z",
       "side": "SELL",
       "entry": 3979.64,
-      "exit": null,
+      "exit": 3987.23,
       "stop_loss": 3990.73,
       "take_profit": 3987.23,
       "r_result": 0,
-      "pnl_usd": 0,
+      "pnl_usd": 1,
       "strategy": "HFT Micro-Scalp Target $1.00",
       "mode": "reel",
       "volume": 0.01,
       "is_hft_micro": true,
       "target_profit_usd": 1,
-      "metaapi_position_id": "2359856691"
+      "metaapi_position_id": "2359856691",
+      "duration_seconds": 25
     },
     {
       "id": "mt5-pos-2359853936",
@@ -2664,6 +3507,504 @@
   ],
   "decision_log": [
     {
+      "id": "log-mdt-config-1793844323897",
+      "time": "2026-11-05T02:05:23.897Z",
+      "level": "info",
+      "message": "[Moteur MDT] Réglages : Profil HFT Micro-Scalper (1m) · Pilote auto : ACTIF · TP Dynamique : [1$ à 3$ net, Trailing: 0.4$] · Multi-tir : 3x."
+    },
+    {
+      "id": "log-auto-fire-1793844173623",
+      "time": "2026-11-05T02:02:53.623Z",
+      "level": "info",
+      "message": "🤖 [Robot HFT Automatique] 3 position(s) BUY ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
+    },
+    {
+      "id": "log-hft-fire-1793844173618",
+      "time": "2026-11-05T02:02:53.618Z",
+      "level": "info",
+      "message": "[HFT Multi-Position Fire] 3 positions BUY ouvertes à 4123.45 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
+    },
+    {
+      "id": "log-hft-close-1793844162810",
+      "time": "2026-11-05T02:02:42.810Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793844155609-1 fermée avec succès en gain de +$1.73 (Cible 0.60$ - 2.00$ atteinte en 7s) !"
+    },
+    {
+      "id": "log-hft-close-1793844162810",
+      "time": "2026-11-05T02:02:42.810Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793844155609-2 fermée avec succès en gain de +$1.73 (Cible 0.60$ - 2.00$ atteinte en 7s) !"
+    },
+    {
+      "id": "log-hft-close-1793844162810",
+      "time": "2026-11-05T02:02:42.810Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793844155609-3 fermée avec succès en gain de +$1.73 (Cible 0.60$ - 2.00$ atteinte en 7s) !"
+    },
+    {
+      "id": "log-auto-fire-1793844155614",
+      "time": "2026-11-05T02:02:35.614Z",
+      "level": "info",
+      "message": "🤖 [Robot HFT Automatique] 3 position(s) BUY ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
+    },
+    {
+      "id": "log-hft-fire-1793844155609",
+      "time": "2026-11-05T02:02:35.609Z",
+      "level": "info",
+      "message": "[HFT Multi-Position Fire] 3 positions BUY ouvertes à 4122.92 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
+    },
+    {
+      "id": "log-hft-close-1793844155609",
+      "time": "2026-11-05T02:02:35.609Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793844127991-1 fermée avec succès en gain de +$2.00 (Cible 0.60$ - 2.00$ atteinte en 27s) !"
+    },
+    {
+      "id": "log-hft-close-1793844155609",
+      "time": "2026-11-05T02:02:35.609Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793844127991-2 fermée avec succès en gain de +$2.00 (Cible 0.60$ - 2.00$ atteinte en 27s) !"
+    },
+    {
+      "id": "log-hft-close-1793844155609",
+      "time": "2026-11-05T02:02:35.609Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793844127991-3 fermée avec succès en gain de +$2.00 (Cible 0.60$ - 2.00$ atteinte en 27s) !"
+    },
+    {
+      "id": "log-auto-fire-1793844127996",
+      "time": "2026-11-05T02:02:07.996Z",
+      "level": "info",
+      "message": "🤖 [Robot HFT Automatique] 3 position(s) BUY ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
+    },
+    {
+      "id": "log-hft-fire-1793844127991",
+      "time": "2026-11-05T02:02:07.991Z",
+      "level": "info",
+      "message": "[HFT Multi-Position Fire] 3 positions BUY ouvertes à 4120.92 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
+    },
+    {
+      "id": "log-hft-close-1793844111190",
+      "time": "2026-11-05T02:01:51.190Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793844109989-1 fermée avec succès en gain de +$1.00 (Cible 0.60$ - 2.00$ atteinte en 1s) !"
+    },
+    {
+      "id": "log-hft-close-1793844111190",
+      "time": "2026-11-05T02:01:51.190Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793844109989-2 fermée avec succès en gain de +$1.00 (Cible 0.60$ - 2.00$ atteinte en 1s) !"
+    },
+    {
+      "id": "log-hft-close-1793844111190",
+      "time": "2026-11-05T02:01:51.190Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793844109989-3 fermée avec succès en gain de +$1.00 (Cible 0.60$ - 2.00$ atteinte en 1s) !"
+    },
+    {
+      "id": "log-auto-fire-1793844109994",
+      "time": "2026-11-05T02:01:49.994Z",
+      "level": "info",
+      "message": "🤖 [Robot HFT Automatique] 3 position(s) BUY ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
+    },
+    {
+      "id": "log-hft-fire-1793844109989",
+      "time": "2026-11-05T02:01:49.989Z",
+      "level": "info",
+      "message": "[HFT Multi-Position Fire] 3 positions BUY ouvertes à 4118.00 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
+    },
+    {
+      "id": "log-hft-close-1793844109989",
+      "time": "2026-11-05T02:01:49.989Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793844078765-1 fermée avec succès en gain de +$1.50 (Cible 0.60$ - 2.00$ atteinte en 31s) !"
+    },
+    {
+      "id": "log-hft-close-1793844109989",
+      "time": "2026-11-05T02:01:49.989Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793844078765-2 fermée avec succès en gain de +$1.50 (Cible 0.60$ - 2.00$ atteinte en 31s) !"
+    },
+    {
+      "id": "log-hft-close-1793844109989",
+      "time": "2026-11-05T02:01:49.989Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793844078765-3 fermée avec succès en gain de +$1.50 (Cible 0.60$ - 2.00$ atteinte en 31s) !"
+    },
+    {
+      "id": "log-auto-fire-1793844078769",
+      "time": "2026-11-05T02:01:18.769Z",
+      "level": "info",
+      "message": "🤖 [Robot HFT Automatique] 3 position(s) BUY ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
+    },
+    {
+      "id": "log-hft-fire-1793844078765",
+      "time": "2026-11-05T02:01:18.765Z",
+      "level": "info",
+      "message": "[HFT Multi-Position Fire] 3 positions BUY ouvertes à 4116.50 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
+    },
+    {
+      "id": "log-hft-sl-1793844078764",
+      "time": "2026-11-05T02:01:18.764Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position mt5-pos-2365273267 clôturée à 4116.50$ (PnL: -9.77$). Protection du capital."
+    },
+    {
+      "id": "log-hft-sl-1793844078764",
+      "time": "2026-11-05T02:01:18.764Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position mt5-pos-2365273268 clôturée à 4116.50$ (PnL: -9.77$). Protection du capital."
+    },
+    {
+      "id": "log-hft-sl-1793844078764",
+      "time": "2026-11-05T02:01:18.764Z",
+      "level": "alerte",
+      "message": "🛡️ [Clôture Protection HFT] Position mt5-pos-2365273269 clôturée à 4116.50$ (PnL: -9.77$). Protection du capital."
+    },
+    {
+      "id": "log-hft-close-1793843796608",
+      "time": "2026-11-05T01:56:36.608Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793843778599-1 fermée avec succès en gain de +$1.00 (Cible 0.60$ - 2.00$ atteinte en 18s) !"
+    },
+    {
+      "id": "log-hft-close-1793843796608",
+      "time": "2026-11-05T01:56:36.608Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793843778599-2 fermée avec succès en gain de +$1.00 (Cible 0.60$ - 2.00$ atteinte en 18s) !"
+    },
+    {
+      "id": "log-hft-close-1793843796608",
+      "time": "2026-11-05T01:56:36.608Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793843778599-3 fermée avec succès en gain de +$1.00 (Cible 0.60$ - 2.00$ atteinte en 18s) !"
+    },
+    {
+      "id": "metaapi-log-1793843784385",
+      "time": "2026-11-05T01:56:24.385Z",
+      "level": "info",
+      "message": "[MetaApi Auto-Trade] Désactivé. Mode surveillance uniquement."
+    },
+    {
+      "id": "log-1793843778792-iphq",
+      "time": "2026-11-05T01:56:18.792Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_BUY 0.01 lot sur GOLD ouverte avec succès (Ticket: #2365273268) !"
+    },
+    {
+      "id": "log-1793843778787-dwf9",
+      "time": "2026-11-05T01:56:18.787Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_BUY 0.01 lot sur GOLD ouverte avec succès (Ticket: #2365273269) !"
+    },
+    {
+      "id": "log-1793843778744-w4t2",
+      "time": "2026-11-05T01:56:18.744Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_BUY 0.01 lot sur GOLD ouverte avec succès (Ticket: #2365273267) !"
+    },
+    {
+      "id": "log-auto-fire-1793843778607",
+      "time": "2026-11-05T01:56:18.607Z",
+      "level": "info",
+      "message": "🤖 [Robot HFT Automatique] 3 position(s) BUY ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
+    },
+    {
+      "id": "log-hft-fire-1793843778599",
+      "time": "2026-11-05T01:56:18.599Z",
+      "level": "info",
+      "message": "[HFT Multi-Position Fire] 3 positions BUY ouvertes à 4119.69 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
+    },
+    {
+      "id": "log-hft-close-1793363609418",
+      "time": "2026-10-30T12:33:29.418Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position mt5-pos-2360010921 fermée avec succès en gain de +$7.82 (Cible 0.60$ - 2.00$ atteinte en 4s) !"
+    },
+    {
+      "id": "log-hft-close-1793363609417",
+      "time": "2026-10-30T12:33:29.417Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position mt5-pos-2360010922 fermée avec succès en gain de +$7.82 (Cible 0.60$ - 2.00$ atteinte en 4s) !"
+    },
+    {
+      "id": "log-hft-close-1793363609416",
+      "time": "2026-10-30T12:33:29.416Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position mt5-pos-2360010927 fermée avec succès en gain de +$7.82 (Cible 0.60$ - 2.00$ atteinte en 4s) !"
+    },
+    {
+      "id": "log-hft-close-1793363608215",
+      "time": "2026-10-30T12:33:28.215Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position mt5-pos-2360010921 fermée avec succès en gain de +$7.82 (Cible 0.60$ - 2.00$ atteinte en 3s) !"
+    },
+    {
+      "id": "log-hft-close-1793363608215",
+      "time": "2026-10-30T12:33:28.215Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position mt5-pos-2360010922 fermée avec succès en gain de +$7.82 (Cible 0.60$ - 2.00$ atteinte en 3s) !"
+    },
+    {
+      "id": "log-hft-close-1793363608215",
+      "time": "2026-10-30T12:33:28.215Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position mt5-pos-2360010927 fermée avec succès en gain de +$7.82 (Cible 0.60$ - 2.00$ atteinte en 3s) !"
+    },
+    {
+      "id": "log-1793363607142-cwhh",
+      "time": "2026-10-30T12:33:27.142Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Clôturé] Ticket #2360010927 fermé avec succès en direct ! (Cible de gain +$1 atteinte)"
+    },
+    {
+      "id": "log-1793363607114-399h",
+      "time": "2026-10-30T12:33:27.114Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Clôturé] Ticket #2360010922 fermé avec succès en direct ! (Cible de gain +$1 atteinte)"
+    },
+    {
+      "id": "log-1793363607096-womn",
+      "time": "2026-10-30T12:33:27.096Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Clôturé] Ticket #2360010921 fermé avec succès en direct ! (Cible de gain +$1 atteinte)"
+    },
+    {
+      "id": "log-hft-close-1793363607017",
+      "time": "2026-10-30T12:33:27.017Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793363604617-1 fermée avec succès en gain de +$7.82 (Cible 0.60$ - 2.00$ atteinte en 2s) !"
+    },
+    {
+      "id": "log-hft-close-1793363607017",
+      "time": "2026-10-30T12:33:27.017Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793363604617-2 fermée avec succès en gain de +$7.82 (Cible 0.60$ - 2.00$ atteinte en 2s) !"
+    },
+    {
+      "id": "log-hft-close-1793363607016",
+      "time": "2026-10-30T12:33:27.016Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793363604617-3 fermée avec succès en gain de +$7.82 (Cible 0.60$ - 2.00$ atteinte en 2s) !"
+    },
+    {
+      "id": "log-1793363605086-9ex6",
+      "time": "2026-10-30T12:33:25.086Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_BUY 0.01 lot sur GOLD ouverte avec succès (Ticket: #2360010927) !"
+    },
+    {
+      "id": "log-1793363604801-rt4j",
+      "time": "2026-10-30T12:33:24.801Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_BUY 0.01 lot sur GOLD ouverte avec succès (Ticket: #2360010922) !"
+    },
+    {
+      "id": "log-1793363604794-6f22",
+      "time": "2026-10-30T12:33:24.794Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_BUY 0.01 lot sur GOLD ouverte avec succès (Ticket: #2360010921) !"
+    },
+    {
+      "id": "log-auto-fire-1793363604622",
+      "time": "2026-10-30T12:33:24.622Z",
+      "level": "info",
+      "message": "🤖 [Robot HFT Automatique] 3 position(s) BUY ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
+    },
+    {
+      "id": "log-hft-fire-1793363604617",
+      "time": "2026-10-30T12:33:24.617Z",
+      "level": "info",
+      "message": "[HFT Multi-Position Fire] 3 positions BUY ouvertes à 3974.72 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
+    },
+    {
+      "id": "log-hft-close-1793363592615",
+      "time": "2026-10-30T12:33:12.615Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position mt5-pos-2360010134 fermée avec succès en gain de +$7.55 (Cible 0.60$ - 2.00$ atteinte en 5s) !"
+    },
+    {
+      "id": "log-hft-close-1793363591424",
+      "time": "2026-10-30T12:33:11.424Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position mt5-pos-2360010134 fermée avec succès en gain de +$7.55 (Cible 0.60$ - 2.00$ atteinte en 4s) !"
+    },
+    {
+      "id": "log-hft-close-1793363591423",
+      "time": "2026-10-30T12:33:11.423Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position mt5-pos-2360010159 fermée avec succès en gain de +$7.53 (Cible 0.60$ - 2.00$ atteinte en 4s) !"
+    },
+    {
+      "id": "log-1793363590434-g8tk",
+      "time": "2026-10-30T12:33:10.434Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Clôturé] Ticket #2360010134 fermé avec succès en direct ! (Cible de gain +$1 atteinte)"
+    },
+    {
+      "id": "log-1793363590360-1wnn",
+      "time": "2026-10-30T12:33:10.360Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Clôturé] Ticket #2360010159 fermé avec succès en direct ! (Cible de gain +$1 atteinte)"
+    },
+    {
+      "id": "log-hft-close-1793363590225",
+      "time": "2026-10-30T12:33:10.225Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793363586608-1 fermée avec succès en gain de +$7.55 (Cible 0.60$ - 2.00$ atteinte en 3s) !"
+    },
+    {
+      "id": "log-hft-close-1793363590225",
+      "time": "2026-10-30T12:33:10.225Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793363586608-2 fermée avec succès en gain de +$7.55 (Cible 0.60$ - 2.00$ atteinte en 3s) !"
+    },
+    {
+      "id": "log-hft-close-1793363590224",
+      "time": "2026-10-30T12:33:10.224Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position mt5-pos-2360010159 fermée avec succès en gain de +$7.53 (Cible 0.60$ - 2.00$ atteinte en 2s) !"
+    },
+    {
+      "id": "log-1793363589131-b7ro",
+      "time": "2026-10-30T12:33:09.131Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Clôturé] Ticket #2360010132 fermé avec succès en direct ! (Cible de gain +$1 atteinte)"
+    },
+    {
+      "id": "log-hft-close-1793363589017",
+      "time": "2026-10-30T12:33:09.017Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793363586608-3 fermée avec succès en gain de +$7.55 (Cible 0.60$ - 2.00$ atteinte en 2s) !"
+    },
+    {
+      "id": "log-1793363587618-yn4d",
+      "time": "2026-10-30T12:33:07.618Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_BUY 0.01 lot sur GOLD ouverte avec succès (Ticket: #2360010159) !"
+    },
+    {
+      "id": "log-1793363586822-cxi6",
+      "time": "2026-10-30T12:33:06.822Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_BUY 0.01 lot sur GOLD ouverte avec succès (Ticket: #2360010134) !"
+    },
+    {
+      "id": "log-1793363586774-uxlr",
+      "time": "2026-10-30T12:33:06.774Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_BUY 0.01 lot sur GOLD ouverte avec succès (Ticket: #2360010132) !"
+    },
+    {
+      "id": "log-auto-fire-1793363586613",
+      "time": "2026-10-30T12:33:06.613Z",
+      "level": "info",
+      "message": "🤖 [Robot HFT Automatique] 3 position(s) BUY ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
+    },
+    {
+      "id": "log-hft-fire-1793363586608",
+      "time": "2026-10-30T12:33:06.608Z",
+      "level": "info",
+      "message": "[HFT Multi-Position Fire] 3 positions BUY ouvertes à 3973.47 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
+    },
+    {
+      "id": "log-hft-close-1793363574601",
+      "time": "2026-10-30T12:32:54.601Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position mt5-pos-2360009245 fermée avec succès en gain de +$8.15 (Cible 0.60$ - 2.00$ atteinte en 5s) !"
+    },
+    {
+      "id": "log-hft-close-1793363574600",
+      "time": "2026-10-30T12:32:54.600Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position mt5-pos-2360009246 fermée avec succès en gain de +$8.15 (Cible 0.60$ - 2.00$ atteinte en 5s) !"
+    },
+    {
+      "id": "log-hft-close-1793363573403",
+      "time": "2026-10-30T12:32:53.403Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position mt5-pos-2360009245 fermée avec succès en gain de +$8.15 (Cible 0.60$ - 2.00$ atteinte en 4s) !"
+    },
+    {
+      "id": "log-hft-close-1793363573402",
+      "time": "2026-10-30T12:32:53.402Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position mt5-pos-2360009246 fermée avec succès en gain de +$8.15 (Cible 0.60$ - 2.00$ atteinte en 4s) !"
+    },
+    {
+      "id": "log-hft-close-1793363573401",
+      "time": "2026-10-30T12:32:53.401Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position mt5-pos-2360009248 fermée avec succès en gain de +$8.15 (Cible 0.60$ - 2.00$ atteinte en 4s) !"
+    },
+    {
+      "id": "log-1793363572489-e095",
+      "time": "2026-10-30T12:32:52.489Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Clôturé] Ticket #2360009246 fermé avec succès en direct ! (Cible de gain +$1 atteinte)"
+    },
+    {
+      "id": "log-1793363572322-e0rq",
+      "time": "2026-10-30T12:32:52.322Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Clôturé] Ticket #2360009245 fermé avec succès en direct ! (Cible de gain +$1 atteinte)"
+    },
+    {
+      "id": "log-1793363572317-yqo9",
+      "time": "2026-10-30T12:32:52.317Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Clôturé] Ticket #2360009248 fermé avec succès en direct ! (Cible de gain +$1 atteinte)"
+    },
+    {
+      "id": "log-hft-close-1793363571005",
+      "time": "2026-10-30T12:32:51.005Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793363568604-1 fermée avec succès en gain de +$8.51 (Cible 0.60$ - 2.00$ atteinte en 2s) !"
+    },
+    {
+      "id": "log-hft-close-1793363571005",
+      "time": "2026-10-30T12:32:51.005Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793363568604-2 fermée avec succès en gain de +$8.51 (Cible 0.60$ - 2.00$ atteinte en 2s) !"
+    },
+    {
+      "id": "log-hft-close-1793363571004",
+      "time": "2026-10-30T12:32:51.004Z",
+      "level": "info",
+      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793363568604-3 fermée avec succès en gain de +$8.51 (Cible 0.60$ - 2.00$ atteinte en 2s) !"
+    },
+    {
+      "id": "log-1793363568819-blsp",
+      "time": "2026-10-30T12:32:48.819Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_BUY 0.01 lot sur GOLD ouverte avec succès (Ticket: #2360009248) !"
+    },
+    {
+      "id": "log-1793363568781-v8rw",
+      "time": "2026-10-30T12:32:48.781Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_BUY 0.01 lot sur GOLD ouverte avec succès (Ticket: #2360009246) !"
+    },
+    {
+      "id": "log-1793363568759-7rtt",
+      "time": "2026-10-30T12:32:48.759Z",
+      "level": "info",
+      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_BUY 0.01 lot sur GOLD ouverte avec succès (Ticket: #2360009245) !"
+    },
+    {
+      "id": "log-auto-fire-1793363568613",
+      "time": "2026-10-30T12:32:48.613Z",
+      "level": "info",
+      "message": "🤖 [Robot HFT Automatique] 3 position(s) BUY ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
+    },
+    {
+      "id": "log-hft-fire-1793363568604",
+      "time": "2026-10-30T12:32:48.604Z",
+      "level": "info",
+      "message": "[HFT Multi-Position Fire] 3 positions BUY ouvertes à 3972.09 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
+    },
+    {
       "id": "log-1793357023196-z9h7",
       "time": "2026-10-30T10:43:43.196Z",
       "level": "info",
@@ -3736,192 +5077,6 @@
       "time": "2026-10-30T09:57:14.046Z",
       "level": "info",
       "message": "🤖 [Robot HFT Automatique] 3 position(s) BUY ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
-    },
-    {
-      "id": "log-hft-fire-1793354234038",
-      "time": "2026-10-30T09:57:14.038Z",
-      "level": "info",
-      "message": "[HFT Multi-Position Fire] 3 positions BUY ouvertes à 3996.63 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
-    },
-    {
-      "id": "log-hft-sl-1793354234038",
-      "time": "2026-10-30T09:57:14.038Z",
-      "level": "alerte",
-      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793353933859-1 clôturée à 3996.63$ (PnL: -0.56$). Protection du capital."
-    },
-    {
-      "id": "log-hft-sl-1793354234038",
-      "time": "2026-10-30T09:57:14.038Z",
-      "level": "alerte",
-      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793353933859-2 clôturée à 3996.63$ (PnL: -0.56$). Protection du capital."
-    },
-    {
-      "id": "log-hft-sl-1793354234038",
-      "time": "2026-10-30T09:57:14.038Z",
-      "level": "alerte",
-      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793353933859-3 clôturée à 3996.63$ (PnL: -0.56$). Protection du capital."
-    },
-    {
-      "id": "log-1793353937598-unmz",
-      "time": "2026-10-30T09:52:17.598Z",
-      "level": "info",
-      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_BUY 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359811484) !"
-    },
-    {
-      "id": "log-1793353933988-ethk",
-      "time": "2026-10-30T09:52:13.988Z",
-      "level": "info",
-      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_BUY 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359811456) !"
-    },
-    {
-      "id": "log-1793353933985-3uhc",
-      "time": "2026-10-30T09:52:13.985Z",
-      "level": "info",
-      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_BUY 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359811454) !"
-    },
-    {
-      "id": "log-auto-fire-1793353933863",
-      "time": "2026-10-30T09:52:13.863Z",
-      "level": "info",
-      "message": "🤖 [Robot HFT Automatique] 3 position(s) BUY ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
-    },
-    {
-      "id": "log-hft-fire-1793353933859",
-      "time": "2026-10-30T09:52:13.859Z",
-      "level": "info",
-      "message": "[HFT Multi-Position Fire] 3 positions BUY ouvertes à 3997.19 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
-    },
-    {
-      "id": "log-hft-sl-1793353933859",
-      "time": "2026-10-30T09:52:13.859Z",
-      "level": "alerte",
-      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793353822197-1 clôturée à 3997.19$ (PnL: -3.11$). Protection du capital."
-    },
-    {
-      "id": "log-hft-sl-1793353933859",
-      "time": "2026-10-30T09:52:13.859Z",
-      "level": "alerte",
-      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793353822197-2 clôturée à 3997.19$ (PnL: -3.11$). Protection du capital."
-    },
-    {
-      "id": "log-hft-sl-1793353933859",
-      "time": "2026-10-30T09:52:13.859Z",
-      "level": "alerte",
-      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793353822197-3 clôturée à 3997.19$ (PnL: -3.11$). Protection du capital."
-    },
-    {
-      "id": "log-1793353823456-d050",
-      "time": "2026-10-30T09:50:23.456Z",
-      "level": "info",
-      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359808808) !"
-    },
-    {
-      "id": "log-1793353823281-qmji",
-      "time": "2026-10-30T09:50:23.281Z",
-      "level": "info",
-      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359808809) !"
-    },
-    {
-      "id": "log-1793353823223-gjwe",
-      "time": "2026-10-30T09:50:23.224Z",
-      "level": "info",
-      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359808806) !"
-    },
-    {
-      "id": "log-auto-fire-1793353822205",
-      "time": "2026-10-30T09:50:22.205Z",
-      "level": "info",
-      "message": "🤖 [Robot HFT Automatique] 3 position(s) SELL ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
-    },
-    {
-      "id": "log-hft-fire-1793353822198",
-      "time": "2026-10-30T09:50:22.198Z",
-      "level": "info",
-      "message": "[HFT Multi-Position Fire] 3 positions SELL ouvertes à 3994.08 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
-    },
-    {
-      "id": "log-hft-close-1793353822197",
-      "time": "2026-10-30T09:50:22.197Z",
-      "level": "info",
-      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793353747185-1 fermée avec succès en gain de +$1.11 (Cible 0.60$ - 2.00$ atteinte en 75s) !"
-    },
-    {
-      "id": "log-hft-close-1793353822197",
-      "time": "2026-10-30T09:50:22.197Z",
-      "level": "info",
-      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793353747185-2 fermée avec succès en gain de +$1.11 (Cible 0.60$ - 2.00$ atteinte en 75s) !"
-    },
-    {
-      "id": "log-hft-close-1793353822197",
-      "time": "2026-10-30T09:50:22.197Z",
-      "level": "info",
-      "message": "⚡ [HFT Micro-Scalp Hit] Position hft-tr-1793353747185-3 fermée avec succès en gain de +$1.11 (Cible 0.60$ - 2.00$ atteinte en 75s) !"
-    },
-    {
-      "id": "log-1793353747377-vgcr",
-      "time": "2026-10-30T09:49:07.377Z",
-      "level": "info",
-      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359807759) !"
-    },
-    {
-      "id": "log-1793353747317-qdds",
-      "time": "2026-10-30T09:49:07.317Z",
-      "level": "info",
-      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359807758) !"
-    },
-    {
-      "id": "log-1793353747314-772h",
-      "time": "2026-10-30T09:49:07.314Z",
-      "level": "info",
-      "message": "⚡ [MetaApi MT5 Exécuté] Position ORDER_TYPE_SELL 0.01 lot sur GOLD ouverte avec succès (Ticket: #2359807757) !"
-    },
-    {
-      "id": "log-auto-fire-1793353747192",
-      "time": "2026-10-30T09:49:07.192Z",
-      "level": "info",
-      "message": "🤖 [Robot HFT Automatique] 3 position(s) SELL ouvertes automatiquement sur GOLD (0.01 lot). Cible rapide : +$1.00 (Score 4/7)."
-    },
-    {
-      "id": "log-hft-fire-1793353747185",
-      "time": "2026-10-30T09:49:07.185Z",
-      "level": "info",
-      "message": "[HFT Multi-Position Fire] 3 positions SELL ouvertes à 3995.19 $ (0.01 lot/ordre). Cible de gain rapide : +$1.00 par trade."
-    },
-    {
-      "id": "log-hft-sl-1793353747185",
-      "time": "2026-10-30T09:49:07.185Z",
-      "level": "alerte",
-      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793353446338-1 clôturée à 3995.19$ (PnL: +0.22$). Protection du capital."
-    },
-    {
-      "id": "log-hft-sl-1793353747185",
-      "time": "2026-10-30T09:49:07.185Z",
-      "level": "alerte",
-      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793353446338-2 clôturée à 3995.19$ (PnL: +0.22$). Protection du capital."
-    },
-    {
-      "id": "log-hft-sl-1793353747185",
-      "time": "2026-10-30T09:49:07.185Z",
-      "level": "alerte",
-      "message": "🛡️ [Clôture Protection HFT] Position hft-tr-1793353446338-3 clôturée à 3995.19$ (PnL: +0.22$). Protection du capital."
-    },
-    {
-      "id": "log-hft-close-1793353487457",
-      "time": "2026-10-30T09:44:47.457Z",
-      "level": "info",
-      "message": "[HFT Micro-Scalp Hit] Position hft-tr-1793353187100-1 fermée avec succès en gain de +$1.15 (Cible 0.60$ - 2.00$ atteinte en 300s) !"
-    },
-    {
-      "id": "log-hft-close-1793353487457",
-      "time": "2026-10-30T09:44:47.457Z",
-      "level": "info",
-      "message": "[HFT Micro-Scalp Hit] Position hft-tr-1793353187100-2 fermée avec succès en gain de +$1.15 (Cible 0.60$ - 2.00$ atteinte en 300s) !"
-    },
-    {
-      "id": "log-hft-close-1793353487457",
-      "time": "2026-10-30T09:44:47.457Z",
-      "level": "info",
-      "message": "[HFT Micro-Scalp Hit] Position hft-tr-1793353187100-3 fermée avec succès en gain de +$1.15 (Cible 0.60$ - 2.00$ atteinte en 300s) !"
     }
   ],
   "settings": {
@@ -3954,18 +5109,13 @@
       "api_token": ""
     },
     "metaapi": {
-      "token": "eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIzNWE3NGQ2ZWM1NmEwNWUwMWNlZmYyYjA0YzYyODRkZSIsImFjY2Vzc1J1bGVzIjpbeyJpZCI6InRyYWRpbmctYWNjb3VudC1tYW5hZ2VtZW50LWFwaSIsIm1ldGhvZHMiOlsidHJhZGluZy1hY2NvdW50LW1hbmFnZW1lbnQtYXBpOnJlc3Q6cHVibGljOio6KiJdLCJyb2xlcyI6WyJyZWFkZXIiXSwicmVzb3VyY2VzIjpbImFjY291bnQ6JFVTRVJfSUQkOjdkZmZlYzJhLTY4OWQtNGVmNS1iNmViLTg0Njk3OGVmYzg1OCJdfSx7ImlkIjoibWV0YWFwaS1yZXN0LWFwaSIsIm1ldGhvZHMiOlsibWV0YWFwaS1hcGk6cmVzdDpwdWJsaWM6KjoqIl0sInJvbGVzIjpbInJlYWRlciIsIndyaXRlciJdLCJyZXNvdXJjZXMiOlsiYWNjb3VudDokVVNFUl9JRCQ6N2RmZmVjMmEtNjg5ZC00ZWY1LWI2ZWItODQ2OTc4ZWZjODU4Il19LHsiaWQiOiJtZXRhYXBpLXJwYy1hcGkiLCJtZXRob2RzIjpbIm1ldGFhcGktYXBpOndzOnB1YmxpYzoqOioiXSwicm9sZXMiOlsicmVhZGVyIiwid3JpdGVyIl0sInJlc291cmNlcyI6WyJhY2NvdW50OiRVU0VSX0lEJDo3ZGZmZWMyYS02ODlkLTRlZjUtYjZlYi04NDY5NzhlZmM4NTgiXX0seyJpZCI6Im1ldGFhcGktcmVhbC10aW1lLXN0cmVhbWluZy1hcGkiLCJtZXRob2RzIjpbIm1ldGFhcGktYXBpOndzOnB1YmxpYzoqOioiXSwicm9sZXMiOlsicmVhZGVyIiwid3JpdGVyIl0sInJlc291cmNlcyI6WyJhY2NvdW50OiRVU0VSX0lEJDo3ZGZmZWMyYS02ODlkLTRlZjUtYjZlYi04NDY5NzhlZmM4NTgiXX0seyJpZCI6Im1ldGFzdGF0cy1hcGkiLCJtZXRob2RzIjpbIm1ldGFzdGF0cy1hcGk6cmVzdDpwdWJsaWM6KjoqIl0sInJvbGVzIjpbInJlYWRlciJdLCJyZXNvdXJjZXMiOlsiYWNjb3VudDokVVNFUl9JRCQ6N2RmZmVjMmEtNjg5ZC00ZWY1LWI2ZWItODQ2OTc4ZWZjODU4Il19LHsiaWQiOiJyaXNrLW1hbmFnZW1lbnQtYXBpIiwibWV0aG9kcyI6WyJyaXNrLW1hbmFnZW1lbnQtYXBpOnJlc3Q6cHVibGljOio6KiJdLCJyb2xlcyI6WyJyZWFkZXIiXSwicmVzb3VyY2VzIjpbImFjY291bnQ6JFVTRVJfSUQkOjdkZmZlYzJhLTY4OWQtNGVmNS1iNmViLTg0Njk3OGVmYzg1OCJdfV0sImlnbm9yZVJhdGVMaW1pdHMiOmZhbHNlLCJ0b2tlbklkIjoiMjAyMTAyMTMiLCJpbXBlcnNvbmF0ZWQiOmZhbHNlLCJyZWFsVXNlcklkIjoiMzVhNzRkNmVjNTZhMDVlMDFjZWZmMmIwNGM2Mjg0ZGUiLCJpYXQiOjE3OTMyMDQ2MjAsImV4cCI6MTgwMDk4MDYyMH0.Rse_kOPJJxbvaw4kLLRH5sRNd48beRno3xXI_kSVHQG950llYo61X4RwpLtii88BAovgXiqQoZxo27LAZ-UNl92c2lXH8fa9xbkpP28oWue36ZHVcJvPBhZ9XIpTD47FEoB7KvwjwNV5SQpAQCJbNC5UBOfQsax7jspgbC62VjlHGREvawBub39PCuxWEhRvCxY4kDmiEKVpNcSZE7oKdRHcMM2v5wj7CEyJ9eT1Whf42d1xb5VvCg7EGPFL0yS--BGvwJjbF1ezteFX5DRzR7heM6OIoOodLpMlN4D4tKgkzadiUOrZTQ4xkidR0r18aG3TmHS2GzJ0oTratt7ChN0XbfUKds6Fl_FvssP99udZRT3XJdY4HtJdeXozBaq7snExHZghbTGbeevrtAQyh49XnY6dAK2__u710cUOFTWlUzMF6mSc_eKqDKrMihdMCJL3kMAaAtWcS2pM5zPZGKGXsf2l5YQLV-1q7IyjyL6FDkOGWlWG8VmOAmdbscLCs66mcaS7KwRmf5C0Xbd1VHtKw4NairsxIlDxQvootAVD6AkP72Nd9wHA65SQrl4lS1DIYEiJQe5crfAZLz4xcNGTV3RpRwMYRSNxFbyT8om1rQxNLD_hyF6KQ8Wg9JzybLwVFCr1xYahUs6Vl889MM1QoITtM3Tl8zZLW9bYyVk",
-      "account_id": "7dffec2a-689d-4ef5-b6eb-846978efc858",
-      "auto_trade_enabled": true,
+      "auto_trade_enabled": false,
       "connected": true,
       "balance": 328.95,
       "equity": 292.29,
       "server_name": "XMGlobal-MT5 2",
       "platform": "mt5",
-      "last_sync": "2026-10-30T09:26:05.287Z",
-      "symbol": "GOLD",
-      "lot_size": 0.01,
-      "region": "london"
+      "last_sync": "2026-10-30T09:26:05.287Z"
     }
   },
   "is_demo_data": false,
@@ -3974,45 +5124,45 @@
   "mdt_radar": [
     {
       "tf": "H4",
-      "trend": "Baissier",
-      "bullOb": "3973.01 - 3975.51",
-      "bearOb": "4019.81 - 4023.01",
-      "distancePct": 0.79,
+      "trend": "Haissier",
+      "bullOb": "4050.21 - 4052.71",
+      "bearOb": "4126.78 - 4129.98",
+      "distancePct": 0.07,
       "stars": 3,
-      "confText": "Biais vendeur HTF"
+      "confText": "Biais haussier HTF"
     },
     {
       "tf": "H1",
-      "trend": "Baissier",
-      "bullOb": "3988.23 - 3990.03",
-      "bearOb": "4002.18 - 4003.98",
-      "distancePct": 0.39,
+      "trend": "Haissier",
+      "bullOb": "4057.76 - 4059.56",
+      "bearOb": "4124.98 - 4126.78",
+      "distancePct": 0.07,
       "stars": 3,
       "confText": "Zone institutionnelle active"
     },
     {
       "tf": "M15",
-      "trend": "Baissier",
-      "bullOb": "3989.43 - 3990.73",
-      "bearOb": "4001.48 - 4002.78",
-      "distancePct": 0.34,
+      "trend": "Haissier",
+      "bullOb": "4058.96 - 4060.26",
+      "bearOb": "4124.28 - 4125.58",
+      "distancePct": 0.02,
       "stars": 2,
       "confText": "Scénario en formation"
     },
     {
       "tf": "M5",
-      "trend": "Baissier",
-      "bullOb": "3985.43 - 3986.73",
-      "bearOb": "3989.73 - 3991.03",
+      "trend": "Haissier",
+      "bullOb": "4121.20 - 4122.50",
+      "bearOb": "4125.50 - 4126.80",
       "distancePct": 0.07,
       "stars": 2,
       "confText": "Imbalance M5 surveillée"
     },
     {
       "tf": "M3",
-      "trend": "Baissier",
-      "bullOb": "3987.03 - 3987.63",
-      "bearOb": "3988.83 - 3989.43",
+      "trend": "Haissier",
+      "bullOb": "4122.80 - 4123.40",
+      "bearOb": "4124.60 - 4125.20",
       "distancePct": 0.03,
       "stars": 1,
       "confText": "Micro-structure en veille"
@@ -4027,8 +5177,8 @@
     "execution_mode": "hft_ultra",
     "connected": true,
     "last_ping_ms": 18,
-    "balance": 355.12,
-    "equity": 355.12,
+    "balance": 321.33,
+    "equity": 321.33,
     "leverage": 500,
     "hft_max_slippage_pips": 1.5,
     "auto_breakeven_tp1": true,
@@ -4036,18 +5186,13 @@
     "api_token": ""
   },
   "metaapi": {
-    "token": "eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIzNWE3NGQ2ZWM1NmEwNWUwMWNlZmYyYjA0YzYyODRkZSIsImFjY2Vzc1J1bGVzIjpbeyJpZCI6InRyYWRpbmctYWNjb3VudC1tYW5hZ2VtZW50LWFwaSIsIm1ldGhvZHMiOlsidHJhZGluZy1hY2NvdW50LW1hbmFnZW1lbnQtYXBpOnJlc3Q6cHVibGljOio6KiJdLCJyb2xlcyI6WyJyZWFkZXIiXSwicmVzb3VyY2VzIjpbImFjY291bnQ6JFVTRVJfSUQkOjdkZmZlYzJhLTY4OWQtNGVmNS1iNmViLTg0Njk3OGVmYzg1OCJdfSx7ImlkIjoibWV0YWFwaS1yZXN0LWFwaSIsIm1ldGhvZHMiOlsibWV0YWFwaS1hcGk6cmVzdDpwdWJsaWM6KjoqIl0sInJvbGVzIjpbInJlYWRlciIsIndyaXRlciJdLCJyZXNvdXJjZXMiOlsiYWNjb3VudDokVVNFUl9JRCQ6N2RmZmVjMmEtNjg5ZC00ZWY1LWI2ZWItODQ2OTc4ZWZjODU4Il19LHsiaWQiOiJtZXRhYXBpLXJwYy1hcGkiLCJtZXRob2RzIjpbIm1ldGFhcGktYXBpOndzOnB1YmxpYzoqOioiXSwicm9sZXMiOlsicmVhZGVyIiwid3JpdGVyIl0sInJlc291cmNlcyI6WyJhY2NvdW50OiRVU0VSX0lEJDo3ZGZmZWMyYS02ODlkLTRlZjUtYjZlYi04NDY5NzhlZmM4NTgiXX0seyJpZCI6Im1ldGFhcGktcmVhbC10aW1lLXN0cmVhbWluZy1hcGkiLCJtZXRob2RzIjpbIm1ldGFhcGktYXBpOndzOnB1YmxpYzoqOioiXSwicm9sZXMiOlsicmVhZGVyIiwid3JpdGVyIl0sInJlc291cmNlcyI6WyJhY2NvdW50OiRVU0VSX0lEJDo3ZGZmZWMyYS02ODlkLTRlZjUtYjZlYi04NDY5NzhlZmM4NTgiXX0seyJpZCI6Im1ldGFzdGF0cy1hcGkiLCJtZXRob2RzIjpbIm1ldGFzdGF0cy1hcGk6cmVzdDpwdWJsaWM6KjoqIl0sInJvbGVzIjpbInJlYWRlciJdLCJyZXNvdXJjZXMiOlsiYWNjb3VudDokVVNFUl9JRCQ6N2RmZmVjMmEtNjg5ZC00ZWY1LWI2ZWItODQ2OTc4ZWZjODU4Il19LHsiaWQiOiJyaXNrLW1hbmFnZW1lbnQtYXBpIiwibWV0aG9kcyI6WyJyaXNrLW1hbmFnZW1lbnQtYXBpOnJlc3Q6cHVibGljOio6KiJdLCJyb2xlcyI6WyJyZWFkZXIiXSwicmVzb3VyY2VzIjpbImFjY291bnQ6JFVTRVJfSUQkOjdkZmZlYzJhLTY4OWQtNGVmNS1iNmViLTg0Njk3OGVmYzg1OCJdfV0sImlnbm9yZVJhdGVMaW1pdHMiOmZhbHNlLCJ0b2tlbklkIjoiMjAyMTAyMTMiLCJpbXBlcnNvbmF0ZWQiOmZhbHNlLCJyZWFsVXNlcklkIjoiMzVhNzRkNmVjNTZhMDVlMDFjZWZmMmIwNGM2Mjg0ZGUiLCJpYXQiOjE3OTMyMDQ2MjAsImV4cCI6MTgwMDk4MDYyMH0.Rse_kOPJJxbvaw4kLLRH5sRNd48beRno3xXI_kSVHQG950llYo61X4RwpLtii88BAovgXiqQoZxo27LAZ-UNl92c2lXH8fa9xbkpP28oWue36ZHVcJvPBhZ9XIpTD47FEoB7KvwjwNV5SQpAQCJbNC5UBOfQsax7jspgbC62VjlHGREvawBub39PCuxWEhRvCxY4kDmiEKVpNcSZE7oKdRHcMM2v5wj7CEyJ9eT1Whf42d1xb5VvCg7EGPFL0yS--BGvwJjbF1ezteFX5DRzR7heM6OIoOodLpMlN4D4tKgkzadiUOrZTQ4xkidR0r18aG3TmHS2GzJ0oTratt7ChN0XbfUKds6Fl_FvssP99udZRT3XJdY4HtJdeXozBaq7snExHZghbTGbeevrtAQyh49XnY6dAK2__u710cUOFTWlUzMF6mSc_eKqDKrMihdMCJL3kMAaAtWcS2pM5zPZGKGXsf2l5YQLV-1q7IyjyL6FDkOGWlWG8VmOAmdbscLCs66mcaS7KwRmf5C0Xbd1VHtKw4NairsxIlDxQvootAVD6AkP72Nd9wHA65SQrl4lS1DIYEiJQe5crfAZLz4xcNGTV3RpRwMYRSNxFbyT8om1rQxNLD_hyF6KQ8Wg9JzybLwVFCr1xYahUs6Vl889MM1QoITtM3Tl8zZLW9bYyVk",
-    "account_id": "7dffec2a-689d-4ef5-b6eb-846978efc858",
-    "auto_trade_enabled": true,
+    "auto_trade_enabled": false,
     "connected": true,
     "balance": 328.95,
     "equity": 292.29,
     "server_name": "XMGlobal-MT5 2",
     "platform": "mt5",
-    "last_sync": "2026-10-30T09:26:05.287Z",
-    "symbol": "GOLD",
-    "lot_size": 0.01,
-    "region": "london"
+    "last_sync": "2026-10-30T09:26:05.287Z"
   },
   "future_scenarios": [
     {
@@ -4055,13 +5200,13 @@
       "title": "Scénario A : VENTE Flip MDT (Tendance Maîtresse)",
       "type": "flip_sell",
       "direction": "SELL",
-      "triggerCondition": "SI une bougie M15 CLÔTURE sous la ligne verte (3985.43 $) → VENTE IMMÉDIATE",
+      "triggerCondition": "SI une bougie M15 CLÔTURE sous la ligne verte (4121.20 $) → VENTE IMMÉDIATE",
       "zoneName": "Ligne MDT 5m + H1",
-      "entry": 3985.43,
-      "stop_loss": 3989.93,
-      "take_profit_1": 3983.18,
-      "take_profit_2": 3979.83,
-      "take_profit_3": 3974.23,
+      "entry": 4121.2,
+      "stop_loss": 4125.7,
+      "take_profit_1": 4118.95,
+      "take_profit_2": 4115.6,
+      "take_profit_3": 4110,
       "risk_points": 4.5,
       "risk_pips": 45,
       "rr_ratio": 2.5,
@@ -4086,13 +5231,13 @@
       "title": "Scénario B : SELL LIMIT sur Bearish OB H1",
       "type": "limit_sell",
       "direction": "SELL",
-      "triggerCondition": "SELL LIMIT posé sur l'OB vendeur 4019.01 $ (sans chasser le prix)",
+      "triggerCondition": "SELL LIMIT posé sur l'OB vendeur 4125.98 $ (sans chasser le prix)",
       "zoneName": "OB- H1 / Liq High",
-      "entry": 4019.01,
-      "stop_loss": 4021.61,
-      "take_profit_1": 4016.91,
-      "take_profit_2": 3986.73,
-      "take_profit_3": 3976.51,
+      "entry": 4125.98,
+      "stop_loss": 4128.58,
+      "take_profit_1": 4123.88,
+      "take_profit_2": 4122.5,
+      "take_profit_3": 4053.71,
       "risk_points": 2.6,
       "risk_pips": 26,
       "rr_ratio": 2.2,
@@ -4117,13 +5262,13 @@
       "title": "Scénario C : BUY LIMIT sur Bullish OB / FVG",
       "type": "limit_buy",
       "direction": "BUY",
-      "triggerCondition": "BUY LIMIT posé au contact du FVG structure 3976.71 $ après sweep",
+      "triggerCondition": "BUY LIMIT posé au contact du FVG structure 4053.91 $ après sweep",
       "zoneName": "FVG+ Structure M15",
-      "entry": 3976.71,
-      "stop_loss": 3974.31,
-      "take_profit_1": 3978.61,
-      "take_profit_2": 3990.23,
-      "take_profit_3": 4018.31,
+      "entry": 4053.91,
+      "stop_loss": 4051.51,
+      "take_profit_1": 4055.81,
+      "take_profit_2": 4126,
+      "take_profit_3": 4125.28,
       "risk_points": 2.4,
       "risk_pips": 24,
       "rr_ratio": 2.8,
@@ -4148,13 +5293,13 @@
       "title": "Scénario D : ACHAT Flip MDT (Reprise Haussière)",
       "type": "flip_buy",
       "direction": "BUY",
-      "triggerCondition": "SI une bougie CLÔTURE au-dessus de la résistance dynamique 3991.33 $",
+      "triggerCondition": "SI une bougie CLÔTURE au-dessus de la résistance dynamique 4127.10 $",
       "zoneName": "Breakout MDT Pivot",
-      "entry": 3991.33,
-      "stop_loss": 3987.03,
-      "take_profit_1": 3993.48,
-      "take_profit_2": 3997.78,
-      "take_profit_3": 4003.33,
+      "entry": 4127.1,
+      "stop_loss": 4122.8,
+      "take_profit_1": 4129.25,
+      "take_profit_2": 4133.55,
+      "take_profit_3": 4139.1,
       "risk_points": 4.3,
       "risk_pips": 43,
       "rr_ratio": 2,
@@ -4175,71 +5320,29 @@
       "recommended_lot": 0.01
     }
   ],
-  "stream_latency_ms": 12,
+  "stream_latency_ms": 22,
   "mdt_engine": {
     "running": true,
     "profile": "HFT Micro-Scalper",
     "timeframe": "1m",
     "auto_pilot": true,
     "req_score": 2,
-    "current_score": 4,
+    "current_score": 3,
     "active_confluences": [
       "Tendance HTF Alignée",
       "Cassure de Structure (BOS)",
-      "Flip Ligne de Tendance MDT",
       "Stop Loss Conforme Ratio Risque ATR"
     ],
-    "trend_direction": -1,
-    "trend_line": 3996.51,
-    "micro_high": 3997.93,
-    "micro_low": 3993.34,
-    "armed_retest": {
-      "side": "BUY",
-      "level": 3997.94,
-      "bar": 72
-    },
+    "trend_direction": 1,
+    "trend_line": 4109.11,
+    "micro_high": 4126.78,
+    "micro_low": 4094.21,
+    "armed_retest": null,
     "candles_scanned": 80,
-    "last_scan_time": "2026-10-30T10:43:55.829Z",
-    "last_signal": "TP3_HIT @ 3999",
+    "last_scan_time": "2026-11-05T02:05:27.578Z",
+    "last_signal": "TP3_HIT @ 4102.24",
     "target_profit_usd": 1,
     "multi_fire_count": 3
   },
-  "live_positions": [
-    {
-      "id": "2359856686",
-      "symbol": "GOLD",
-      "type": "POSITION_TYPE_SELL",
-      "openPrice": 3979.64,
-      "currentPrice": 3979.94,
-      "volume": 0.01,
-      "unrealizedProfit": -0.3,
-      "profit": -0.3,
-      "comment": "Viceinte HFT Auto 2/3",
-      "time": "2026-10-30T10:43:42.971Z"
-    },
-    {
-      "id": "2359856687",
-      "symbol": "GOLD",
-      "type": "POSITION_TYPE_SELL",
-      "openPrice": 3979.64,
-      "currentPrice": 3979.94,
-      "volume": 0.01,
-      "unrealizedProfit": -0.3,
-      "profit": -0.3,
-      "comment": "Viceinte HFT Auto 3/3",
-      "time": "2026-10-30T10:43:42.999Z"
-    },
-    {
-      "id": "2359856691",
-      "symbol": "GOLD",
-      "type": "POSITION_TYPE_SELL",
-      "openPrice": 3979.64,
-      "currentPrice": 3979.94,
-      "volume": 0.01,
-      "unrealizedProfit": -0.3,
-      "profit": -0.3,
-      "comment": "Viceinte HFT Auto 1/3",
-      "time": "2026-10-30T10:43:43.172Z"
-    }
-  ]
+  "live_positions": []
 }

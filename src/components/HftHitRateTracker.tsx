@@ -356,8 +356,8 @@ export const HftHitRateTracker: React.FC<HftHitRateTrackerProps> = ({ currentPri
                 <span>Gain de Clôture Automatique par Position :</span>
                 <span className="text-emerald-400 font-bold tabular-nums">+${targetProfitUsd.toFixed(2)} / position</span>
               </div>
-              <div className="grid grid-cols-4 gap-2">
-                {[0.60, 1.00, 1.50, 2.00].map((tVal) => (
+              <div className="grid grid-cols-5 gap-1.5">
+                {[0.60, 1.00, 1.50, 2.00, 3.00].map((tVal) => (
                   <button
                     key={tVal}
                     onClick={() => setTargetProfitUsd(tVal)}

@@ -960,6 +960,24 @@ app.post('/api/mdt/config', (req: Request, res: Response) => {
   }
 });
 
+// Dynamic Take Profit & Trailing Stop Configuration (1$ - 3$ Net)
+app.post('/api/mdt/dynamic-tp', (req: Request, res: Response) => {
+  try {
+    const { tp_dynamic_enabled, tp_dynamic_min, tp_dynamic_max, trailing_step_usd, breakeven_lock_usd } = req.body;
+    const updated = store.updateMdtEngineConfig({
+      tp_dynamic_enabled: tp_dynamic_enabled !== undefined ? Boolean(tp_dynamic_enabled) : undefined,
+      tp_dynamic_min: Number(tp_dynamic_min) > 0 ? Number(tp_dynamic_min) : undefined,
+      tp_dynamic_max: Number(tp_dynamic_max) > 0 ? Number(tp_dynamic_max) : undefined,
+      trailing_step_usd: Number(trailing_step_usd) > 0 ? Number(trailing_step_usd) : undefined,
+      breakeven_lock_usd: Number(breakeven_lock_usd) > 0 ? Number(breakeven_lock_usd) : undefined,
+    });
+    res.json({ success: true, mdt_engine: updated });
+  } catch (err: any) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+
 app.post('/api/mdt/scan-now', (_req: Request, res: Response) => {
   try {
     const status = store.forceMdtScan();
@@ -1263,33 +1281,63 @@ async function setupServer() {
               await closeAllMetaApiPositions(`Protection du capital (-$${Math.abs(totalBasketProfit).toFixed(2)})`);
               positionPeaks.clear();
             }
-            // 3. Per-position Fast Scalp, Trailing Stop, Break-Even & Early Exit
+            // 3. Per-position Dynamic Take Profit ($1 - $3 Net), Trailing Stop, Break-Even Lock & Early Exit
             else {
+              const tpDyn = store.getTpDynamicConfig();
+
               for (const p of livePositions) {
                 const uProfit = Number(p.unrealizedProfit) || 0;
+                const prevPeak = positionPeaks.get(p.id) ?? uProfit;
+                const peak = Math.max(prevPeak, uProfit);
+                positionPeaks.set(p.id, peak);
 
-                // A. Fast Scalp Target Hit ($0.60 to $2.00)
-                if (uProfit >= targetProfitUsd) {
-                  console.log(`[Fast Scalp] ⚡ Position #${p.id} a atteint la cible +$${uProfit.toFixed(2)} ! Clôture immédiate.`);
+                // A. Dynamic Take Profit Ceiling ($3.00 Net Default)
+                if (tpDyn.enabled && uProfit >= tpDyn.max) {
+                  console.log(`[Dynamic TP Plafond] 🎯 Position #${p.id} a touché le plafond de profit max: +$${uProfit.toFixed(2)} (Seuil max: $${tpDyn.max.toFixed(2)}). Clôture immédiate !`);
+                  await closeMetaApiPosition(p.id, `Plafond TP Dynamique +$${uProfit.toFixed(2)} atteint`);
+                  positionPeaks.delete(p.id);
+                  continue;
+                }
+
+                // B. Trailing Stop & Hard Break-Even Floor Lock ($1.00 à $3.00 Net)
+                if (tpDyn.enabled && peak >= tpDyn.min) {
+                  // B1. Dynamic Trailing Step (ex: repli de 0.40$ depuis le pic)
+                  if (uProfit <= (peak - tpDyn.step)) {
+                    console.log(`[Dynamic Trailing] ⚡ Trailing stop déclenché pour #${p.id} : clôture à +$${uProfit.toFixed(2)} (Pic: +$${peak.toFixed(2)}, Repli: -$${tpDyn.step.toFixed(2)}). Gain sécurisé !`);
+                    await closeMetaApiPosition(p.id, `Dynamic Trailing Stop (+${uProfit.toFixed(2)}$ sécurisé)`);
+                    positionPeaks.delete(p.id);
+                    continue;
+                  }
+
+                  // B2. Hard Break-Even Floor Lock (Le trade a dépassé 1.00$, interdiction formelle de repasser sous 0.20$ net !)
+                  if (uProfit <= tpDyn.beLock) {
+                    console.log(`[Break-Even Lock] 🛡️ Verrouillage Break-Even de sécurité pour #${p.id} à +$${uProfit.toFixed(2)} (Plancher: +$${tpDyn.beLock.toFixed(2)}). Clôture pour interdire toute perte !`);
+                    await closeMetaApiPosition(p.id, `Break-Even Lock garanti (+${uProfit.toFixed(2)}$)`);
+                    positionPeaks.delete(p.id);
+                    continue;
+                  }
+                }
+
+                // C. Standard Fast Scalp Target Hit (si TP dynamique désactivé)
+                if (!tpDyn.enabled && uProfit >= targetProfitUsd) {
+                  console.log(`[Fast Scalp] ⚡ Position #${p.id} a atteint la cible fixe +$${uProfit.toFixed(2)} ! Clôture immédiate.`);
                   await closeMetaApiPosition(p.id, `Cible rapide +$${uProfit.toFixed(2)} atteinte`);
                   positionPeaks.delete(p.id);
                   continue;
                 }
 
-                // B. Trailing & Break-Even step (MQ5 logic)
-                const peak = positionPeaks.get(p.id) || uProfit;
-                if (uProfit > peak) {
-                  positionPeaks.set(p.id, uProfit);
-                }
-                if (peak >= 0.50 && uProfit < (peak - 0.25) && uProfit > 0.10) {
-                  console.log(`[Trailing Hit] 🛡️ Trailing stop sécurisé pour #${p.id} à +$${uProfit.toFixed(2)} (Pic: $${peak.toFixed(2)}).`);
-                  await closeMetaApiPosition(p.id, `Trailing stop déclenché (+${uProfit.toFixed(2)}$ sécurisé)`);
-                  positionPeaks.delete(p.id);
-                  continue;
+                // D. Micro Trailing de secours avant 1.00$ (si pic >= 0.50$ et retour sous 0.25$)
+                if (!tpDyn.enabled || peak < tpDyn.min) {
+                  if (peak >= 0.50 && uProfit < (peak - 0.25) && uProfit > 0.10) {
+                    console.log(`[Micro-Trailing] 🛡️ Trailing stop sécurisé pour #${p.id} à +$${uProfit.toFixed(2)} (Pic: $${peak.toFixed(2)}).`);
+                    await closeMetaApiPosition(p.id, `Micro-Trailing (+${uProfit.toFixed(2)}$ sécurisé)`);
+                    positionPeaks.delete(p.id);
+                    continue;
+                  }
                 }
 
-                // C. ManageEarlyExit on M1 reversal (MQ5 logic)
-                if (uProfit >= 0.25 && state.bot_status.candles.length >= 2) {
+                // E. ManageEarlyExit on M1 reversal (MQ5 logic)
+                if (uProfit >= 0.30 && state.bot_status.candles.length >= 2) {
                   const lastCandle = state.bot_status.candles[state.bot_status.candles.length - 1];
                   const isBuy = p.type === 'POSITION_TYPE_BUY';
                   const isReversal = isBuy ? (lastCandle.close < lastCandle.open) : (lastCandle.close > lastCandle.open);

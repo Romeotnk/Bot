@@ -16,7 +16,12 @@ import {
   TrendingDown,
   Info,
   Flame,
-  ArrowRight
+  ArrowRight,
+  Target,
+  Lock,
+  Sliders,
+  Sparkles,
+  ArrowUpRight
 } from 'lucide-react';
 import { useAppState } from '../context/StateContext';
 
@@ -25,9 +30,10 @@ interface HftExecutionConsoleProps {
 }
 
 export const HftExecutionConsole: React.FC<HftExecutionConsoleProps> = ({ currentPrice }) => {
-  const { state, executeMetaApiTrade, closeMetaApiPosition, closeAllMetaApiPositions, latencyMs } = useAppState();
+  const { state, executeMetaApiTrade, closeMetaApiPosition, closeAllMetaApiPositions, updateDynamicTpConfig, latencyMs } = useAppState();
   const broker = state?.broker;
   const metaapi = state?.metaapi;
+  const mdtEngine = state?.mdt_engine;
   const livePositions = state?.live_positions || [];
 
   const [hftMode, setHftMode] = useState<'latency_lead' | 'micro_retest' | 'momentum_hft'>('micro_retest');
@@ -50,6 +56,60 @@ export const HftExecutionConsole: React.FC<HftExecutionConsoleProps> = ({ curren
   // Spread simulation (realistic on XAUUSD/GOLD: ~1.2 to 1.8 pips)
   const spreadPips = 1.4;
   const isSpreadSafe = spreadPips <= 2.0;
+
+  // Dynamic Take Profit & Trailing Stop ($1.00 - $3.00 Net) state
+  const tpDynamicEnabled = mdtEngine?.tp_dynamic_enabled ?? true;
+  const tpDynamicMin = mdtEngine?.tp_dynamic_min ?? 1.00;
+  const tpDynamicMax = mdtEngine?.tp_dynamic_max ?? 3.00;
+  const trailingStep = mdtEngine?.trailing_step_usd ?? 0.40;
+  const beLock = mdtEngine?.breakeven_lock_usd ?? 0.20;
+
+  const [localMin, setLocalMin] = useState<number>(tpDynamicMin);
+  const [localMax, setLocalMax] = useState<number>(tpDynamicMax);
+  const [localStep, setLocalStep] = useState<number>(trailingStep);
+  const [localBe, setLocalBe] = useState<number>(beLock);
+  const [isApplyingTp, setIsApplyingTp] = useState<boolean>(false);
+  const [tpNotice, setTpNotice] = useState<string | null>(null);
+
+  // Sync state when backend updates
+  React.useEffect(() => {
+    if (mdtEngine?.tp_dynamic_min !== undefined) setLocalMin(mdtEngine.tp_dynamic_min);
+    if (mdtEngine?.tp_dynamic_max !== undefined) setLocalMax(mdtEngine.tp_dynamic_max);
+    if (mdtEngine?.trailing_step_usd !== undefined) setLocalStep(mdtEngine.trailing_step_usd);
+    if (mdtEngine?.breakeven_lock_usd !== undefined) setLocalBe(mdtEngine.breakeven_lock_usd);
+  }, [mdtEngine?.tp_dynamic_min, mdtEngine?.tp_dynamic_max, mdtEngine?.trailing_step_usd, mdtEngine?.breakeven_lock_usd]);
+
+  const handleToggleDynamicTp = async () => {
+    setIsApplyingTp(true);
+    try {
+      await updateDynamicTpConfig({ tp_dynamic_enabled: !tpDynamicEnabled });
+      setTpNotice(!tpDynamicEnabled ? '✓ TP Dynamique & Trailing Stop ACTIVÉS' : '✓ TP Dynamique DÉSACTIVÉ');
+      setTimeout(() => setTpNotice(null), 3500);
+    } catch (e: any) {
+      setTpNotice(`Erreur : ${e.message}`);
+    } finally {
+      setIsApplyingTp(false);
+    }
+  };
+
+  const handleSaveDynamicTp = async () => {
+    setIsApplyingTp(true);
+    try {
+      await updateDynamicTpConfig({
+        tp_dynamic_enabled: true,
+        tp_dynamic_min: localMin,
+        tp_dynamic_max: localMax,
+        trailing_step_usd: localStep,
+        breakeven_lock_usd: localBe,
+      });
+      setTpNotice(`✓ Paramètres validés : Plage ${localMin.toFixed(2)}$ à ${localMax.toFixed(2)}$ · Step ${localStep.toFixed(2)}$ · Plancher BE +${localBe.toFixed(2)}$`);
+      setTimeout(() => setTpNotice(null), 4000);
+    } catch (e: any) {
+      setTpNotice(`Erreur : ${e.message}`);
+    } finally {
+      setIsApplyingTp(false);
+    }
+  };
 
   const handleFireHftOrder = async (side: 'BUY' | 'SELL') => {
     setIsSendingOrder(side);
@@ -402,6 +462,277 @@ export const HftExecutionConsole: React.FC<HftExecutionConsoleProps> = ({ curren
               <div>3. <strong>Arrêt journalier strict</strong> : arrêt automatique dès 2 pertes consécutives (-2.0R).</div>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* 3. DYNAMIC TAKE PROFIT ($1.00 TO $3.00 NET) & TRAILING STOP CORRIDOR ENGINE */}
+      <div className="mt-6 pt-5 border-t border-white/[0.08]">
+        <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-[#0e1626] via-[#09101d] to-[#0c0e17] border border-cyan-500/30 shadow-xl relative overflow-hidden">
+          {/* Subtle glow accent */}
+          <div className="absolute top-0 right-0 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+
+          {/* Section Header */}
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-4 pb-3 border-b border-white/[0.08]">
+            <div className="flex items-center gap-2.5">
+              <div className="p-2 rounded-xl bg-gradient-to-br from-cyan-500/20 to-emerald-500/20 border border-cyan-500/40 text-cyan-300">
+                <Target className="w-5 h-5 animate-pulse" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h4 className="font-heading font-black text-sm uppercase tracking-wider text-white">
+                    Take Profit Dynamique (1,00 $ à 3,00 $ Net) & Trailing Stop
+                  </h4>
+                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-mono font-bold border ${
+                    tpDynamicEnabled
+                      ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300'
+                      : 'bg-zinc-800 border-zinc-700 text-zinc-400'
+                  }`}>
+                    {tpDynamicEnabled ? '● ACTIF EN DIRECT' : '○ DÉSACTIVÉ'}
+                  </span>
+                </div>
+                <p className="text-xs text-zinc-400 mt-0.5">
+                  Verrouillage automatique de gains par palier de 0,40 $ · Plancher Break-Even garanti à +0,20 $ (zéro retour en perte).
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleToggleDynamicTp}
+                disabled={isApplyingTp}
+                className={`px-3 py-1.5 rounded-xl font-mono text-xs font-bold border transition cursor-pointer disabled:opacity-50 ${
+                  tpDynamicEnabled
+                    ? 'bg-rose-500/15 border-rose-500/40 text-rose-300 hover:bg-rose-500/25'
+                    : 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300 hover:bg-emerald-500/25'
+                }`}
+              >
+                {tpDynamicEnabled ? 'Désactiver TP Dynamique' : 'Activer TP Dynamique'}
+              </button>
+            </div>
+          </div>
+
+          {/* Real-Time Trailing Corridor Visualizer */}
+          <div className="mb-5 p-4 rounded-xl bg-black/50 border border-white/[0.06] space-y-3">
+            <div className="flex items-center justify-between text-xs font-mono">
+              <span className="text-zinc-400 flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                <span>Corridor de Sécurisation Dynamique :</span>
+              </span>
+              <span className="text-zinc-300">
+                Fenêtre de Capture : <strong className="text-cyan-300">+{localMin.toFixed(2)} $</strong> à <strong className="text-emerald-300">+{localMax.toFixed(2)} $</strong> net
+              </span>
+            </div>
+
+            {/* Visual Corridor Bar */}
+            <div className="relative pt-6 pb-2">
+              {/* Range Track */}
+              <div className="h-3 w-full bg-zinc-800/80 rounded-full relative overflow-hidden">
+                {/* Break-even floor area */}
+                <div
+                  className="absolute top-0 bottom-0 left-0 bg-zinc-600/50"
+                  style={{ width: `${(localBe / localMax) * 100}%` }}
+                />
+                {/* Active Trailing Zone (1$ to 3$) */}
+                <div
+                  className="absolute top-0 bottom-0 bg-gradient-to-r from-cyan-500/70 via-emerald-500/80 to-amber-400"
+                  style={{
+                    left: `${(localMin / localMax) * 100}%`,
+                    width: `${Math.max(0, ((localMax - localMin) / localMax) * 100)}%`,
+                  }}
+                />
+              </div>
+
+              {/* Threshold Markers */}
+              <div className="relative flex justify-between text-[10px] font-mono mt-2 text-zinc-400">
+                <div className="text-left">
+                  <span className="block text-zinc-500">Entrée</span>
+                  <span className="text-zinc-400 font-bold">$0.00</span>
+                </div>
+                <div className="text-center" style={{ left: `${(localBe / localMax) * 100}%` }}>
+                  <span className="block text-emerald-400 font-bold flex items-center justify-center gap-0.5">
+                    <Lock className="w-2.5 h-2.5" /> BE Lock
+                  </span>
+                  <span className="text-emerald-300 font-bold">+{localBe.toFixed(2)} $</span>
+                </div>
+                <div className="text-center" style={{ left: `${(localMin / localMax) * 100}%` }}>
+                  <span className="block text-cyan-400 font-bold flex items-center justify-center gap-0.5">
+                    <ArrowUpRight className="w-2.5 h-2.5" /> Trailing Déclenche
+                  </span>
+                  <span className="text-cyan-300 font-bold">+{localMin.toFixed(2)} $</span>
+                </div>
+                <div className="text-right">
+                  <span className="block text-amber-400 font-bold flex items-center justify-end gap-0.5">
+                    <Target className="w-2.5 h-2.5" /> Plafond TP Flash
+                  </span>
+                  <span className="text-amber-300 font-bold">+{localMax.toFixed(2)} $</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Live Positions inside Corridor Indicator */}
+            {livePositions.length > 0 && (
+              <div className="pt-2 border-t border-white/[0.04] space-y-1.5 font-mono text-xs">
+                <div className="text-[11px] text-zinc-400 font-semibold">Statut des Positions MT5 en cours :</div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {livePositions.map((pos) => {
+                    const uProfit = Number(pos.unrealizedProfit) || 0;
+                    const inTrailing = uProfit >= localMin;
+                    const nearTarget = uProfit >= (localMax - 0.50);
+
+                    return (
+                      <div
+                        key={pos.id}
+                        className={`p-2 rounded-lg border flex items-center justify-between text-[11px] ${
+                          nearTarget
+                            ? 'bg-amber-500/15 border-amber-500/40 text-amber-200'
+                            : inTrailing
+                            ? 'bg-cyan-500/15 border-cyan-500/40 text-cyan-200 animate-pulse'
+                            : uProfit >= 0
+                            ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300'
+                            : 'bg-zinc-900 border-zinc-800 text-zinc-400'
+                        }`}
+                      >
+                        <span className="font-bold">#{pos.id} ({pos.type === 'POSITION_TYPE_BUY' ? 'ACHAT' : 'VENTE'} {pos.volume} lot)</span>
+                        <div className="flex items-center gap-1.5">
+                          <span className="font-bold tabular-nums">
+                            {uProfit >= 0 ? '+' : ''}{uProfit.toFixed(2)} $
+                          </span>
+                          <span className="text-[9px] px-1 py-0.2 rounded bg-black/40">
+                            {nearTarget ? '⚡ Proche Plafond' : inTrailing ? '🚀 Trailing Actif' : uProfit >= localBe ? '🛡️ BE Sécurisé' : 'En attente'}
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Interactive Parameters Configuration Sliders */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-4 font-mono text-xs">
+            {/* Param 1: Min Dynamic Range */}
+            <div className="p-3 rounded-xl bg-black/40 border border-white/[0.06] space-y-1.5">
+              <div className="flex justify-between items-center text-zinc-400">
+                <span className="text-[11px]">Seuil Début Trailing :</span>
+                <span className="text-cyan-300 font-bold tabular-nums">+{localMin.toFixed(2)} $</span>
+              </div>
+              <input
+                type="range"
+                min="0.60"
+                max="2.00"
+                step="0.10"
+                value={localMin}
+                onChange={(e) => setLocalMin(Number(e.target.value))}
+                className="w-full accent-cyan-400 cursor-pointer"
+              />
+              <span className="text-[10px] text-zinc-500 block">Dès +{localMin.toFixed(2)}$, le trailing s'active.</span>
+            </div>
+
+            {/* Param 2: Max Dynamic Ceiling */}
+            <div className="p-3 rounded-xl bg-black/40 border border-white/[0.06] space-y-1.5">
+              <div className="flex justify-between items-center text-zinc-400">
+                <span className="text-[11px]">Plafond Sortie Flash :</span>
+                <span className="text-amber-300 font-bold tabular-nums">+{localMax.toFixed(2)} $</span>
+              </div>
+              <input
+                type="range"
+                min="1.50"
+                max="5.00"
+                step="0.25"
+                value={localMax}
+                onChange={(e) => setLocalMax(Number(e.target.value))}
+                className="w-full accent-amber-400 cursor-pointer"
+              />
+              <span className="text-[10px] text-zinc-500 block">Clôture au marché dès +{localMax.toFixed(2)}$.</span>
+            </div>
+
+            {/* Param 3: Trailing Step (Repli toléré) */}
+            <div className="p-3 rounded-xl bg-black/40 border border-white/[0.06] space-y-1.5">
+              <div className="flex justify-between items-center text-zinc-400">
+                <span className="text-[11px]">Pas Trailing (Repli) :</span>
+                <span className="text-emerald-300 font-bold tabular-nums">{localStep.toFixed(2)} $</span>
+              </div>
+              <input
+                type="range"
+                min="0.20"
+                max="1.00"
+                step="0.05"
+                value={localStep}
+                onChange={(e) => setLocalStep(Number(e.target.value))}
+                className="w-full accent-emerald-400 cursor-pointer"
+              />
+              <span className="text-[10px] text-zinc-500 block">Coupe si le prix recule de {localStep.toFixed(2)}$ du pic.</span>
+            </div>
+
+            {/* Param 4: Break-Even Hard Floor */}
+            <div className="p-3 rounded-xl bg-black/40 border border-white/[0.06] space-y-1.5">
+              <div className="flex justify-between items-center text-zinc-400">
+                <span className="text-[11px]">Plancher BE Garanti :</span>
+                <span className="text-purple-300 font-bold tabular-nums">+{localBe.toFixed(2)} $</span>
+              </div>
+              <input
+                type="range"
+                min="0.10"
+                max="0.50"
+                step="0.05"
+                value={localBe}
+                onChange={(e) => setLocalBe(Number(e.target.value))}
+                className="w-full accent-purple-400 cursor-pointer"
+              />
+              <span className="text-[10px] text-zinc-500 block">Interdiction absolue de repasser sous +{localBe.toFixed(2)}$.</span>
+            </div>
+          </div>
+
+          {/* Quick Presets & Apply Button */}
+          <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-white/[0.06]">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-[11px] text-zinc-400 font-mono">Préréglages Rapides :</span>
+              <button
+                onClick={() => { setLocalMin(0.80); setLocalMax(2.00); setLocalStep(0.30); setLocalBe(0.15); }}
+                className="px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold bg-white/[0.04] hover:bg-white/[0.08] text-zinc-300 border border-white/[0.08] transition cursor-pointer"
+              >
+                Micro-Scalp (0,80$ - 2$)
+              </button>
+              <button
+                onClick={() => { setLocalMin(1.00); setLocalMax(3.00); setLocalStep(0.40); setLocalBe(0.20); }}
+                className="px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 hover:bg-cyan-500/30 transition cursor-pointer"
+              >
+                Standard Recommandé (1$ - 3$)
+              </button>
+              <button
+                onClick={() => { setLocalMin(1.50); setLocalMax(4.50); setLocalStep(0.60); setLocalBe(0.30); }}
+                className="px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold bg-white/[0.04] hover:bg-white/[0.08] text-zinc-300 border border-white/[0.08] transition cursor-pointer"
+              >
+                Impulsion Forte (1,50$ - 4,50$)
+              </button>
+            </div>
+
+            <button
+              onClick={handleSaveDynamicTp}
+              disabled={isApplyingTp}
+              className="px-4 py-2 rounded-xl text-xs font-mono font-bold bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-zinc-950 shadow-lg shadow-cyan-500/20 transition cursor-pointer disabled:opacity-50 active:scale-95 flex items-center gap-2"
+            >
+              {isApplyingTp ? (
+                <>
+                  <div className="w-3.5 h-3.5 border-2 border-zinc-950 border-t-transparent rounded-full animate-spin" />
+                  <span>Synchronisation...</span>
+                </>
+              ) : (
+                <>
+                  <Sliders className="w-3.5 h-3.5" />
+                  <span>Enregistrer & Synchroniser MT5</span>
+                </>
+              )}
+            </button>
+          </div>
+
+          {/* Feedback banner */}
+          {tpNotice && (
+            <div className="mt-3 p-2.5 rounded-xl bg-cyan-500/15 border border-cyan-500/30 text-cyan-200 text-xs font-mono text-center animate-fadeIn">
+              {tpNotice}
+            </div>
+          )}
         </div>
       </div>
 

@@ -276,15 +276,21 @@ export const MdtAutonomousEngineCard: React.FC = () => {
         </div>
 
         <div className="bg-slate-800/50 rounded-lg p-2.5 border border-slate-800">
-          <div className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Cible de Sortie Rapide</div>
+          <div className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">
+            {mdtEngine?.tp_dynamic_enabled ? 'TP Dynamique & Trailing' : 'Cible de Sortie Fixe'}
+          </div>
           <div className="flex items-baseline gap-2 mt-1">
             <span className="text-xl font-bold text-emerald-400 font-mono">
-              +${targetProfit.toFixed(2)}
+              {mdtEngine?.tp_dynamic_enabled 
+                ? `+$${(mdtEngine?.tp_dynamic_min || 1.0).toFixed(1)} - $${(mdtEngine?.tp_dynamic_max || 3.0).toFixed(1)}` 
+                : `+$${targetProfit.toFixed(2)}`}
             </span>
-            <span className="text-xs text-slate-400">({multiCount}x ordres)</span>
+            <span className="text-xs text-slate-400 font-mono">
+              {mdtEngine?.tp_dynamic_enabled ? `(BE Lock +$${(mdtEngine?.breakeven_lock_usd || 0.20).toFixed(2)})` : `(${multiCount}x)`}
+            </span>
           </div>
           <div className="text-[10px] text-slate-400 mt-1">
-            Auto-closer verrouille à l'impact
+            {mdtEngine?.tp_dynamic_enabled ? `Trailing step : $${(mdtEngine?.trailing_step_usd || 0.40).toFixed(2)}` : "Auto-closer verrouille à l'impact"}
           </div>
         </div>
 

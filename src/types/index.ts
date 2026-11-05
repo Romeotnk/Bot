@@ -152,6 +152,11 @@ export interface Settings {
   news_filter: boolean;
   ml_filter: boolean;
   ai_filter: boolean;
+  tp_dynamic_enabled?: boolean;
+  tp_dynamic_min?: number;
+  tp_dynamic_max?: number;
+  trailing_step_usd?: number;
+  breakeven_lock_usd?: number;
   broker?: BrokerAccountConfig;
   metaapi?: MetaApiConfig;
 }
@@ -228,6 +233,11 @@ export interface MdtEngineTelemetry {
   last_signal: string | null;
   target_profit_usd: number;
   multi_fire_count: number;
+  tp_dynamic_enabled?: boolean;
+  tp_dynamic_min?: number;
+  tp_dynamic_max?: number;
+  trailing_step_usd?: number;
+  breakeven_lock_usd?: number;
 }
 
 export interface MetaApiLivePosition {
@@ -241,6 +251,8 @@ export interface MetaApiLivePosition {
   profit: number;
   comment?: string;
   time?: string;
+  peakProfit?: number;
+  beLocked?: boolean;
 }
 
 export interface DashboardState {

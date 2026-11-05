@@ -29,6 +29,18 @@ interface StateContextType {
     auto_pilot?: boolean;
     target_profit_usd?: number;
     multi_fire_count?: number;
+    tp_dynamic_enabled?: boolean;
+    tp_dynamic_min?: number;
+    tp_dynamic_max?: number;
+    trailing_step_usd?: number;
+    breakeven_lock_usd?: number;
+  }) => Promise<void>;
+  updateDynamicTpConfig: (config: {
+    tp_dynamic_enabled?: boolean;
+    tp_dynamic_min?: number;
+    tp_dynamic_max?: number;
+    trailing_step_usd?: number;
+    breakeven_lock_usd?: number;
   }) => Promise<void>;
   forceMdtScan: () => Promise<void>;
   forceMdtTestTrade: (side?: 'BUY' | 'SELL') => Promise<void>;
@@ -412,6 +424,11 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     auto_pilot?: boolean;
     target_profit_usd?: number;
     multi_fire_count?: number;
+    tp_dynamic_enabled?: boolean;
+    tp_dynamic_min?: number;
+    tp_dynamic_max?: number;
+    trailing_step_usd?: number;
+    breakeven_lock_usd?: number;
   }) => {
     try {
       const res = await fetch('/api/mdt/config', {
@@ -427,6 +444,30 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       }
     } catch (e) {
       console.error('Error updating MDT config:', e);
+    }
+  };
+
+  const updateDynamicTpConfig = async (config: {
+    tp_dynamic_enabled?: boolean;
+    tp_dynamic_min?: number;
+    tp_dynamic_max?: number;
+    trailing_step_usd?: number;
+    breakeven_lock_usd?: number;
+  }) => {
+    try {
+      const res = await fetch('/api/mdt/dynamic-tp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(config),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.mdt_engine) {
+          setState((prev) => (prev ? { ...prev, mdt_engine: { ...prev.mdt_engine, ...data.mdt_engine } } : null));
+        }
+      }
+    } catch (e) {
+      console.error('Error updating Dynamic TP config:', e);
     }
   };
 
@@ -484,6 +525,7 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         closeMetaApiPosition,
         closeAllMetaApiPositions,
         updateMdtEngineConfig,
+        updateDynamicTpConfig,
         forceMdtScan,
         forceMdtTestTrade,
         advanceDemoSequence,
