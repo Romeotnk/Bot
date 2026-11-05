@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Cpu,
   Zap,
@@ -15,7 +15,10 @@ import {
   Layers,
   ArrowRight,
   ExternalLink,
-  Target
+  Target,
+  Radio,
+  Lock,
+  Key
 } from 'lucide-react';
 import { useAppState } from '../context/StateContext';
 
@@ -26,16 +29,36 @@ export const MdtAutonomousEngineCard: React.FC = () => {
     forceMdtScan,
     forceMdtTestTrade,
     setIsBrokerModalOpen,
+    saveMetaApiConfig,
+    syncMetaApiAccount,
   } = useAppState();
 
   const [isScanning, setIsScanning] = useState(false);
   const [isTestingTrade, setIsTestingTrade] = useState<'BUY' | 'SELL' | null>(null);
   const [testFeedback, setTestFeedback] = useState<string | null>(null);
   const [showExplanation, setShowExplanation] = useState(true);
+  const [isQuickOpen, setIsQuickOpen] = useState(false);
+  const [quickToken, setQuickToken] = useState(state?.metaapi?.token || '');
+  const [quickAccountId, setQuickAccountId] = useState(state?.metaapi?.account_id || '');
+  const [isSavingQuickMeta, setIsSavingQuickMeta] = useState(false);
 
   const mdtEngine = state?.mdt_engine;
-  const isMetaConnected = Boolean(state?.metaapi?.connected || (state?.metaapi?.token && state?.metaapi?.account_id));
+  const isMetaConnected = Boolean(state?.metaapi?.token && state?.metaapi?.account_id);
   const isAutoTradeActive = Boolean(state?.metaapi?.auto_trade_enabled);
+
+  useEffect(() => {
+    let saved: any = {};
+    try {
+      const item = localStorage.getItem('metaapi_persisted_config');
+      if (item) saved = JSON.parse(item);
+    } catch {}
+    if (!quickToken && (state?.metaapi?.token || saved.token)) {
+      setQuickToken(state?.metaapi?.token || saved.token || '');
+    }
+    if (!quickAccountId && (state?.metaapi?.account_id || saved.account_id)) {
+      setQuickAccountId(state?.metaapi?.account_id || saved.account_id || '');
+    }
+  }, [state?.metaapi?.token, state?.metaapi?.account_id]);
 
   const profile = mdtEngine?.profile || 'HFT Micro-Scalper';
   const timeframe = mdtEngine?.timeframe || '1m';
@@ -66,6 +89,40 @@ export const MdtAutonomousEngineCard: React.FC = () => {
       await forceMdtScan();
     } finally {
       setTimeout(() => setIsScanning(false), 500);
+    }
+  };
+
+  const handleToggleAutoTrade = async () => {
+    try {
+      await saveMetaApiConfig({ auto_trade_enabled: !isAutoTradeActive });
+      setTestFeedback(`Auto-Trade MT5 : ${!isAutoTradeActive ? 'ACTIVÉ ⚡ (Routage direct des ordres)' : 'DÉSACTIVÉ ⏸️ (Mode surveillance)'}`);
+      setTimeout(() => setTestFeedback(null), 4000);
+    } catch (e: any) {
+      setTestFeedback(`Erreur : ${e.message}`);
+    }
+  };
+
+  const handleQuickConnect = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!quickToken.trim() || !quickAccountId.trim()) {
+      setTestFeedback('Veuillez renseigner le Token et l’Account ID MetaApi.');
+      return;
+    }
+    setIsSavingQuickMeta(true);
+    try {
+      await saveMetaApiConfig({
+        token: quickToken.trim(),
+        account_id: quickAccountId.trim(),
+        auto_trade_enabled: true,
+      });
+      await syncMetaApiAccount();
+      setTestFeedback('✓ Compte MetaApi connecté avec succès ! Auto-Trade MT5 ACTIVÉ.');
+      setIsQuickOpen(false);
+      setTimeout(() => setTestFeedback(null), 5000);
+    } catch (err: any) {
+      setTestFeedback(`Erreur : ${err.message}`);
+    } finally {
+      setIsSavingQuickMeta(false);
     }
   };
 
@@ -151,7 +208,7 @@ export const MdtAutonomousEngineCard: React.FC = () => {
               </p>
               <ul className="list-disc list-inside space-y-1 text-slate-300/90 pl-1">
                 <li>
-                  <strong>MetaApi est une passerelle, pas un cerveau</strong> : Les identifiants MetaApi permettent de passer les ordres sur MT5, mais il fallait que le moteur de calcul (<code className="text-amber-200">MdtEngine</code>) et la boucle de surveillance (<code className="text-amber-200">mdtRunner</code>) tournent. Ils sont désormais <strong>directement intégrés dans le serveur Render</strong>.
+                  <strong>MetaApi est une passerelle, pas un cerveau</strong> : Les identifiants MetaApi permettent de passer les ordres sur MT5, mais il fallait que le moteur de calcul (<code className="text-amber-200">MdtEngine</code>) et la boucle de surveillance (<code className="text-amber-200">mdtRunner</code>) tournent. Ils sont désormais <strong>directement intégrés dans le serveur Cloud (Google Cloud Run / Viceinte Core)</strong>, fonctionnant 24h/24 sans dépendance Render.
                 </li>
                 <li>
                   <strong>Vitesse des signaux</strong> : En mode <em>Sniper Pro A+ (M15)</em>, le robot attend 5 confluences strictes sur 7 en session de Londres/NY uniquement (seulement 1 à 3 trades par semaine). En mode <em>HFT Micro-Scalper (M1)</em>, le robot ouvre des positions dès qu'un micro-retest est validé et encaisse rapidement 0,60 $ à 2,00 $.
@@ -310,26 +367,107 @@ export const MdtAutonomousEngineCard: React.FC = () => {
               {isMetaConnected
                 ? isAutoTradeActive
                   ? 'Auto-Trade MT5 ACTIF'
-                  : 'Connecté (Attente Auto)'
-                : 'Non connecté'}
+                  : 'Prêt (Attente Auto)'
+                : 'Identifiants Manquants'}
             </span>
           </div>
-          <div className="mt-1">
+          <div className="mt-1 flex items-center justify-between gap-1">
             {!isMetaConnected ? (
               <button
-                onClick={() => setIsBrokerModalOpen(true)}
-                className="text-[10px] text-amber-400 hover:text-amber-300 underline font-semibold"
+                type="button"
+                onClick={() => setIsQuickOpen(!isQuickOpen)}
+                className="text-[10px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30 font-bold transition flex items-center gap-1 cursor-pointer"
               >
-                Lier MetaApi maintenant
+                <Key className="w-2.5 h-2.5" /> Lier MetaApi MT5
               </button>
             ) : (
-              <span className="text-[10px] text-slate-400 font-mono">
-                {state?.metaapi?.symbol || 'GOLD'} · {state?.metaapi?.lot_size || 0.01} lot
-              </span>
+              <>
+                <button
+                  type="button"
+                  onClick={() => setIsQuickOpen(!isQuickOpen)}
+                  className="text-[10px] text-slate-400 hover:text-amber-300 font-mono flex items-center gap-1 cursor-pointer transition"
+                  title="Voir / Modifier les clés MetaApi"
+                >
+                  <Key className="w-2.5 h-2.5 text-amber-400" />
+                  <span>{state?.metaapi?.symbol || 'GOLD'} · {state?.metaapi?.lot_size || 0.01} lot</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={handleToggleAutoTrade}
+                  className={`text-[9px] px-2 py-0.5 rounded font-mono font-bold border transition cursor-pointer ${
+                    isAutoTradeActive
+                      ? 'bg-rose-500/15 border-rose-500/40 text-rose-300 hover:bg-rose-500/25'
+                      : 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300 hover:bg-emerald-500/30'
+                  }`}
+                >
+                  {isAutoTradeActive ? 'Pause' : '⚡ Activer Auto'}
+                </button>
+              </>
             )}
           </div>
         </div>
       </div>
+
+      {/* Quick MetaApi Direct Connect Drawer */}
+      {isQuickOpen && (
+        <form onSubmit={handleQuickConnect} className="mb-4 p-4 rounded-xl bg-black/60 border border-amber-500/40 space-y-3 animate-fadeIn">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold text-amber-300 flex items-center gap-1.5 font-mono">
+              <Radio className="w-4 h-4 text-amber-400" />
+              <span>{isMetaConnected ? 'Modifier les Identifiants MetaApi MT5 :' : 'Connexion Directe MetaApi Cloud (XM Global MT5) :'}</span>
+            </span>
+            <button
+              type="button"
+              onClick={() => setIsQuickOpen(false)}
+              className="text-[11px] text-zinc-400 hover:text-white cursor-pointer"
+            >
+              Fermer
+            </button>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label className="block text-[10px] font-mono uppercase text-zinc-400 mb-1">Jeton API MetaApi (Token) :</label>
+              <input
+                type="password"
+                placeholder="Ex: eyJhbGciOiJSUzI1NiIsInR5cCI6Ik..."
+                value={quickToken}
+                onChange={(e) => setQuickToken(e.target.value)}
+                className="w-full px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-700 text-xs font-mono text-white placeholder-zinc-600 focus:border-amber-400 focus:outline-none"
+              />
+            </div>
+            <div>
+              <label className="block text-[10px] font-mono uppercase text-zinc-400 mb-1">ID de Compte MetaApi (Account ID) :</label>
+              <input
+                type="text"
+                placeholder="Ex: 7dffec2a-689d-4ef5-b6eb-846978efc858"
+                value={quickAccountId}
+                onChange={(e) => setQuickAccountId(e.target.value)}
+                className="w-full px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-700 text-xs font-mono text-cyan-300 placeholder-zinc-600 focus:border-amber-400 focus:outline-none"
+              />
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
+            <span className="text-[10px] text-zinc-400">Vos identifiants seront stockés de façon permanente sur le serveur et ne s'effaceront plus.</span>
+            <button
+              type="submit"
+              disabled={isSavingQuickMeta}
+              className="px-4 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-emerald-500 hover:from-amber-400 hover:to-emerald-400 text-zinc-950 font-bold text-xs font-mono transition disabled:opacity-50 flex items-center gap-1.5 cursor-pointer shadow-md"
+            >
+              {isSavingQuickMeta ? (
+                <>
+                  <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                  <span>Connexion en cours...</span>
+                </>
+              ) : (
+                <>
+                  <Zap className="w-3.5 h-3.5" />
+                  <span>Connecter & Activer Auto-Trade MT5</span>
+                </>
+              )}
+            </button>
+          </div>
+        </form>
+      )}
 
       {/* 7 Confluences Checklist */}
       <div className="mb-4 bg-slate-950/60 rounded-xl p-3 border border-slate-800/80">

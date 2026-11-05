@@ -6,7 +6,7 @@
  * Variables d'environnement requises :
  * METAAPI_TOKEN       : Jeton API MetaApi Cloud
  * METAAPI_ACCOUNT_ID  : ID de compte MT5/MT4 MetaApi
- * WEBHOOK_URL         : URL webhook du site (ex: https://ton-app.onrender.com/api/webhook/tradingview)
+ * WEBHOOK_URL         : URL webhook du site (ex: https://ais-pre-...run.app/api/webhook/tradingview)
  * WEBHOOK_SECRET      : aurum-prod-secret-xauusd-key
  * SYMBOL              : Symbole courtier (défaut: GOLD ou XAUUSD)
  * TIMEFRAME           : Unité de temps (1m pour HFT, 5m pour Intraday, 15m pour Sniper A+)

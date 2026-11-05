@@ -137,12 +137,36 @@ export const BrokerConnectModal: React.FC<BrokerConnectModalProps> = ({ isOpen, 
   const [maxSlippage, setMaxSlippage] = useState(currentBroker?.hft_max_slippage_pips || 1.5);
 
   // MetaApi Hub State (For automatic position taking & cloud link)
-  const [metaApiToken, setMetaApiToken] = useState(currentMetaApi?.token || '');
-  const [metaApiAccountId, setMetaApiAccountId] = useState(currentMetaApi?.account_id || '');
-  const [metaApiSymbol, setMetaApiSymbol] = useState(currentMetaApi?.symbol || 'GOLD');
-  const [metaApiLot, setMetaApiLot] = useState<number>(currentMetaApi?.lot_size || 0.01);
-  const [metaApiAutoTrade, setMetaApiAutoTrade] = useState<boolean>(currentMetaApi?.auto_trade_enabled || false);
-  const [metaApiRegion, setMetaApiRegion] = useState(currentMetaApi?.region || 'new-york');
+  const getPersistedCreds = () => {
+    try {
+      const stored = localStorage.getItem('metaapi_persisted_config');
+      return stored ? JSON.parse(stored) : {};
+    } catch {
+      return {};
+    }
+  };
+  const persistedCreds = getPersistedCreds();
+
+  const [metaApiToken, setMetaApiToken] = useState(currentMetaApi?.token || persistedCreds.token || '');
+  const [metaApiAccountId, setMetaApiAccountId] = useState(currentMetaApi?.account_id || persistedCreds.account_id || '');
+  const [metaApiSymbol, setMetaApiSymbol] = useState(currentMetaApi?.symbol || persistedCreds.symbol || 'GOLD');
+  const [metaApiLot, setMetaApiLot] = useState<number>(currentMetaApi?.lot_size || persistedCreds.lot_size || 0.01);
+  const [metaApiAutoTrade, setMetaApiAutoTrade] = useState<boolean>(currentMetaApi?.auto_trade_enabled ?? persistedCreds.auto_trade_enabled ?? true);
+  const [metaApiRegion, setMetaApiRegion] = useState(currentMetaApi?.region || persistedCreds.region || 'london');
+
+  // Keep fields filled when currentMetaApi or modal opens
+  React.useEffect(() => {
+    const creds = getPersistedCreds();
+    if (!metaApiToken && (currentMetaApi?.token || creds.token)) {
+      setMetaApiToken(currentMetaApi?.token || creds.token || '');
+    }
+    if (!metaApiAccountId && (currentMetaApi?.account_id || creds.account_id)) {
+      setMetaApiAccountId(currentMetaApi?.account_id || creds.account_id || '');
+    }
+    if (currentMetaApi?.auto_trade_enabled !== undefined) {
+      setMetaApiAutoTrade(currentMetaApi.auto_trade_enabled);
+    }
+  }, [isOpen, currentMetaApi?.token, currentMetaApi?.account_id, currentMetaApi?.auto_trade_enabled]);
   const [showMetaApiToken, setShowMetaApiToken] = useState(false);
   const [metaApiSaving, setMetaApiSaving] = useState(false);
   const [metaApiSyncing, setMetaApiSyncing] = useState(false);
@@ -1101,9 +1125,9 @@ void OnTimer() {
                 <div className="p-2.5 rounded-xl bg-[#060810] border border-emerald-500/30 flex items-start gap-2.5 col-span-1 md:col-span-2">
                   <span className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-mono font-bold flex items-center justify-center shrink-0">3</span>
                   <div>
-                    <span className="font-semibold text-emerald-300">Moteur Autonome MDT & HFT Actif sur Render</span>
+                    <span className="font-semibold text-emerald-300">Moteur Autonome MDT & HFT Actif sur le Cloud (Google Cloud Run)</span>
                     <p className="text-[11px] text-[#8d93a8] mt-0.5">
-                      Plus besoin de script externe : le moteur <code className="text-amber-300">MdtEngine</code> et l'orchestrateur <code className="text-amber-300">mdtRunner</code> tournent désormais 24/7 directement au cœur du serveur. Dès qu'un setup se présente, la position est ouverte automatiquement sur votre MetaTrader 5 !
+                      Plus besoin d'un service externe comme Render : le moteur <code className="text-amber-300">MdtEngine</code> et l'orchestrateur <code className="text-amber-300">mdtRunner</code> tournent désormais 24/7 directement au cœur de ce serveur cloud. Dès qu'un setup se présente, la position est ouverte automatiquement sur votre MetaTrader 5 !
                     </p>
                   </div>
                 </div>

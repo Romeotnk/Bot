@@ -21,9 +21,33 @@ import { MdtEngine, MdtConfig, MdtEvent } from './mdtEngine.js';
 
 const DATA_DIR = path.resolve('.data');
 const STATE_FILE = path.join(DATA_DIR, 'viceinte_state.json');
+const METAAPI_CREDS_FILE = path.join(DATA_DIR, 'metaapi_credentials.json');
 
 if (!fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
+}
+
+export function loadPersistedMetaApiCreds(): Partial<MetaApiConfig> | null {
+  try {
+    if (fs.existsSync(METAAPI_CREDS_FILE)) {
+      const raw = fs.readFileSync(METAAPI_CREDS_FILE, 'utf-8');
+      return JSON.parse(raw);
+    }
+  } catch (e) {
+    console.error('[Credentials] Error reading metaapi_credentials.json:', e);
+  }
+  return null;
+}
+
+export function savePersistedMetaApiCreds(creds: Partial<MetaApiConfig>) {
+  try {
+    const existing = loadPersistedMetaApiCreds() || {};
+    const merged = { ...existing, ...creds };
+    fs.writeFileSync(METAAPI_CREDS_FILE, JSON.stringify(merged, null, 2), 'utf-8');
+    console.log('[Credentials] MetaApi credentials securely persisted to disk.');
+  } catch (e) {
+    console.error('[Credentials] Error saving metaapi_credentials.json:', e);
+  }
 }
 
 // Compute authentic MDT Radar MTF from real candles
@@ -597,17 +621,31 @@ class Store {
           }
         }
 
-        // Auto-close any unclosed trades that have been open for more than 5 minutes
+        // Auto-close any unclosed trades that have been open for more than 40s (HFT micro) or 5 minutes
         if (Array.isArray(parsed.trades)) {
           const now = Date.now();
           parsed.trades.forEach((t: any) => {
-            if (t.closed_at === null && (now - new Date(t.opened_at).getTime()) > 300000) {
-              t.closed_at = new Date(new Date(t.opened_at).getTime() + 25000).toISOString();
+            const timeoutMs = t.is_hft_micro ? 40000 : 300000;
+            if (t.closed_at === null && (now - new Date(t.opened_at).getTime()) > timeoutMs) {
+              t.closed_at = new Date().toISOString();
               t.exit = t.take_profit || t.entry;
               t.pnl_usd = (t as any).target_profit_usd || 1.00;
-              t.duration_seconds = 25;
+              t.duration_seconds = Math.max(1, Math.floor((now - new Date(t.opened_at).getTime()) / 1000));
             }
           });
+        }
+
+        // Rehydrate MetaApi credentials from persistent credentials file if missing in state
+        const savedCreds = loadPersistedMetaApiCreds();
+        if (savedCreds) {
+          if (!parsed.metaapi) parsed.metaapi = {};
+          if (savedCreds.token) parsed.metaapi.token = savedCreds.token;
+          if (savedCreds.account_id) parsed.metaapi.account_id = savedCreds.account_id;
+          if (savedCreds.region) parsed.metaapi.region = savedCreds.region;
+          if (savedCreds.symbol) parsed.metaapi.symbol = savedCreds.symbol;
+          if (savedCreds.lot_size) parsed.metaapi.lot_size = savedCreds.lot_size;
+          if (savedCreds.auto_trade_enabled !== undefined) parsed.metaapi.auto_trade_enabled = savedCreds.auto_trade_enabled;
+          parsed.metaapi.connected = Boolean(parsed.metaapi.token && parsed.metaapi.account_id);
         }
 
         if (!this.isDemo) {
@@ -649,8 +687,14 @@ class Store {
 
   public getState(): DashboardState {
     const broker = this.state.settings.broker || this.state.broker;
+    const metaapi = this.state.metaapi ? {
+      ...this.state.metaapi,
+      connected: Boolean(this.state.metaapi.token && this.state.metaapi.account_id),
+    } : undefined;
+
     return {
       ...this.state,
+      metaapi,
       broker,
       server_time: new Date().toISOString(),
       is_demo_data: this.isDemo,
@@ -712,13 +756,14 @@ class Store {
   }
 
   public updateMetaApi(config: Partial<MetaApiConfig>): MetaApiConfig {
+    const savedCreds = loadPersistedMetaApiCreds() || {};
     const current: MetaApiConfig = this.state.metaapi || {
-      token: process.env.METAAPI_TOKEN || '',
-      account_id: process.env.METAAPI_ACCOUNT_ID || '',
-      symbol: 'GOLD',
-      lot_size: 0.01,
-      auto_trade_enabled: false,
-      region: 'london',
+      token: savedCreds.token || process.env.METAAPI_TOKEN || '',
+      account_id: savedCreds.account_id || process.env.METAAPI_ACCOUNT_ID || '',
+      symbol: savedCreds.symbol || 'GOLD',
+      lot_size: savedCreds.lot_size || 0.01,
+      auto_trade_enabled: savedCreds.auto_trade_enabled ?? false,
+      region: savedCreds.region || 'london',
       connected: false,
       balance: null,
       equity: null,
@@ -727,10 +772,34 @@ class Store {
       last_sync: null,
     };
 
+    const token = config.token !== undefined && config.token !== '' ? config.token : (current.token || savedCreds.token || '');
+    const account_id = config.account_id !== undefined && config.account_id !== '' ? config.account_id : (current.account_id || savedCreds.account_id || '');
+    const hasCreds = Boolean(token && account_id);
+
+    // If credentials are provided and auto_trade_enabled is not explicitly false, enable it
+    const auto_trade_enabled = config.auto_trade_enabled !== undefined 
+      ? config.auto_trade_enabled 
+      : (current.auto_trade_enabled || hasCreds);
+
     const updated: MetaApiConfig = {
       ...current,
       ...config,
+      token,
+      account_id,
+      auto_trade_enabled,
+      connected: hasCreds,
     };
+
+    if (hasCreds) {
+      savePersistedMetaApiCreds({
+        token,
+        account_id,
+        region: updated.region,
+        symbol: updated.symbol,
+        lot_size: updated.lot_size,
+        auto_trade_enabled,
+      });
+    }
 
     this.state.metaapi = updated;
     this.state.settings.metaapi = updated;
@@ -860,7 +929,7 @@ class Store {
         }
 
         const hitSL = (trade.stop_loss > 0 && ((trade.side === 'BUY' && price <= trade.stop_loss) || (trade.side === 'SELL' && price >= trade.stop_loss))) || floatingUsd <= -2.50;
-        const isStale = (Date.now() - new Date(trade.opened_at).getTime()) > 300000; // 5 min max
+        const isStale = (Date.now() - new Date(trade.opened_at).getTime()) > ((trade as any).is_hft_micro ? 40000 : 300000); // 40s en HFT pour ne jamais geler le flux
 
         if (hitTP || hitSL || isStale) {
           trade.closed_at = new Date().toISOString();
@@ -910,7 +979,8 @@ class Store {
       const openTrades = this.state.trades.filter((t) => t.closed_at === null);
       const now = Date.now();
       const cooldownMs = 18000; // 18 seconds pause between automatic salvos
-      const canOpen = openTrades.length === 0 && (now - this.lastHftAutoFireTime >= cooldownMs);
+      const isBatchAging = openTrades.length > 0 && openTrades.every((t) => (now - new Date(t.opened_at).getTime()) >= 25000);
+      const canOpen = (openTrades.length === 0 || isBatchAging) && (now - this.lastHftAutoFireTime >= cooldownMs);
 
       if (canOpen && candles && candles.length >= 5) {
         this.lastHftAutoFireTime = now;

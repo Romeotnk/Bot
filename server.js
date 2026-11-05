@@ -24,10 +24,31 @@ app.use(express.urlencoded({ extended: true, limit: '15mb' }));
 // -------------------------------------------------------------
 const DATA_DIR = path.resolve('.data');
 const STATE_FILE = path.join(DATA_DIR, 'viceinte_state.json');
+const METAAPI_CREDS_FILE = path.join(DATA_DIR, 'metaapi_credentials.json');
 
 if (!fs.existsSync(DATA_DIR)) {
   try {
     fs.mkdirSync(DATA_DIR, { recursive: true });
+  } catch (e) {
+    // ignore
+  }
+}
+
+function loadPersistedMetaApiCreds() {
+  try {
+    if (fs.existsSync(METAAPI_CREDS_FILE)) {
+      return JSON.parse(fs.readFileSync(METAAPI_CREDS_FILE, 'utf-8'));
+    }
+  } catch (e) {
+    // ignore
+  }
+  return null;
+}
+
+function savePersistedMetaApiCreds(creds) {
+  try {
+    const existing = loadPersistedMetaApiCreds() || {};
+    fs.writeFileSync(METAAPI_CREDS_FILE, JSON.stringify({ ...existing, ...creds }, null, 2), 'utf-8');
   } catch (e) {
     // ignore
   }
@@ -147,6 +168,19 @@ if (fs.existsSync(STATE_FILE)) {
   } catch (e) {
     console.warn('[Viceinte Store] Impossible de lire l\'état sauvegardé, initialisation par défaut.');
   }
+}
+
+// Rehydrate MetaApi credentials from persistent credentials file if missing in state
+const savedCreds = loadPersistedMetaApiCreds();
+if (savedCreds) {
+  if (!appState.metaapi) appState.metaapi = {};
+  if (savedCreds.token) appState.metaapi.token = savedCreds.token;
+  if (savedCreds.account_id) appState.metaapi.account_id = savedCreds.account_id;
+  if (savedCreds.region) appState.metaapi.region = savedCreds.region;
+  if (savedCreds.symbol) appState.metaapi.symbol = savedCreds.symbol;
+  if (savedCreds.lot_size) appState.metaapi.lot_size = savedCreds.lot_size;
+  if (savedCreds.auto_trade_enabled !== undefined) appState.metaapi.auto_trade_enabled = savedCreds.auto_trade_enabled;
+  appState.metaapi.connected = Boolean(appState.metaapi.token && appState.metaapi.account_id);
 }
 
 function saveStateToDisk() {
@@ -561,9 +595,19 @@ app.post('/api/metaapi/config', (req, res) => {
       account_id: account_id !== undefined ? String(account_id).trim() : appState.metaapi.account_id,
       symbol: symbol ? String(symbol).trim() : (appState.metaapi.symbol || 'GOLD'),
       lot_size: Number(lot_size) > 0 ? Number(lot_size) : (appState.metaapi.lot_size || 0.01),
-      auto_trade_enabled: auto_trade_enabled !== undefined ? Boolean(auto_trade_enabled) : appState.metaapi.auto_trade_enabled,
-      region: region ? String(region).trim() : (appState.metaapi.region || 'new-york'),
+      auto_trade_enabled: auto_trade_enabled !== undefined ? Boolean(auto_trade_enabled) : (Boolean(token && account_id) || appState.metaapi.auto_trade_enabled),
+      region: region ? String(region).trim() : (appState.metaapi.region || 'london'),
     };
+    appState.metaapi.connected = Boolean(appState.metaapi.token && appState.metaapi.account_id);
+
+    savePersistedMetaApiCreds({
+      token: appState.metaapi.token,
+      account_id: appState.metaapi.account_id,
+      region: appState.metaapi.region,
+      symbol: appState.metaapi.symbol,
+      lot_size: appState.metaapi.lot_size,
+      auto_trade_enabled: appState.metaapi.auto_trade_enabled,
+    });
 
     appState.logs.unshift({
       id: `log-${Date.now()}`,
